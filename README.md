@@ -7,7 +7,12 @@ the CS300 group project.
 
 Type `make all` to build and run. 
 
+## Test Suite 
 
+We will use Google's C++ [testing suite](https://github.com/google/googletest).
+
+```Not Yet Operational```
+Type `make test` to run the test suite.
 
 
 
