@@ -7,28 +7,42 @@ Purpose:
 
  */
 
-#include "Account.h"
+#include "mainHeader.h"
 
-////////////
-//Account //
-////////////
 
-Account :: Account ( void ) : 
-name ( NULL ), ID ( 0 ), email ( NULL ), securityLevel ( init ) {}
+////////////////////////
+//      Account       //
+////////////////////////
 
-Account :: Account ( std :: string * newName, std :: string * newEmail, int newID, SECURITY_LEVEL newSecurityLevel) :
+
+Account :: Account ( void ) : name ( NULL ), ID ( NULL ), email  ( NULL ), securityLevel ( init ) {}
+
+Account :: Account (  string * newName,   string * newEmail, string * newID, address* newAddress, SECURITY_LEVEL newSecurityLevel) :
 name ( NULL ), email ( NULL ), ID ( newID ), securityLevel ( newSecurityLevel ) {
-	name = new std :: string ( * newName );
-	email = new std :: string ( * newEmail );
+	name = new string ( * newName );
+	email = new string ( * newEmail );
+	ID = new string (*newID);
+    theAddress = new address(*newAddress);
 }
+
 
 Account :: Account ( const Account & copied) : 
-name ( NULL ), email ( NULL ), ID ( copied.ID ), securityLevel ( copied.securityLevel ) {//@todo
-	name = new std :: string ( * copied.name );
-	email = new std :: string ( * copied.email );
+name ( NULL ), email ( NULL ), ID ( NULL), theAddress (NULL), securityLevel ( copied.securityLevel ) {
+	name = new   string ( * copied.name );
+	email = new   string ( * copied.email );
+	ID = new string (*copied.ID);
+    theAddress = new address(*copied.theAddress);
 }
 
-Account :: ~Account ( void ) {//@todo
+Account :: Account ( infoStruct* newInfo){
+    name = new string ( *newInfo->name );
+    email = new string ( * newInfo->email );
+    ID = new string (*newInfo->ID);
+    theAddress = new address(*newInfo->address);
+}
+
+Account :: ~Account ( void ) {
+
 	//Delete dynamic memory
 	if ( name ) {
 		delete name;
@@ -39,7 +53,40 @@ Account :: ~Account ( void ) {//@todo
 		delete email;
 		email = NULL;
 	}
+
+	if ( ID ) {
+		delete ID;
+		ID = NULL;
+	}
+    
+    if(theAddress){
+        delete theAddress;
+        theAddress = NULL;
+    }
 }
+
+void Account::display() {
+	cout<<*name<<endl;
+	cout<<*email<<endl;
+	cout<<*ID<<endl;
+    cout<<*theAddress->getFullAddress()<<endl; 
+	cout<<securityLevel<<endl;
+}
+
+infoStruct* Account::getInfo(){
+	infoStruct* toReturn = new infoStruct;
+
+	toReturn->name = name;
+	toReturn->email = email;
+	toReturn->address = theAddress;
+	toReturn->ID = ID;
+	return toReturn;
+}
+
+SECURITY_LEVEL Account::getSecurityLevel(){
+	return securityLevel;
+}
+
 
 ////////////
 //Manager //
@@ -48,9 +95,8 @@ Account :: ~Account ( void ) {//@todo
 Manager :: Manager ( void ) : 
 Account ( ), password ( NULL ) {}
 
-Manager :: Manager ( std :: string * newName, std :: string * newEmail, int newID, SECURITY_LEVEL newSecurityLevel, std :: string * newPassword) :
-Account ( newName, newEmail, newID, newSecurityLevel ), password ( NULL ) {
-	password = new std :: string ( *newPassword );
+Manager :: Manager ( string * newName, string * newEmail, string * newID, address * newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword) : Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), password ( NULL ) {
+	password = new   string ( *newPassword );
 }
 
 Manager :: Manager ( const Manager & copied) : 
@@ -71,7 +117,7 @@ Manager :: ~Manager ( void ){//@todo
  * @param  newPassword The new password to be set
  * @return             True iff the password is set
  */
-bool Manager :: setPassword ( std :: string * newPassword ) {//@todo
+bool Manager :: setPassword (   string * newPassword ) {//@todo
 	
 	//Delete old password
 	//set NULL
@@ -85,7 +131,7 @@ bool Manager :: setPassword ( std :: string * newPassword ) {//@todo
  * @param  passwordToCheck Provided by user
  * @return                 True if the passwords match, false otherwise
  */
-bool Manager :: checkPassword ( std :: string * passwordToCheck ) {
+bool Manager :: checkPassword (   string * passwordToCheck ) {
 	if ( * password == * passwordToCheck )
 		return true;
 
@@ -99,18 +145,17 @@ bool Manager :: checkPassword ( std :: string * passwordToCheck ) {
 Provider :: Provider ( void ) : 
 Account ( ), password ( NULL ), numMembersSeen ( 0 ), membersSeen ( NULL ), serviceRecord ( NULL ) {}
 
-Provider :: Provider ( std :: string * newName, std :: string * newEmail, int newID, SECURITY_LEVEL newSecurityLevel,
-std :: string * newPassword, int newNumMembersSeen, std :: list < int > * newMembersSeen, std :: list < Record >  * newServiceRecord) :
-Account ( newName, newEmail, newID, newSecurityLevel ), password ( newPassword ), numMembersSeen ( newNumMembersSeen ), membersSeen ( NULL ), 
+Provider :: Provider (   string * newName,   string * newEmail, string * newID, address * newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword, int newNumMembersSeen,   list < int > * newMembersSeen,   list < Record >  * newServiceRecord) :
+    Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), password ( newPassword ), numMembersSeen ( newNumMembersSeen ), membersSeen ( NULL ),
 serviceRecord ( NULL )  {
 	//Initialize membersSeen if it remains a pointer
 	
 	//@todo Read-up on list and make sure this is the correct syntax
 	//Also, do we want the provider to own this memory or deal with it in the program?
-	membersSeen = new std :: list < int >; 
+	membersSeen = new   list < int >;
 	*membersSeen = *newMembersSeen;
 
-	serviceRecord = new std :: list < Record >; //@todo
+	serviceRecord = new   list < Record >; //@todo
 	*serviceRecord = *newServiceRecord;
 }
 
@@ -135,7 +180,7 @@ Provider :: ~Provider ( void ) {//@todo
  * @param  newPassword The new password
  * @return             True if set, false otherwise
  */
-bool Provider :: setPassword ( std :: string * newPassword ) {
+bool Provider :: setPassword (   string * newPassword ) {
 	* password = * newPassword;
 
 	if ( * password == * newPassword )
@@ -149,7 +194,7 @@ bool Provider :: setPassword ( std :: string * newPassword ) {
  * @param  passwordToCheck The string to verify
  * @return                 True if they match, false otherwise
  */
-bool Provider :: checkPassword ( std :: string * passwordToCheck ) {//@todo
+bool Provider :: checkPassword (   string * passwordToCheck ) {//@todo
 	if ( * password == * passwordToCheck)
 		return true;
 
@@ -198,15 +243,15 @@ Account ( ), serviceRecord ( NULL ), status ( current ) {}
 
 Member :: Member ( const Member & copied) : 
 Account ( copied ), serviceRecord ( NULL ), status ( copied.status) {
-	serviceRecord = new std :: list < Record > ( * copied.serviceRecord );
+	serviceRecord = new   list < Record > ( * copied.serviceRecord );
 }
 
 
-Member :: Member ( std :: string * newName, std :: string * newEmail, int newID, SECURITY_LEVEL newSecurityLevel,
-MEMBER_STATUS newStatus, std :: list < Record > * newServiceRecord ) : 
-Account ( newName, newEmail, newID, newSecurityLevel ), serviceRecord ( NULL ), status ( newStatus) {
+Member :: Member (   string * newName,   string * newEmail, string * newID, address *newAddress, SECURITY_LEVEL newSecurityLevel,
+MEMBER_STATUS newStatus,   list < Record > * newServiceRecord ) :
+Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), serviceRecord ( NULL ), status ( newStatus) {
 
-	serviceRecord = new std :: list < Record > ( * newServiceRecord );
+	serviceRecord = new   list < Record > ( * newServiceRecord );
 }
 
 Member :: ~Member ( void ) {//@todo
@@ -246,6 +291,74 @@ bool Member :: appendToServiceRecord ( Record newServiceRecord) {//@todo
  * Getter for the serviceRecords data member
  * @return                  The service Records data member 
  */
-std :: list < Record > * Member :: getServiceRecords ( void ) {
+  list < Record > * Member :: getServiceRecords ( void ) {
 	return serviceRecord; //@todo syntax?
 }
+
+
+
+
+////////////
+// Address //
+////////////
+
+address::address(){
+    streetAdress = NULL;
+    city = NULL;
+    state = NULL;
+    zipcode = NULL;
+}
+address::address(const address & toCopy){
+    this->streetAdress = new string(*toCopy.streetAdress);
+    this->city = new string(*toCopy.city);
+    this->state = new string(*toCopy.state);
+    this->zipcode = new string(*toCopy.zipcode);
+}
+
+address::address(string* streetAdress, string* city, string* state, string* zipcode){
+    this->streetAdress = new string(*streetAdress);
+    this->city = new string(*city);
+    this->state = new string(*state);
+    this->zipcode = new string(*zipcode);
+}
+
+address::~address(){
+    delete streetAdress;
+    delete city;
+    delete state;
+    delete zipcode;
+}
+bool address::setAddress(string* streetAdress, string* city, string* state, string* zipcode){
+    this->streetAdress = new string(*streetAdress);
+    this->city = new string(*city);
+    this->state = new string(*state);
+    this->zipcode = new string(*zipcode);
+    return true;
+}
+
+void address::setAddress(const char* streetAdress, const char*  city, const char*  state, const char* zipcode){
+    this->streetAdress = new string(streetAdress);
+    this->city = new string(city);
+    this->state = new string(state);
+    this->zipcode = new string(zipcode);
+}
+
+string* address::getFullAddress(){
+    return new string(*streetAdress+", "+*city+", "+*state+" "+*zipcode);
+}
+string* address::getStreetAddress(){
+    return new string(*streetAdress);
+}
+string* address::getCity(){
+    return new string(*city);
+}
+string* address::getState(){
+    return new string(*state);
+    
+}
+string* address::getZipcode(){
+    return new string(*zipcode);
+}
+
+
+

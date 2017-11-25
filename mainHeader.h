@@ -4,6 +4,17 @@
 
 //General Include
 #include "standardHeader.h"
+#include "list" //http://www.cplusplus.com/reference/list/list/
+#include "string" //http://www.cplusplus.com/reference/string/string/
+#include "Account.h"
+
+using namespace std;
+
+
+/* Structs to be used Globally
+ *
+ *
+ */
 
 
 //-----------------------------

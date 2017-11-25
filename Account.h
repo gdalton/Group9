@@ -2,7 +2,7 @@
 #define ACCOUNT
 
 /* filename: Acount.h
- * Programmers: Matthew Greenlaw, (Add your name here)
+ * Programmers: Matthew Greenlaw, Dmitri Murphy, (Add your name here)
  * Class Number: CS-300 
  * Date: 22NOV17 
  * Purpose: 
@@ -21,15 +21,12 @@
  * of the systems functionality. 
  */
 
-#include "list" //http://www.cplusplus.com/reference/list/list/
-#include "string" //http://www.cplusplus.com/reference/string/string/
-
-struct Record {
-	//used for complilation only
-	//@todo remove once implemented
-};
 
 
+/* *** Enumerations
+ * - Use to denote different statuses
+ *   and security levels.
+ */
 enum MEMBER_STATUS {
 	current, 
 	expired
@@ -43,70 +40,140 @@ enum SECURITY_LEVEL {
 }; typedef enum SECURITY_LEVEL SECURITY_LEVEL;
 
 
+class address {
+public:
+	address();
+	address(string* streetAdress, string* city, string* state, string* zipcode);
+    address(const address & toCopy);
+	~address();
+	bool setAddress(string* streetAdress, string* city, string* state, string* zipcode);
+    void setAddress(const char* streetAdress, const char*  city, const char*  state, const char* zipcode);
+	string* getFullAddress();
+	string* getStreetAddress();
+	string* getCity();
+	string* getState();
+	string* getZipcode();
+
+private:
+	string * streetAdress;
+	string * city;
+	string * state;
+	string * zipcode;
+};
+
+
+
+/*
+ *  STRUCTS
+ */
+
+struct infoStruct {
+    string* ID;
+    string* name;
+    address* address;
+    string* email;
+    int securityLevel;
+};
+
+
+struct Record {
+    //used for complilation only
+    //@todo remove once implemented
+};
+
+
+
+
+// ******* Account Class *******
+
 class Account {
 public:
 	Account ( void );
 	Account ( const Account & );
-	Account ( std :: string * newName, std :: string * newEmail, int newID, SECURITY_LEVEL newSecurityLevel );
+    Account ( infoStruct* newInfo);
+	Account ( string * newName, string * newEmail, string *newID, address *newAddress, SECURITY_LEVEL newSecurityLevel );
 	~Account ( void );
+	void display();
+	infoStruct* getInfo();
+	SECURITY_LEVEL getSecurityLevel();
+
 
 protected:
-	std :: string * name;
-	int ID;
-	std :: string * email;
+	string * name;
+	string * ID;
+	string * email;
+    address * theAddress;
 	SECURITY_LEVEL securityLevel;
+    
 };
+
+/* From assignment:
+- Member street address (25 characters).
+- Member city (14 characters).
+- Member state (2 letters).
+- Member zip code (5 digits).
+ */
+
+// ******* Manager Class *******
 
 class Manager : public Account {
 public:
 	Manager ( void );
 	Manager ( const Manager & );
-	Manager ( std :: string * newName, std :: string * newEmail, int newID, SECURITY_LEVEL newSecurityLevel, std :: string * newPassword );
+	Manager ( string * newName, string * newEmail, string *newID, address *newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword );
 	~Manager ( void );
 
-	bool setPassword ( std :: string * newPassword );
-	bool checkPassword ( std :: string * passwordToCheck );
+	bool setPassword (   string * newPassword );
+	bool checkPassword (   string * passwordToCheck );
 
 protected:
-	std :: string * password;
+	string * password;
 };
+
+
+
+// ******* Provider Class *******
 
 class Provider : public Account {
 public:
 	Provider ( void );
 	Provider ( const Provider & );
-	Provider ( std :: string * newName, std :: string * newEmail, int newID, SECURITY_LEVEL newSecurityLevel,
-std :: string * newPassword, int newNumMembersSeen, std :: list < int > * newMembersSeen, std :: list < Record >  * newServiceRecord);
+	Provider ( string * newName, string * newEmail, string *newID, address *newAddress, SECURITY_LEVEL newSecurityLevel,
+  	string * newPassword, int newNumMembersSeen,   list < int > * newMembersSeen,   list < Record >  * newServiceRecord);
 	~Provider ( void );
 
-	bool setPassword ( std :: string * newPassword );
-	bool checkPassword ( std :: string * passwordToCheck );
+	bool setPassword (   string * newPassword );
+	bool checkPassword (   string * passwordToCheck );
 	bool displayAllMembers ( void );
 	bool addServiceRecord ( Record serviceRecord );
 	bool addMemberSeen ( int memberID );
 
 protected:
-	std :: string * password;
+	string * password;
 	int numMembersSeen;
-	std :: list < int > * membersSeen; //Wasn't shown as a pointer, but maybe it should be?
-	std :: list < Record > * serviceRecord; //Wasn't shown as a pointer, but maybe it should be?
+	list < int > * membersSeen; //Wasn't shown as a pointer, but maybe it should be?
+	list < Record > * serviceRecord; //Wasn't shown as a pointer, but maybe it should be?
 };
+
+
+
+// ******* Member Class *******
 
 class Member : public Account {
 public:
 	Member ( void );
 	Member ( const Member & );
-	Member ( std :: string * newName, std :: string * newEmail, int newID, SECURITY_LEVEL newSecurityLevel,
-MEMBER_STATUS newStatus, std :: list < Record > * newServiceRecord );
+	Member ( string * newName, string * newEmail, string *newID, address *newAddress, SECURITY_LEVEL newSecurityLevel,
+	MEMBER_STATUS newStatus,   list < Record > * newServiceRecord );
 	~Member ( void );
 
 	bool setMemberStatus ( MEMBER_STATUS newStatus );
 	MEMBER_STATUS getMemberStatus ( void );
 	bool appendToServiceRecord ( Record newServiceRecord);
-	std :: list < Record > * getServiceRecords ( void );
+	list < Record > * getServiceRecords ( void );
 
 protected:
-	std :: list < Record > * serviceRecord; //Should this be a pointer?
+	list < Record > * serviceRecord; //Should this be a pointer? // Yes, I think so...
 	MEMBER_STATUS status;
 };
 
