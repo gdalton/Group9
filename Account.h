@@ -39,6 +39,8 @@ enum SECURITY_LEVEL {
 	member
 }; typedef enum SECURITY_LEVEL SECURITY_LEVEL;
 
+typedef SECURITY_LEVEL ACCOUNT_TYPE;
+
 
 class address {
 public:
