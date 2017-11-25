@@ -38,7 +38,7 @@ Account :: Account ( infoStruct* newInfo){
     name = new string ( *newInfo->name );
     email = new string ( * newInfo->email );
     ID = new string (*newInfo->ID);
-    theAddress = new address(*newInfo->address);
+    theAddress = new address(*newInfo->theAddress);
 }
 
 Account :: ~Account ( void ) {
@@ -78,7 +78,7 @@ infoStruct* Account::getInfo(){
 
 	toReturn->name = name;
 	toReturn->email = email;
-	toReturn->address = theAddress;
+	toReturn->theAddress = theAddress;
 	toReturn->ID = ID;
 	return toReturn;
 }

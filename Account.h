@@ -72,7 +72,7 @@ private:
 struct infoStruct {
     string* ID;
     string* name;
-    address* address;
+    address* theAddress;
     string* email;
     int securityLevel;
 };
