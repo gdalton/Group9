@@ -283,8 +283,8 @@ MEMBER_STATUS newStatus,   list < memberRecord > * newServiceRecord ) :
 Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), serviceRecord ( NULL ), status ( newStatus) {
 
         serviceRecord = new list < memberRecord >;
-	*serviceRecord = *copied.serviceRecord;
-        status = copied.status;
+	*serviceRecord = *newServiceRecord;
+        status = newStatus;
 }
 
 Member :: ~Member ( void ) {
