@@ -83,6 +83,21 @@ struct Record {
     //@todo remove once implemented
 };
 
+struct memberRecord {
+    string dateOfService;
+    string providerName;
+    string serviceName;
+};
+
+
+struct providerRecord {
+    string currentDateTime;
+    string dateOfService;
+    string memberName;
+    string memberID;
+    string serviceCode;
+    string serviceFee;
+};
 
 
 
@@ -141,20 +156,20 @@ public:
 	Provider ( void );
 	Provider ( const Provider & );
 	Provider ( string * newName, string * newEmail, string *newID, address *newAddress, SECURITY_LEVEL newSecurityLevel,
-  	string * newPassword, int newNumMembersSeen,   list < int > * newMembersSeen,   list < Record >  * newServiceRecord);
+  	string * newPassword, int newNumMembersSeen,   list < int > * newMembersSeen,   list < providerRecord >  * newServiceRecord);
 	~Provider ( void );
 
 	bool setPassword (   string * newPassword );
 	bool checkPassword (   string * passwordToCheck );
 	bool displayAllMembers ( void );
-	bool addServiceRecord ( Record serviceRecord );
+	bool addServiceRecord ( providerRecord* newServiceRecord );
 	bool addMemberSeen ( int memberID );
 
 protected:
 	string * password;
 	int numMembersSeen;
 	list < int > * membersSeen; //Wasn't shown as a pointer, but maybe it should be?
-	list < Record > * serviceRecord; //Wasn't shown as a pointer, but maybe it should be?
+	list < providerRecord > * serviceRecord; //Wasn't shown as a pointer, but maybe it should be?
 };
 
 
@@ -166,16 +181,16 @@ public:
 	Member ( void );
 	Member ( const Member & );
 	Member ( string * newName, string * newEmail, string *newID, address *newAddress, SECURITY_LEVEL newSecurityLevel,
-	MEMBER_STATUS newStatus,   list < Record > * newServiceRecord );
+	MEMBER_STATUS newStatus,   list < memberRecord > * newServiceRecord );
 	~Member ( void );
 
 	bool setMemberStatus ( MEMBER_STATUS newStatus );
 	MEMBER_STATUS getMemberStatus ( void );
-	bool appendToServiceRecord ( Record newServiceRecord);
-	list < Record > * getServiceRecords ( void );
+	bool appendToServiceRecord ( memberRecord newServiceRecord);
+	list < memberRecord > * getServiceRecords ( void );
 
 protected:
-	list < Record > * serviceRecord; //Should this be a pointer? // Yes, I think so...
+	list < memberRecord > * serviceRecord; //Should this be a pointer? // Yes, I think so...
 	MEMBER_STATUS status;
 };
 

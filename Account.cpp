@@ -145,16 +145,16 @@ bool Manager :: checkPassword (   string * passwordToCheck ) {
 Provider :: Provider ( void ) : 
 Account ( ), password ( NULL ), numMembersSeen ( 0 ), membersSeen ( NULL ), serviceRecord ( NULL ) {}
 
-Provider :: Provider ( string * newName, string * newEmail, string * newID, address * newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword, int newNumMembersSeen,   list < int > * newMembersSeen,   list < Record >  * newServiceRecord) :
+Provider :: Provider ( string * newName, string * newEmail, string * newID, address * newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword, int newNumMembersSeen,   list < int > * newMembersSeen,   list < providerRecord >  * newServiceRecord) :
     Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), password ( newPassword ), numMembersSeen ( newNumMembersSeen ), membersSeen ( NULL ),
-serviceRecord ( NULL )  {
+    serviceRecord ( NULL )  {
 	
 	password = new string ( * newPassword );
 
 	membersSeen = new list < int >;
 	*membersSeen = *newMembersSeen;
 
-	serviceRecord = new list < Record >;
+	serviceRecord = new list < providerRecord >;
 	*serviceRecord = *newServiceRecord;
 }
 
@@ -167,7 +167,7 @@ Account ( copied ), password ( NULL ), numMembersSeen ( copied.numMembersSeen ),
 	membersSeen = new list < int >;
 	*membersSeen = *copied.membersSeen;
 
-	serviceRecord = new list < Record >;
+	serviceRecord = new list < providerRecord >;
 	*serviceRecord = *copied.serviceRecord;
 }
 
@@ -235,7 +235,7 @@ bool Provider :: displayAllMembers ( void ) {//@todo
  * @note	Client should not delete newServiceRecord, let Provider do that in the
  *       	destructor.
  */
-bool Provider :: addServiceRecord ( Record * newServiceRecord ) {//@todo
+bool Provider :: addServiceRecord ( providerRecord * newServiceRecord ) {//@todo
 	//Push newServiceRecord onto list head
 	
 	serviceRecord -> push_back ( * newServiceRecord );
@@ -271,15 +271,15 @@ Account ( ), serviceRecord ( NULL ), status ( current ) {}
 
 Member :: Member ( const Member & copied) : 
 Account ( copied ), serviceRecord ( NULL ), status ( copied.status) {
-	serviceRecord = new   list < Record > ( * copied.serviceRecord );
+	serviceRecord = new   list < memberRecord > ( * copied.serviceRecord );
 }
 
 
 Member :: Member (   string * newName,   string * newEmail, string * newID, address *newAddress, SECURITY_LEVEL newSecurityLevel,
-MEMBER_STATUS newStatus,   list < Record > * newServiceRecord ) :
+MEMBER_STATUS newStatus,   list < memberRecord > * newServiceRecord ) :
 Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), serviceRecord ( NULL ), status ( newStatus) {
 
-	serviceRecord = new   list < Record > ( * newServiceRecord );
+	serviceRecord = new   list < memberRecord > ( * newServiceRecord );
 }
 
 Member :: ~Member ( void ) {
@@ -315,7 +315,7 @@ MEMBER_STATUS Member :: getMemberStatus ( void ) {
  * @param  newServiceRecord The apended service record
  * @return                  True if the service record was appended, false otherwise
  */
-bool Member :: appendToServiceRecord ( Record newServiceRecord) {//@todo check for append.
+bool Member :: appendToServiceRecord ( memberRecord newServiceRecord) {//@todo check for append.
 	//Push newServiceRecord onto serviceRecord
 	serviceRecord -> push_front(newServiceRecord);
 	return true;
@@ -325,7 +325,7 @@ bool Member :: appendToServiceRecord ( Record newServiceRecord) {//@todo check f
  * Getter for the serviceRecords data member
  * @return                  The service Records data member 
  */
-  list < Record > * Member :: getServiceRecords ( void ) {
+  list < memberRecord > * Member :: getServiceRecords ( void ) {
 	return serviceRecord; //@todo syntax?
 }
 
