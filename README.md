@@ -10,7 +10,7 @@ Type `make all` to build and run.
 
 ## Instructions for Writing Tests ##
 - In general, use [Google's Guide](https://github.com/google/googletest/blob/master/googletest/docs/Primer.md) for reference.
-- Put tests in gTest/, with extension .cc
+- Put tests in tests/, with extension .cc
 
 **However, write tests in the format:**
 ```
@@ -20,12 +20,16 @@ TEST( <test name>, <testing what?>) {
 ```
 
 
-**For format, see:** gTest/exampleTest.cc
+**For format, see:** tests/exampleTest.cc
 
 ## Instructions for Running Tests ##
 
-**To run:** `cd gTest/` **and run**
-`g++ -I googletest/include -pthread exampleTest.cc libgtest.a -o test_executable`
+**To Install:**
+Run `make get-test-suite` to install googletest.
 
-**Then do:**
-`./test_executable` to run the tests.
+**To run:***
+
+Run `make test` to run the tests (only runs tests/exampleTest.cc at the moment).  
+
+Verified to work on PSU Linux. 
+

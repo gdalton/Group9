@@ -4,7 +4,7 @@ all:
 	./a.out
 
 
-test: get-test-suite
+test: 
 	cd googletest && \
 	g++ -Igoogletest/include -pthread ../tests/exampleTest.cc libgtest.a -o test_executable && \
 	./test_executable
