@@ -8,6 +8,7 @@
 #include "string" //http://www.cplusplus.com/reference/string/string/
 #include "Account.h"
 #include <map>
+#include <time.h> // time_t
 
 
 using namespace std;
@@ -17,6 +18,14 @@ using namespace std;
  *
  *
  */
+
+struct Service { //@todo
+    
+};
+
+struct eft { //@todo 
+
+};
 
 
 //-----------------------------
@@ -76,21 +85,78 @@ class accountManager{
     //See for refrence: http://en.cppreference.com/w/cpp/container/map
 };
 
-
-
 class providerDirectory{
 public:
+    providerDirectory ( void );
+    providerDirectory ( const providerDirectory & toCopy );
+    ~providerDirectory ( void );
 
+    list < Service > getDirectory ( void );
+    bool addService ( Service addedService);
+    bool removeService ( int serviceID);
+    bool displayService ( int serviceID);
+    bool updateFee ( int serviceID, float newFee);
 
 private:
-    list <providerRecord> allRecords;
+    list < Service > directory;
 };
 
 
 
 class reportManager{
+public:
+    reportManager ( void );
+    reportManager ( const reportManager & toCopy );
+    ~reportManager ( void );
 
+private:
+    bool updateReport ( void );//changed from the orig desing. Could have a menue inside that decides which type of report to update.
+    bool providerReport ( string, providerRecord * );
+    bool memberReport ( string, memberRecord * );
+    bool providerAllReports ( map < string, Provider >, Provider * );
+    bool memberAllReports ( map < string, Member >, Member * );
+    bool generateEFT ( eft *, Account * );
 };
 
+class Warden { 
+public:
+    Warden ( void );
+    Warden ( const Warden & toCopy );
+    ~Warden ( void );
 
+    bool addCredential ( string newUsername, string newPassword);
+    bool validateLogin ( string, string );
+    bool checkLoginAttempts ( int );
+    bool addLog ( string logToAdd);
+    bool checkActive ( void );
 
+private:
+    time_t currentTime;
+    time_t referenceTime;
+    list < string [ 2 ] > systemCredentials;
+    list < string > userActions; //could probably just make this a string ( not a list of strings )
+    FILE * logFile;
+    int loginAttempts;
+};
+
+class UserInterface {
+public:
+    UserInterface ( void );
+    UserInterface ( const UserInterface & toCopy );
+    ~UserInterface ( void );
+
+    string currentUser;
+    int clearanceLevel;
+
+private:
+    bool runSystem ( void );
+    bool runProviderMenu ( void );
+    bool runManagerMenu ( void );
+
+    Warden warden;
+    accountManager accounts;
+    providerDirectory directory;
+    reportManager reports;
+    fileSystem database;
+    float timeInactive;
+};
