@@ -272,7 +272,7 @@ Account ( ), serviceRecord ( NULL ), status ( current ) {}
 Member :: Member ( const Member & copied) : 
 Account ( copied ), serviceRecord ( NULL ), status ( copied.status) {
 
-       	serviceRecord = new list < providerRecord >;
+       	serviceRecord = new list < memberRecord >;
 	*serviceRecord = *copied.serviceRecord;
         status = copied.status;
 }
@@ -282,7 +282,7 @@ Member :: Member (   string * newName,   string * newEmail, string * newID, addr
 MEMBER_STATUS newStatus,   list < memberRecord > * newServiceRecord ) :
 Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), serviceRecord ( NULL ), status ( newStatus) {
 
-        serviceRecord = new list < providerRecord >;
+        serviceRecord = new list < memberRecord >;
 	*serviceRecord = *copied.serviceRecord;
         status = copied.status;
 }
