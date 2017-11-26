@@ -145,34 +145,49 @@ bool Manager :: checkPassword (   string * passwordToCheck ) {
 Provider :: Provider ( void ) : 
 Account ( ), password ( NULL ), numMembersSeen ( 0 ), membersSeen ( NULL ), serviceRecord ( NULL ) {}
 
-Provider :: Provider (   string * newName,   string * newEmail, string * newID, address * newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword, int newNumMembersSeen,   list < int > * newMembersSeen,   list < Record >  * newServiceRecord) :
+Provider :: Provider ( string * newName, string * newEmail, string * newID, address * newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword, int newNumMembersSeen,   list < int > * newMembersSeen,   list < Record >  * newServiceRecord) :
     Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), password ( newPassword ), numMembersSeen ( newNumMembersSeen ), membersSeen ( NULL ),
 serviceRecord ( NULL )  {
-	//Initialize membersSeen if it remains a pointer
 	
-	//@todo Read-up on list and make sure this is the correct syntax
-	//Also, do we want the provider to own this memory or deal with it in the program?
-	membersSeen = new   list < int >;
+	password = new string ( * newPassword );
+
+	membersSeen = new list < int >;
 	*membersSeen = *newMembersSeen;
 
-	serviceRecord = new   list < Record >; //@todo
+	serviceRecord = new list < Record >;
 	*serviceRecord = *newServiceRecord;
 }
 
-Provider :: Provider ( const Provider & copied) {//@todo
+Provider :: Provider ( const Provider & copied) : 
+Account ( copied ), password ( NULL ), numMembersSeen ( copied.numMembersSeen ), membersSeen ( NULL ), serviceRecord ( NULL ){
 	//Deep Copy
 	
-	//members seen
+	password = new string ( * copied.password );
 	
-	//serviceRecord
+	membersSeen = new list < int >;
+	*membersSeen = *copied.membersSeen;
+
+	serviceRecord = new list < Record >;
+	*serviceRecord = *copied.serviceRecord;
 }
 
 Provider :: ~Provider ( void ) {//@todo
 	//Delete dynamic memory
 	
-	//members seen
-	
-	//serviceRecord
+	if ( password ) {
+		delete password;
+		password = NULL;
+	}
+
+	if ( membersSeen ) {
+		delete membersSeen;
+		membersSeen = NULL;
+	}
+
+	if ( serviceRecord ) {
+		delete serviceRecord;
+		serviceRecord = NULL;
+	}
 }
 
 /**
@@ -180,7 +195,7 @@ Provider :: ~Provider ( void ) {//@todo
  * @param  newPassword The new password
  * @return             True if set, false otherwise
  */
-bool Provider :: setPassword (   string * newPassword ) {
+bool Provider :: setPassword ( string * newPassword ) {
 	* password = * newPassword;
 
 	if ( * password == * newPassword )
@@ -194,7 +209,7 @@ bool Provider :: setPassword (   string * newPassword ) {
  * @param  passwordToCheck The string to verify
  * @return                 True if they match, false otherwise
  */
-bool Provider :: checkPassword (   string * passwordToCheck ) {//@todo
+bool Provider :: checkPassword ( string * passwordToCheck ) {//@todo
 	if ( * password == * passwordToCheck)
 		return true;
 
@@ -206,9 +221,10 @@ bool Provider :: checkPassword (   string * passwordToCheck ) {//@todo
  * @return  True if the function displayed all members, false otherwise
  */
 bool Provider :: displayAllMembers ( void ) {//@todo
-	//Loop over each member
-		//display member to console
 	
+	for ( list < int > :: const_iterator i = membersSeen->begin(), end = membersSeen -> end(); i != end; ++i )
+		cout << *i << endl;
+
 	return false;
 }
 
@@ -216,10 +232,17 @@ bool Provider :: displayAllMembers ( void ) {//@todo
  * Adds a service record to the list of service records
  * @param  newServiceRecord The new service record
  * @return                  True if the service record was added, false otherwise
+ * @note	Client should not delete newServiceRecord, let Provider do that in the
+ *       	destructor.
  */
-bool Provider :: addServiceRecord ( Record newServiceRecord ) {//@todo
+bool Provider :: addServiceRecord ( Record * newServiceRecord ) {//@todo
 	//Push newServiceRecord onto list head
 	
+	serviceRecord -> push_back ( * newServiceRecord );
+
+	//if ( serviceRecord - > end () - 1 == * newServiceRecord ) @toDo '==' operator for Record class
+		//return true; 
+
 	return false;
 }
 
@@ -230,6 +253,11 @@ bool Provider :: addServiceRecord ( Record newServiceRecord ) {//@todo
  */
 bool Provider :: addMemberSeen ( int memberID ) {//@todo
 	//Push memberID onto membersSeen
+	
+	membersSeen -> push_back ( memberID );
+
+	if ( membersSeen -> back () == memberID )
+		return true; 
 	
 	return false;
 }
