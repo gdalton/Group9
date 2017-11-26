@@ -1,6 +1,6 @@
 /*
 Filename: Account.cpp
-Programmers: Matthew Greelaw, (Add your name here)
+Programmers: Matthew Greelaw, Dalton Gray, (Add your name here)
 Class: CS-300
 Date: 22NOV17
 Purpose:
@@ -235,7 +235,7 @@ bool Provider :: addMemberSeen ( int memberID ) {//@todo
 }
 
 ////////////
-//Memeber //
+//Member //
 ////////////
 
 Member :: Member ( void ) :  
@@ -254,8 +254,11 @@ Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), serviceRecor
 	serviceRecord = new   list < Record > ( * newServiceRecord );
 }
 
-Member :: ~Member ( void ) {//@todo
+Member :: ~Member ( void ) {
 	//Delete dynamic memory
+        while(!serviceRecord -> empty()) {
+            serviceRecord -> pop_front();
+        }
 }
 
 /**
@@ -263,16 +266,19 @@ Member :: ~Member ( void ) {//@todo
  * @param  newStatus The new status
  * @return           True if set, false otherwise
  */
-bool Member :: setMemberStatus ( MEMBER_STATUS newStatus ) {//@todo
-	
-	return false;
+bool Member :: setMemberStatus ( MEMBER_STATUS newStatus ) {
+	status = newStatus;
+        if(status == newStatus)
+            return true;
+        else
+	    return false;
 }
 
 /**
  * Getter for status data member
  * @return  The status data member
  */
-MEMBER_STATUS Member :: getMemberStatus ( void ) {//@todo
+MEMBER_STATUS Member :: getMemberStatus ( void ) {
 	return status;
 }
 
@@ -281,7 +287,7 @@ MEMBER_STATUS Member :: getMemberStatus ( void ) {//@todo
  * @param  newServiceRecord The apended service record
  * @return                  True if the service record was appended, false otherwise
  */
-bool Member :: appendToServiceRecord ( Record newServiceRecord) {//@todo
+bool Member :: appendToServiceRecord ( Record newServiceRecord) {//@todo check for append.
 	//Push newServiceRecord onto serviceRecord
 	serviceRecord -> push_front(newServiceRecord);
 	return true;
