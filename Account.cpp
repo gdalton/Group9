@@ -283,8 +283,8 @@ MEMBER_STATUS Member :: getMemberStatus ( void ) {//@todo
  */
 bool Member :: appendToServiceRecord ( Record newServiceRecord) {//@todo
 	//Push newServiceRecord onto serviceRecord
-	
-	return false;
+	serviceRecord -> push_front(newServiceRecord);
+	return true;
 }
 
 /**
