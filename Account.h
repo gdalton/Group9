@@ -113,6 +113,7 @@ public:
 	void display();
 	infoStruct* getInfo();
 	SECURITY_LEVEL getSecurityLevel();
+    string* getID();
 
 
 protected:
