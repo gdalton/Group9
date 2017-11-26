@@ -87,6 +87,10 @@ SECURITY_LEVEL Account::getSecurityLevel(){
 	return securityLevel;
 }
 
+string* Account::getID(){
+    return ID;
+}
+
 
 ////////////
 //Manager //
@@ -349,38 +353,50 @@ address::address(){
     zipcode = NULL;
 }
 address::address(const address & toCopy){
-    this->streetAdress = new string(*toCopy.streetAdress);
-    this->city = new string(*toCopy.city);
-    this->state = new string(*toCopy.state);
-    this->zipcode = new string(*toCopy.zipcode);
+    streetAdress = new string(*toCopy.streetAdress);
+    city = new string(*toCopy.city);
+    state = new string(*toCopy.state);
+    zipcode = new string(*toCopy.zipcode);
 }
 
-address::address(string* streetAdress, string* city, string* state, string* zipcode){
-    this->streetAdress = new string(*streetAdress);
-    this->city = new string(*city);
-    this->state = new string(*state);
-    this->zipcode = new string(*zipcode);
+address::address(string* newStreetAdress, string* newCity, string* newState, string* newZipcode){
+    streetAdress = new string(*newStreetAdress);
+    city = new string(*newCity);
+    state = new string(*newState);
+    zipcode = new string(*newZipcode);
 }
 
 address::~address(){
-    delete streetAdress;
-    delete city;
-    delete state;
-    delete zipcode;
+    if(streetAdress){
+        delete streetAdress;
+        streetAdress = NULL;
+    }
+    if(city){
+        delete city;
+        city = NULL;
+    }
+    if(state){
+        delete state;
+        state = NULL;
+    }
+    if(zipcode){
+        delete zipcode;
+        zipcode = NULL;
+    }
 }
-bool address::setAddress(string* streetAdress, string* city, string* state, string* zipcode){
-    this->streetAdress = new string(*streetAdress);
-    this->city = new string(*city);
-    this->state = new string(*state);
-    this->zipcode = new string(*zipcode);
+bool address::setAddress(string* newStreetAdress, string* newCity, string* newState, string* newZipcode){
+    streetAdress = new string(*newStreetAdress);
+    city = new string(*newCity);
+    state = new string(*newState);
+    zipcode = new string(*newZipcode);
     return true;
 }
 
-void address::setAddress(const char* streetAdress, const char*  city, const char*  state, const char* zipcode){
-    this->streetAdress = new string(streetAdress);
-    this->city = new string(city);
-    this->state = new string(state);
-    this->zipcode = new string(zipcode);
+void address::setAddress(const char* newStreetAdress, const char*  newCity, const char*  newState, const char* newZipcode){
+    streetAdress = new string(newStreetAdress);
+    city = new string(newCity);
+    state = new string(newState);
+    zipcode = new string(newZipcode);
 }
 
 string* address::getFullAddress(){
