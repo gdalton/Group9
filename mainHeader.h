@@ -44,6 +44,11 @@ class fileSystem{
 };
 
 
+/* Account Manager Class 
+ *
+ */
+
+
 class accountManager{
     
     public:
@@ -73,7 +78,19 @@ class accountManager{
 
 
 
+class providerDirectory{
+public:
 
+
+private:
+    list <providerRecord> allRecords;
+};
+
+
+
+class reportManager{
+
+};
 
 
 

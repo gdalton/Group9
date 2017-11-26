@@ -1,6 +1,11 @@
-//  CS300 - Group 9
-//  Filename: fileSystem.cpp
 
+/* filename: fileSystem.cpp
+ * Programmers: Dmitri Murphy, (Add your name here)
+ * Class Number: CS-300
+ * Date: 22NOV17
+ * Purpose:
+ * @todo
+ */
 
 #include "mainHeader.h"
 
