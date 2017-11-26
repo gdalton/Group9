@@ -19,12 +19,16 @@ using namespace std;
  *
  */
 
-struct Service { //@todo
-    
+struct Service { 
+        string * serviceID;
+        string * name;
+        float fee;
 };
 
-struct eft { //@todo 
-
+struct eft { 
+        string * providerName;
+        string * providerID;
+        float totalFee; 
 };
 
 
