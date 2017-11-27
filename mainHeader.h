@@ -128,6 +128,8 @@ public:
     ~Warden ( void );
 
     bool addCredential ( string newUsername, string newPassword);
+    bool updateCredential ( string newUsername, string newPassword);
+    bool deleteCredential ( string newUsername, string newPassword);
     bool validateLogin ( string, string );
     bool checkLoginAttempts ( int );
     bool addLog ( string logToAdd);
