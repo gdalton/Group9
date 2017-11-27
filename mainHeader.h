@@ -76,15 +76,16 @@ class accountManager{
     bool removeAccount(string* accountID, ACCOUNT_TYPE type);
     bool editAccount(string* accountID, Account* newAccount, ACCOUNT_TYPE type);
     Account* getAccount(string* accountID, ACCOUNT_TYPE type);
-    map<string, Account>* getAllAccounts(ACCOUNT_TYPE type);
+    map<const string, Account* >* getAllAccounts(ACCOUNT_TYPE type);
     void displayAllAccounts(ACCOUNT_TYPE type); //For testing...
     
     
     private:
     bool loadDataFromDisk();
-    map<string, Member> memberTree;
-    map<string, Provider> providerTree;
-    map<string, Manager> managerTree;
+    bool checkAccountType(string* idNumber, ACCOUNT_TYPE type);
+    map<const string, Account*> memberTree;
+    map<const string, Account*> providerTree;
+    map<const string, Account*> managerTree;
     
     //See for refrence: http://en.cppreference.com/w/cpp/container/map
 };
