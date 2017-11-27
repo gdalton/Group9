@@ -98,9 +98,9 @@ public:
 
     list < Service > getDirectory ( void );
     bool addService ( Service addedService);
-    bool removeService ( int serviceID);
-    bool displayService ( int serviceID);
-    bool updateFee ( int serviceID, float newFee);
+    bool removeService ( string * serviceID);
+    bool displayService ( string * serviceID);
+    bool updateFee ( string * serviceID, float newFee);
 
 private:
     list < Service > directory;
