@@ -25,16 +25,24 @@
      */
     reportManager :: ~reportManager ( void ) {}
 
-    /** Allows the user to make changes to an existing report
+    /** Finds every provider that has provided a service during
+     * the week and list them, along with the number of services they provided
+     * during the week, and the total fee owed to them. It will also add up the
+     * overall total fee owed by ChocAn for the week. This will be stored and
+     * returned via a manager’s report struct.
      * @return     True if the changes were made, false otherwise
      * @todo This is a change from the original design and may need some extra
      * attention.
      */
-    bool reportManager :: updateReport ( void ) {
+    bool reportManager :: managerReport ( void ) {
 
     }
     
-    /** Generates a new provider report
+    /** Reads in a 9-digit provider ID and generate an individual provider report
+     * for a ChocAn manager if the provider ID input exists. The report will be
+     * returned via provider report pointer provided in the arguments list. If
+     * the report is successfully created the function will return true,
+     * otherwise it will return false.
      * @param      reportDetails  The report details
      * @param      newReport      The new report
      * @return     True if the report was generated, false otherwise
@@ -43,7 +51,11 @@
 
     }
 
-    /** Generates a new member report
+    /** Reads in a 9-digit member ID and generate an individual member report for
+     * a ChocAn manager if the member ID input exists. The report will be
+     * returned via the member report pointer provided in the arguments list. If
+     * the report is successfully created the function will return true,
+     * otherwise it will return false.
      * @param      reportDetails  The report details
      * @param      newReport      The new report
      * @return     True if the report was generated, false otherwise
@@ -52,7 +64,13 @@
 
     }
 
-    /** Generates all reports for a provider
+    /** Reads in a tree of providers and cycle through all of the ChocAn
+     * providers creating a linear linked list of provider reports. A node in
+     * the list will represent a report and each provider that has rendered a
+     * service during the week will have a node. The completed list will be
+     * returned via the the Provider Report pointer in the arguments list for
+     * use by the file system. The function will return true if the list is
+     * completed, or false if there is an error in the process.
      * @param      providerTree  The provider tree
      * @param      theProvider   The provider
      * @return     True if the reports were generated, false otherwise
@@ -61,7 +79,13 @@
 
     }
 
-    /** Generates all reports for a member
+    /** Reads read in a tree of members and cycle through all of the ChocAn
+     * members creating a linear linked list of member reports. A node in the
+     * list will represent a report and each member that has received a service
+     * during the week will have a node. The completed list will be returned via
+     * the the Member Report pointer in the arguments list for use by the file
+     * system. The function will return true if the list is completed, or false
+     * if there is an error in the process.
      * @param      memberTree  The member tree
      * @param      theMember   The member
      * @return     True if the reports were generated, false otherwise
@@ -70,7 +94,11 @@
 
     }
 
-    /** Generates an EFT
+    /** Reads read in a tree of providers and cycle through all of the ChocAn
+     * providers creating a linear linked list of providers and total fees owed
+     * to them. The completed list will be returned via the eft pointer for use
+     * by the file system. The function will return true if the list is
+     * completed, or false if there is an error in the process.
      * @param      newEFT     The new eft
      * @param      trasferee  The trasferee
      * @return     True if the EFT was generated, false otherwise
