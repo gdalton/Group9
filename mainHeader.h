@@ -114,6 +114,7 @@ public:
     ~reportManager ( void );
 
     bool managerReport ( void );
+    bool providerReport ( string, providerRecord * );
     bool memberReport ( string, memberRecord * );
     bool providerAllReports ( map < string, Provider >, Provider * );
     bool memberAllReports ( map < string, Member >, Member * );
