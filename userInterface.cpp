@@ -35,21 +35,23 @@ UserInterface :: ~UserInterface ( void ) {
 	//@todo
 }
 
-/** Runs system menu
+/** Starts up the whole system and runs the UI.
  * @return     True if the user exits normally, false otherwise
  */
 bool UserInterface :: runSystem ( void ) {
 	//@todo
 }
 
-/** Runs the provider menu
+/** Runs the provider menu system. It presents the provider with a series of
+ * commands for the provider to use.
  * @return     True if the user exits  normally, false otherwise
  */
 bool UserInterface :: runProviderMenu ( void ) {
 	//@todo
 }
 
-/** Runs the manager menu
+/** Runs the manager menu system. It presents the manager with a series of
+ * commands for the manger to use.
  * @return     True if the user exits  normally, false otherwise
  */
 bool UserInterface :: runManagerMenu ( void ) {
