@@ -66,11 +66,13 @@ Account :: ~Account ( void ) {
 }
 
 void Account::display() {
+	string* fullAddress = theAddress->getFullAddress();
 	cout<<*name<<endl;
 	cout<<*email<<endl;
 	cout<<*ID<<endl;
-    cout<<*theAddress->getFullAddress()<<endl; 
+    cout<<*fullAddress<<endl;
 	cout<<securityLevel<<endl;
+	delete fullAddress;
 }
 
 infoStruct* Account::getInfo(){
