@@ -1,6 +1,6 @@
 
 /* filename: providerDirectory.cpp
-* Programmers: (Add your name here)
+* Programmers: Dalton Gray
 * Class Number: CS-300
 * Date: 22NOV17
 * Purpose: The Provider Directory class will manage the list of services that
@@ -16,25 +16,27 @@
 
 /** Constructs the object.
  */
-providerDirectory :: providerDirectory ( void ) {}
+providerDirectory :: providerDirectory ( void ) {
+}
 
 /** Constructs the object.
  * @param      toCopy  To copy
  */
 providerDirectory :: providerDirectory ( const providerDirectory & toCopy ) {
-
+	directory = toCopy.directory;
 }
 
 /** Destroys the object.
  */
-providerDirectory :: ~providerDirectory ( void ) {}
+providerDirectory :: ~providerDirectory ( void ) {
+}
 
 /** Returns a list of services providers have that agreed to perform for ChocAn
  * members.
  * @return     The directory.
  */
 list < Service > providerDirectory :: getDirectory ( void ) {
-
+	return directory;
 }
 
 /** Takes a Service struct as input and adds it to the linear linked of services
@@ -44,7 +46,27 @@ list < Service > providerDirectory :: getDirectory ( void ) {
  * @return     True if the service was added, false otherwise
  */
 bool providerDirectory :: addService ( Service addedService) {
-
+        if(directory.empty()) {
+            directory.push_front(addedService);
+            return true;
+        }
+        else {
+            list < Service > :: iterator it = directory.begin(); 
+	    for(it; it != directory.end(); ++it) {
+                if(it -> name >= addedService.name) {
+                    directory.insert(it, addedService);
+                    return true;
+                }
+            }
+            if(it -> name >= addedService.name) {
+                directory.insert(it, addedService);
+                return true;
+	    }
+            else {
+                directory.push_back(addedService);
+                return true;
+            }
+	}    
 }
 
 /** Takes a 6-digit long int as input and removes the corresponding service from
@@ -53,10 +75,37 @@ bool providerDirectory :: addService ( Service addedService) {
  * @param      serviceID  The service id
  * @return     True if the service was removed, false otherwise
  */
-bool providerDirectory :: removeService ( int serviceID) {
-
+bool providerDirectory :: removeService ( string * serviceID) {
+	if(directory.empty())
+            return true;
+        else {
+            list < Service > :: iterator it = directory.begin(); 
+            for(it; it != directory.end(); ++it) {
+                if(it -> serviceID == serviceID) {
+                    if(it -> serviceID)
+                        delete it -> serviceID;
+                    if(it -> name)
+                        delete it -> name;
+                    it = directory.erase(it);
+                    //Possible problems if list is emptied after deletion. 
+                    if(it -> serviceID == serviceID)
+                        return false;
+                    else
+                        return true;
+                }
+            }
+            if(it -> serviceID == serviceID) {
+                it = directory.erase(it); 
+                if(it -> serviceID == serviceID)
+                    return false;
+                else
+                    return true;
+            }
+            else
+                return true;
+	}
 }
-
+                    
 /** Takes a 6-digit long int as input and displays the corresponding service and
  * all of its information to the terminal. It returns true if the service
  * entered is found and displayed, otherwise the function returns false.
@@ -64,8 +113,24 @@ bool providerDirectory :: removeService ( int serviceID) {
  * @return     True if the service was displayed, false otherwise (Why is this a
  *             bool?)
  */
-bool providerDirectory :: displayService ( int serviceID) {
-
+bool providerDirectory :: displayService ( string * serviceID) {
+	if(directory.empty())
+            return false;
+        else {
+            list < Service > :: iterator it = directory.begin(); 
+            for(it; it != directory.end(); ++it) {
+                if(it -> serviceID == serviceID) {
+                    cout << "\nService ID: " << it -> serviceID << "\nName: " << it -> name << "\nService Fee: $" << it -> fee << endl;
+                    return true;
+                }
+            }
+            if(it -> serviceID == serviceID) {
+                cout << "\nService ID: " << it -> serviceID << "\nName: " << it -> name << "\nService Fee: $" << it -> fee << endl;
+                return true;
+            }
+            else
+                return false;
+	}
 }
 
 /** Takes a 6-digit long int, and a float up to 999.99 as input and updates the
@@ -75,6 +140,28 @@ bool providerDirectory :: displayService ( int serviceID) {
  * @param      newFee     The new fee
  * @return     True if the service fee was updated, false otherwise
  */
-bool providerDirectory :: updateFee ( int serviceID, float newFee) {
-
+bool providerDirectory :: updateFee ( string * serviceID, float newFee) {
+	if(directory.empty())
+            return false;
+        else {
+            list < Service > :: iterator it = directory.begin();
+            for(it; it != directory.end(); ++it) {
+                if(it -> serviceID == serviceID) {
+                    it -> fee = newFee; 
+                    if(it -> fee == newFee)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            if(it -> serviceID == serviceID) {
+                it -> fee = newFee; 
+                if(it -> fee == newFee)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+	}
 }
