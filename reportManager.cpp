@@ -44,15 +44,15 @@
         float totalFees = 0;
 
         for ( map < string, Provider > :: iterator i = providerTree.begin (); i != providerTree.end (); ++i ) {
-            if( i->second.getMembersSeen () != 0) {
+            if( i->second.getNumMembersSeen () != 0) {
                 cout << "Provider: " << endl;
                 i->second.display ();
-                cout << "Members seen: " << i.Provider.membersSeen << endl;
+                cout << "Members seen: " << i -> second.getNumMembersSeen () << endl;
 
                 list < providerRecord > * copyServiceRecord = i -> second.getServiceRecord ();
                 
                 for ( list < providerRecord > :: iterator j = copyServiceRecord -> begin (); j != copyServiceRecord -> end (); ++j ) {
-                    providerFee += j -> getFee ();
+                    providerFee += j -> serviceFee;
                 }
 
                 cout << "Fees due: " << providerFee << endl;
@@ -64,7 +64,7 @@
         }
 
         cout << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
-        cout << "Total fees due: " + totalFees << endl;
+        cout << "Total fees due: " << totalFees << endl;
         cout << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
 
     }

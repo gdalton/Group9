@@ -96,7 +96,7 @@ struct providerRecord {
     string memberName;
     string memberID;
     string serviceCode;
-    string serviceFee;
+    float serviceFee;
 };
 
 
@@ -168,8 +168,8 @@ public:
 	bool addMemberSeen ( int memberID );
 
 	float getFee ();
-	int getNumMemersSeen ();
-	list < providerRecord > * getProviderRecord ();
+	int getNumMembersSeen ();
+	list < providerRecord > * getServiceRecord ();
 
 
 protected:

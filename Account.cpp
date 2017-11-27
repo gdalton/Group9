@@ -272,19 +272,19 @@ bool Provider :: addMemberSeen ( int memberID ) {//@todo
  * Gets the fee.
  * @return     The fee.
  */
-float Provider :: getFee (){}
+float Provider :: getFee ( void ) {}
 
 /**
  * Gets the number memers seen.
  * @return     The number memers seen.
  */
-int Provider :: getNumMemersSeen (){}
+int Provider :: getNumMembersSeen ( void ) {}
 
 /**
  * Gets the provider record.
  * @return     The provider record.
  */
-list < providerRecord > * Provider :: getProviderRecord (){}
+list < providerRecord > * Provider :: getServiceRecord ( void ) {}
 
 ////////////
 //Member //
