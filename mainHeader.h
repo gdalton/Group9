@@ -114,7 +114,7 @@ public:
     reportManager ( const reportManager & toCopy );
     ~reportManager ( void );
 
-    bool managerReport ( void );
+    bool managerReport ( map < string, Provider > );
     bool providerReport ( string, providerRecord * );
     bool memberReport ( string, memberRecord * );
     bool providerAllReports ( map < string, Provider >, Provider * );
