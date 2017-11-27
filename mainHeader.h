@@ -134,12 +134,12 @@ public:
     bool checkActive ( void );
 
 private:
-    //time_t currentTime;
-    //time_t referenceTime;
-    list < string [ 2 ] > systemCredentials;
+    time_t currentTime;
+    time_t referenceTime;
+    //list < string [ 2 ] > systemCredentials;
     list < string > userActions; //could probably just make this a string ( not a list of strings )
     FILE * logFile;
-    //int loginAttempts;
+    int loginAttempts;
 };
 
 class UserInterface {
