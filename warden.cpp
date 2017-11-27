@@ -3,9 +3,11 @@
  * Programmers: Matthew Greenlaw, (Add your name here)
  * Class Number: CS-300
  * Date: 22NOV17
- * Purpose:
- * @todo
- */
+ * Purpose: The Warden class encapsulates the security functionality of the
+   system into one discrete object. Warden primarily interacts with the UI and
+   File System classes. Warden’s three main tasks are validation / system locks,
+   timeouts, and logging.
+*/
 
 #include "mainHeader.h"
 
