@@ -113,8 +113,7 @@ public:
     reportManager ( const reportManager & toCopy );
     ~reportManager ( void );
 
-    bool updateReport ( void );//changed from the orig design. Could have a menue inside that decides which type of report to update.
-    bool providerReport ( string, providerRecord * );
+    bool managerReport ( void );
     bool memberReport ( string, memberRecord * );
     bool providerAllReports ( map < string, Provider >, Provider * );
     bool memberAllReports ( map < string, Member >, Member * );
