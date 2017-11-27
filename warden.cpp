@@ -33,9 +33,27 @@ Warden :: ~Warden ( void ) { //@todo
 /** Adds a credential to systemCredentials.
  * @param      newUsername  The new username
  * @param      newPassword  The new password
- * @return     Adds a username/password pair to the list of credentials
+ * @return     True if the cred was added, false otherwise
  */
 bool Warden :: addCredential ( string newUsername, string newPassword) { //@todo
+
+}
+
+/** Updates a credential in systemCredentials.
+ * @param      newUsername  The new username
+ * @param      newPassword  The new password
+ * @return     True if the cred was updated, false otherwise
+ */
+bool Warden :: updateCredential ( string newUsername, string newPassword) { //@todo
+
+}
+
+/** Deletes a credential from systemCredentials.
+ * @param      newUsername  The new username
+ * @param      newPassword  The new password
+ * @return     True if the cred was deleted, false otherwise
+ */
+bool Warden :: deleteCredential ( string newUsername, string newPassword) { //@todo
 
 }
 
@@ -43,27 +61,26 @@ bool Warden :: addCredential ( string newUsername, string newPassword) { //@todo
  * pair in the systemCredentials list
  * @param      checkedUsername  The checked username
  * @param      checkedPassword  The checked password
- * @return     True if the username/passowrd match
+ * @return     True if the username/passowrd match, false otherwise.
  */
 bool Warden :: validateLogin ( string checkedUsername, string checkedPassword) { //@todo
 
 }
 
-/** Checks how many times a user has failed logins
+/** Returns true if login attempts < 3.
  * @param      userID  The user id
- * @return     Returns true if login attempts < 3., false
- *             otherwise
+ * @return     Returns true if login attempts < 3, false otherwise
  */
 bool Warden :: checkLoginAttempts ( int userID) { //@todo
 
 }
 
-/**
- * Adds a log entry to the logFile.
- @param      logToAdd  The log to add
- @return     Returns true if the logEntry is successfully entered in the
-             logFile, false otherwise
-*/
+
+/** Returns true if the logEntry is successfully entered in the logFile.
+ * @param      logToAdd  The log to add
+ * @return     Returns true if the logEntry is successfully entered in the
+ *             logFile, false otherwise.
+ */
 bool Warden :: addLog ( string logToAdd) { //@todo
 
 }
