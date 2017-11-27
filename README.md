@@ -25,9 +25,10 @@ TEST( <test name>, <testing what?>) {
 ## Instructions for Running Tests ##
 
 **To Install:**
+
 Run `make get-test-suite` to install googletest.
 
-**To run:***
+**To run:**
 
 Run `make test` to run the tests (only runs tests/exampleTest.cc at the moment).  
 
