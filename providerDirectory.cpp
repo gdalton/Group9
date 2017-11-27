@@ -82,7 +82,12 @@ bool providerDirectory :: removeService ( string * serviceID) {
             list < Service > :: iterator it = directory.begin(); 
             for(it; it != directory.end(); ++it) {
                 if(it -> serviceID == serviceID) {
-                    it = directory.erase(it); 
+                    if(it -> serviceID)
+                        delete it -> serviceID;
+                    if(it -> name)
+                        delete it -> name;
+                    it = directory.erase(it);
+                    //Possible problems if list is emptied after deletion. 
                     if(it -> serviceID == serviceID)
                         return false;
                     else
