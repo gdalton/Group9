@@ -268,6 +268,24 @@ bool Provider :: addMemberSeen ( int memberID ) {//@todo
 	return false;
 }
 
+/**
+ * Gets the fee.
+ * @return     The fee.
+ */
+float Provider :: getFee (){}
+
+/**
+ * Gets the number memers seen.
+ * @return     The number memers seen.
+ */
+int Provider :: getNumMemersSeen (){}
+
+/**
+ * Gets the provider record.
+ * @return     The provider record.
+ */
+list < providerRecord > * Provider :: getProviderRecord (){}
+
 ////////////
 //Member //
 ////////////

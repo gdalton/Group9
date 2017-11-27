@@ -19,7 +19,7 @@
     /** Constructs the object.
      * @param      toCopy  To copy
      */
-    reportManager :: reportManager ( const reportManager & toCopy ) {}
+    //reportManager :: reportManager ( const reportManager & toCopy ) {}
     
     /** Destroys the object.
      */
@@ -31,10 +31,41 @@
      * overall total fee owed by ChocAn for the week. This will be stored and
      * returned via a manager’s report struct.
      * @return     True if the changes were made, false otherwise
-     * @todo This is a change from the original design and may need some extra
-     * attention.
      */
-    bool reportManager :: managerReport ( void ) {
+    bool reportManager :: managerReport ( map < string, Provider > providerTree ) {
+
+        //loop over providers {
+        //  Display there stuff
+        //  add up total fee
+        // }
+        //  display total fee
+
+        float providerFee = 0;
+        float totalFees = 0;
+
+        for ( map < string, Provider > :: iterator i = providerTree.begin (); i != providerTree.end (); ++i ) {
+            if( i->second.getMembersSeen () != 0) {
+                cout << "Provider: " << endl;
+                i->second.display ();
+                cout << "Members seen: " << i.Provider.membersSeen << endl;
+
+                list < providerRecord > * copyServiceRecord = i -> second.getServiceRecord ();
+                
+                for ( list < providerRecord > :: iterator j = copyServiceRecord -> begin (); j != copyServiceRecord -> end (); ++j ) {
+                    providerFee += j -> getFee ();
+                }
+
+                cout << "Fees due: " << providerFee << endl;
+
+            }
+
+            totalFees += providerFee;
+            providerFee = 0;
+        }
+
+        cout << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
+        cout << "Total fees due: " + totalFees << endl;
+        cout << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
 
     }
     

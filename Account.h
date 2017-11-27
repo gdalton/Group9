@@ -160,11 +160,17 @@ public:
   	string * newPassword, int newNumMembersSeen,   list < int > * newMembersSeen,   list < providerRecord >  * newServiceRecord);
 	~Provider ( void );
 
+
 	bool setPassword (   string * newPassword );
 	bool checkPassword (   string * passwordToCheck );
 	bool displayAllMembers ( void );
 	bool addServiceRecord ( providerRecord* newServiceRecord );
 	bool addMemberSeen ( int memberID );
+
+	float getFee ();
+	int getNumMemersSeen ();
+	list < providerRecord > * getProviderRecord ();
+
 
 protected:
 	string * password;
