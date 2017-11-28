@@ -251,8 +251,23 @@ void standardNode::setNext(standardNode* nextIn)
     next = nextIn;
 }
 
+/**
+ * Returns a string with the current time and date
+ * @return     Current time and date
+ */
+string currentDateTime () {
+  time_t raw;
+  struct tm * timeStruct;
+  char buffer [20];
 
+  time (&raw);
+  timeStruct = localtime (&raw);
 
+  strftime (buffer,20,"_%d-%m-%Y_%I%M%S",timeStruct);
+  string theTime(buffer);
+
+  return theTime;
+}
 
 
 

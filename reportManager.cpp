@@ -19,7 +19,7 @@
     /** Constructs the object.
      * @param      toCopy  To copy
      */
-    //reportManager :: reportManager ( const reportManager & toCopy ) {}
+    reportManager :: reportManager ( const reportManager & toCopy ) {}
     
     /** Destroys the object.
      */
@@ -34,28 +34,22 @@
      */
     bool reportManager :: managerReport ( map < string, Provider > providerTree ) {
 
-        //loop over providers {
-        //  Display there stuff
-        //  add up total fee
-        // }
-        //  display total fee
-
         float providerFee = 0;
         float totalFees = 0;
+        stringstream record;
 
         for ( map < string, Provider > :: iterator i = providerTree.begin (); i != providerTree.end (); ++i ) {
             if( i->second.getNumMembersSeen () != 0) {
-                cout << "Provider: " << endl;
-                i->second.display ();
-                cout << "Members seen: " << i -> second.getNumMembersSeen () << endl;
+                record << "Provider: " + i -> first << endl;
+                record << "Members seen: " << i -> second.getNumMembersSeen () << endl;
 
-                list < providerRecord > * copyServiceRecord = i -> second.getServiceRecord ();
+                list < providerRecord > * providerServiceRecord = i -> second.getServiceRecord ();
                 
-                for ( list < providerRecord > :: iterator j = copyServiceRecord -> begin (); j != copyServiceRecord -> end (); ++j ) {
+                for ( list < providerRecord > :: iterator j = providerServiceRecord -> begin (); j != providerServiceRecord -> end (); ++j ) {
                     providerFee += j -> serviceFee;
                 }
 
-                cout << "Fees due: " << providerFee << endl;
+                record << "Fees due: " << providerFee << endl;
 
             }
 
@@ -63,9 +57,9 @@
             providerFee = 0;
         }
 
-        cout << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
-        cout << "Total fees due: " << totalFees << endl;
-        cout << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
+        record << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
+        record << "Total fees due: " << totalFees << endl;
+        record << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
 
     }
     
@@ -137,3 +131,46 @@
     bool reportManager :: generateEFT ( eft * newEFT, Account * trasferee) {
 
     }
+
+    /**
+     GARBAGE CAN
+
+        bool reportManager :: managerReport ( map < string, Provider > providerTree ) {
+
+        //Generate report filename
+        string sFilename = "managerReport" + currentDateTime();
+        const char * filename = sFilename.c_str();
+
+        //Open file for appen
+        ofstream record;
+        record.open(filename, fstream :: app);//Closes once out of scope
+
+        float providerFee = 0;
+        float totalFees = 0;
+
+        for ( map < string, Provider > :: iterator i = providerTree.begin (); i != providerTree.end (); ++i ) {
+            if( i->second.getNumMembersSeen () != 0) {
+                record << "Provider: " + i -> first << endl;
+                record << "Members seen: " << i -> second.getNumMembersSeen () << endl;
+
+                list < providerRecord > * providerServiceRecord = i -> second.getServiceRecord ();
+                
+                for ( list < providerRecord > :: iterator j = providerServiceRecord -> begin (); j != providerServiceRecord -> end (); ++j ) {
+                    providerFee += j -> serviceFee;
+                }
+
+                record << "Fees due: " << providerFee << endl;
+
+            }
+
+            totalFees += providerFee;
+            providerFee = 0;
+        }
+
+        record << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
+        record << "Total fees due: " << totalFees << endl;
+        record << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
+
+    }
+     */
+    

@@ -7,6 +7,7 @@
 #include <fstream>
 #include <cctype>
 #include <cmath>
+#include <ctime>
 #include <time.h>
 #include <iomanip>
 
@@ -40,6 +41,9 @@ void printLine(int length);
 
 //Prompts and waits for the user to press enter
 void waitForEnter();
+
+//Returns a string with the current date and time
+string currentDateTime();
 
 
 

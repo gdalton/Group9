@@ -9,6 +9,7 @@
 #include "Account.h"
 #include <map>
 #include <time.h> // time_t
+#include <sstream> // stringstream http://www.cplusplus.com/reference/sstream/stringstream/
 
 
 using namespace std;
