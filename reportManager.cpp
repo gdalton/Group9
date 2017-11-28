@@ -47,10 +47,10 @@
             
             //If they saw anyone this week
             if( i->second.getNumMembersSeen () != 0) {
-
+                
+                //loop over who they saw and record the fees
                 list < providerRecord > * providerServiceRecord = i -> second.getServiceRecord ();
 
-                //loop over who they saw and record the fees
                 for ( list < providerRecord > :: iterator j = providerServiceRecord -> begin (); j != providerServiceRecord -> end (); ++j ) {
                     providerFee += j -> serviceFee;
                 }
@@ -62,6 +62,7 @@
                 record.providerDetails.insert ( pair < string, map < int, float > > ( i -> first, data));
             }
 
+            //tie up the bits
             totalFees += providerFee;
             providerFee = 0;
         }
@@ -81,8 +82,19 @@
      * @param      newReport      The new report
      * @return     True if the report was generated, false otherwise
      */
-    bool reportManager :: providerReport ( string reportDetails, providerRecord * newReport) {
+    bool reportManager :: providerReport ( string providerID, providerRecord * newReport) {
 
+        //if ( the argument exists? it has to ) {
+            newReport -> currentDateTime = currentDateTime();
+            //newReport.dateOfService = <Yeah...>;
+            //newReport.memberName = <how...>;
+            //newReport.memberID = <are...>;
+            //newReport.serviceCode = <we...>;
+            //newReport.serviceFee = <getting this?...>
+            //return true;
+        //}
+        
+        return false;
     }
 
     /** Reads in a 9-digit member ID and generate an individual member report for
@@ -94,7 +106,7 @@
      * @param      newReport      The new report
      * @return     True if the report was generated, false otherwise
      */
-    bool reportManager :: memberReport ( string reportDetails, memberRecord * newReport) {
+    bool reportManager :: memberReport ( string memberID, memberRecord * newReport) {
 
     }
 
