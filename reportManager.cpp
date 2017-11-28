@@ -82,19 +82,33 @@
      * @param      newReport      The new report
      * @return     True if the report was generated, false otherwise
      */
-    bool reportManager :: providerReport ( string providerID, providerRecord * newReport) {
+    providersReport reportManager :: providerReport ( Provider * theProvider ) {
 
-        //if ( the argument exists? it has to ) {
-            newReport -> currentDateTime = currentDateTime();
-            //newReport.dateOfService = <Yeah...>;
-            //newReport.memberName = <how...>;
-            //newReport.memberID = <are...>;
-            //newReport.serviceCode = <we...>;
-            //newReport.serviceFee = <getting this?...>
-            //return true;
-        //}
-        
-        return false;
+        int totalFees;
+        int totalConsults;
+        providersReport newReport;
+
+        if( theProvider ){
+            //Static stuff
+            
+            infoStruct * providerInfo = theProvider -> getInfo();
+
+            newReport . providerName = * providerInfo -> name;//no get name
+            newReport . providerID = * providerInfo -> ID;//invalid from string* to char
+            newReport . theAddress = * providerInfo -> theAddress;//No get address
+
+            //Dynamic stuff
+            list < providerRecord > * providerServiceRecord = theProvider -> getServiceRecord ();
+            for ( list < providerRecord > :: iterator j = providerServiceRecord -> begin (); j != providerServiceRecord -> end (); ++j ) {
+                totalFees += j -> serviceFee;
+                ++totalConsults;
+            }
+
+            newReport . consultations = totalConsults;
+            newReport . weekFee = totalFees;
+        }
+
+        return newReport;
     }
 
     /** Reads in a 9-digit member ID and generate an individual member report for
@@ -106,8 +120,20 @@
      * @param      newReport      The new report
      * @return     True if the report was generated, false otherwise
      */
-    bool reportManager :: memberReport ( string memberID, memberRecord * newReport) {
+    membersReport reportManager :: memberReport ( Member * theMember ) {
 
+        membersReport newReport;
+
+        if( theMember ){
+
+            infoStruct * memberInfo = theMember -> getInfo();
+
+            newReport . memberName = * memberInfo -> name;
+            newReport . memberID = * memberInfo -> ID;
+            newReport . theAddress = * memberInfo -> theAddress;
+        }
+
+        return newReport;
     }
 
     /** Reads in a tree of providers and cycle through all of the ChocAn
@@ -121,8 +147,15 @@
      * @param      theProvider   The provider
      * @return     True if the reports were generated, false otherwise
      */
-    bool reportManager :: providerAllReports ( map < string, Provider > providerTree, Provider * theProvider) {
+    list < providersReport > reportManager :: providerAllReports ( map < string, Provider > providerTree) {
 
+        list < providersReport > providerReports;
+
+        for ( map < string, Provider > :: iterator i = providerTree.begin (); i != providerTree.end (); ++i )
+            providerReports.push_back ( providerReport ( &i -> second ) );
+
+        return providerReports;
+        
     }
 
     /** Reads read in a tree of members and cycle through all of the ChocAn
@@ -136,11 +169,16 @@
      * @param      theMember   The member
      * @return     True if the reports were generated, false otherwise
      */
-    bool reportManager :: memberAllReports ( map < string, Member > memberTree, Member * theMember) {
+    list < membersReport > reportManager :: memberAllReports ( map < string, Member > memberTree) {
+        list < membersReport > memberReports;
 
+        for ( map < string, Member > :: iterator i = memberTree.begin (); i != memberTree.end (); ++i )
+            memberReports.push_back ( memberReport ( &i -> second ) );
+
+        return memberReports;
     }
 
-    /** Reads read in a tree of providers and cycle through all of the ChocAn
+    /** Reads in a tree of providers and cycle through all of the ChocAn
      * providers creating a linear linked list of providers and total fees owed
      * to them. The completed list will be returned via the eft pointer for use
      * by the file system. The function will return true if the list is
@@ -149,12 +187,25 @@
      * @param      trasferee  The trasferee
      * @return     True if the EFT was generated, false otherwise
      */
-    bool reportManager :: generateEFT ( eft * newEFT, Account * trasferee) {
+    eft reportManager :: generateEFT ( Provider * trasferee) {
 
+        eft retEFT;
+        providersReport report;
+
+        if ( trasferee ) {
+            report = providerReport ( trasferee );
+
+            retEFT . providerName = report.providerName;
+            retEFT . providerID = report.providerID;
+            retEFT .  totalFee = report.weekFee;
+        }
+
+        return retEFT;
     }
 
     /**
-     GARBAGE CAN
+     PARKING LOT
+     **
         
         //Save to file version 0
         void reportManager :: managerReport ( map < string, Provider > providerTree ) {

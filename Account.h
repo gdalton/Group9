@@ -21,7 +21,42 @@
  * of the systems functionality. 
  */
 
+class address; //forward declaration
+               
+struct infoStruct {
+    string* ID;
+    string* name;
+    address* theAddress;
+    string* email;
+    int securityLevel;
+};
 
+/**Service Record Structs**/
+
+struct memberRecord {
+    string dateOfService;
+    string providerName;
+    string serviceName;
+};
+
+
+struct providerRecord {
+    string currentDateTime;
+    string dateOfService;
+    string memberName;
+    string memberID;
+    string serviceCode;
+    float serviceFee;
+};
+
+struct provSysRecord { //@todo deconflict with providerRecord
+    string currentDateTime;
+    string DateOfService;
+    string providerID;
+    string memberID;
+    string serviceCode;
+    string comments; 
+};
 
 /* *** Enumerations
  * - Use to denote different statuses
@@ -62,44 +97,6 @@ private:
 	string * state;
 	string * zipcode;
 };
-
-
-
-/*
- *  STRUCTS
- */
-
-struct infoStruct {
-    string* ID;
-    string* name;
-    address* theAddress;
-    string* email;
-    int securityLevel;
-};
-
-
-struct Record {
-    //used for complilation only
-    //@todo remove once implemented
-};
-
-struct memberRecord {
-    string dateOfService;
-    string providerName;
-    string serviceName;
-};
-
-
-struct providerRecord {
-    string currentDateTime;
-    string dateOfService;
-    string memberName;
-    string memberID;
-    string serviceCode;
-    float serviceFee;
-};
-
-
 
 // ******* Account Class *******
 

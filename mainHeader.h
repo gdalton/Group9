@@ -27,9 +27,25 @@ struct Service {
 };
 
 struct eft { 
-        string * providerName;
-        string * providerID;
+        string providerName;
+        string providerID;
         float totalFee; 
+};
+
+/**Report Structs**/
+
+struct membersReport {
+    string memberName;
+    string memberID;
+    address theAddress;
+};
+
+struct providersReport {
+    string providerName;
+    string providerID;
+    address theAddress;
+    int consultations;
+    float weekFee;
 };
 
 struct managersReport {
@@ -121,11 +137,11 @@ public:
     ~reportManager ( void );
 
     managersReport managerReport ( map < string, Provider > );
-    bool providerReport ( string, providerRecord * );
-    bool memberReport ( string, memberRecord * );
-    bool providerAllReports ( map < string, Provider >, Provider * );
-    bool memberAllReports ( map < string, Member >, Member * );
-    bool generateEFT ( eft *, Account * );
+    providersReport providerReport ( Provider * );
+    membersReport memberReport ( Member * );
+    list < providersReport >  providerAllReports ( map < string, Provider > );
+    list < membersReport > memberAllReports ( map < string, Member > );
+    eft generateEFT ( Provider * );
 };
 
 class Warden { 
