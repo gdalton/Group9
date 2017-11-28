@@ -37,6 +37,11 @@
         float providerFee = 0;
         float totalFees = 0;
         stringstream record;
+        string completedRecord;
+        fileSystem fs; 
+
+        //Generate report filename
+        string filename = "managerReport" + currentDateTime();
 
         for ( map < string, Provider > :: iterator i = providerTree.begin (); i != providerTree.end (); ++i ) {
             if( i->second.getNumMembersSeen () != 0) {
@@ -60,6 +65,9 @@
         record << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
         record << "Total fees due: " << totalFees << endl;
         record << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
+
+        completedRecord = record.str();
+        fs.write(completedRecord.c_str(), filename.c_str());
 
     }
     
