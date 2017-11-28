@@ -12,6 +12,8 @@
 
 #include "mainHeader.h"
 
+    
+
 	/** Constructs the object.
 	 */
 	reportManager :: reportManager ( void ) {}
@@ -32,42 +34,41 @@
      * returned via a manager’s report struct.
      * @return     True if the changes were made, false otherwise
      */
-    bool reportManager :: managerReport ( map < string, Provider > providerTree ) {
+    managersReport reportManager :: managerReport ( map < string, Provider > providerTree ) {
 
         float providerFee = 0;
         float totalFees = 0;
-        stringstream record;
-        string completedRecord;
-        fileSystem fs; 
 
-        //Generate report filename
-        string filename = "managerReport" + currentDateTime();
+        managersReport record;
+        map < int, float > data;
 
+        //Loop over providers
         for ( map < string, Provider > :: iterator i = providerTree.begin (); i != providerTree.end (); ++i ) {
+            
+            //If they saw anyone this week
             if( i->second.getNumMembersSeen () != 0) {
-                record << "Provider: " + i -> first << endl;
-                record << "Members seen: " << i -> second.getNumMembersSeen () << endl;
 
                 list < providerRecord > * providerServiceRecord = i -> second.getServiceRecord ();
-                
+
+                //loop over who they saw and record the fees
                 for ( list < providerRecord > :: iterator j = providerServiceRecord -> begin (); j != providerServiceRecord -> end (); ++j ) {
                     providerFee += j -> serviceFee;
                 }
 
-                record << "Fees due: " << providerFee << endl;
+                //store the data
+                data.insert ( pair < int, float > ( i->second.getNumMembersSeen (), providerFee));
 
+                //add the provider and their data
+                record.providerDetails.insert ( pair < string, map < int, float > > ( i -> first, data));
             }
 
             totalFees += providerFee;
             providerFee = 0;
         }
 
-        record << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
-        record << "Total fees due: " << totalFees << endl;
-        record << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
+        record.totalFees = totalFees;
 
-        completedRecord = record.str();
-        fs.write(completedRecord.c_str(), filename.c_str());
+        return record;
 
     }
     
@@ -142,8 +143,9 @@
 
     /**
      GARBAGE CAN
-
-        bool reportManager :: managerReport ( map < string, Provider > providerTree ) {
+        
+        //Save to file version 0
+        void reportManager :: managerReport ( map < string, Provider > providerTree ) {
 
         //Generate report filename
         string sFilename = "managerReport" + currentDateTime();
@@ -180,5 +182,44 @@
         record << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
 
     }
+
+        
+        //Save to file version 1
+        void reportManager :: managerReport ( map < string, Provider > providerTree ) {
+
+        float providerFee = 0;
+        float totalFees = 0;
+        stringstream record;
+        string completedRecord;
+        fileSystem fs; 
+
+        //Generate report filename
+        string filename = "managerReport" + currentDateTime();
+
+        for ( map < string, Provider > :: iterator i = providerTree.begin (); i != providerTree.end (); ++i ) {
+            if( i->second.getNumMembersSeen () != 0) {
+                record << "Provider: " + i -> first << endl;
+                record << "Members seen: " << i -> second.getNumMembersSeen () << endl;
+
+                list < providerRecord > * providerServiceRecord = i -> second.getServiceRecord ();
+                
+                for ( list < providerRecord > :: iterator j = providerServiceRecord -> begin (); j != providerServiceRecord -> end (); ++j ) {
+                    providerFee += j -> serviceFee;
+                }
+
+                record << "Fees due: " << providerFee << endl;
+
+            }
+
+            totalFees += providerFee;
+            providerFee = 0;
+        }
+
+        record << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
+        record << "Total fees due: " << totalFees << endl;
+        record << "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_" << endl;
+
+        completedRecord = record.str();
+        fs.write(completedRecord.c_str(), filename.c_str());
      */
     

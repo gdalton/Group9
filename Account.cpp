@@ -15,7 +15,7 @@ Purpose:
 ////////////////////////
 
 
-Account :: Account ( void ) : name ( NULL ), ID ( NULL ), email  ( NULL ), securityLevel ( init ) {}
+Account :: Account ( void ) : name ( NULL ), ID ( NULL ), email  ( NULL ), theAddress (NULL), securityLevel ( init ) {}
 
 Account :: Account (  string * newName,   string * newEmail, string * newID, address* newAddress, SECURITY_LEVEL newSecurityLevel) :
 name ( NULL ), email ( NULL ), ID ( newID ), securityLevel ( newSecurityLevel ) {
