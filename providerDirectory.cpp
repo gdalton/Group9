@@ -58,15 +58,9 @@ bool providerDirectory :: addService ( Service addedService) {
                     return true;
                 }
             }
-            if(it -> name >= addedService.name) {
-                directory.insert(it, addedService);
-                return true;
-	    }
-            else {
-                directory.push_back(addedService);
-                return true;
-            }
-	}    
+        }
+        directory.push_back(addedService);
+            return true;
 }
 
 /** Takes a 6-digit long int as input and removes the corresponding service from
@@ -94,16 +88,8 @@ bool providerDirectory :: removeService ( string * serviceID) {
                         return true;
                 }
             }
-            if(it -> serviceID == serviceID) {
-                it = directory.erase(it); 
-                if(it -> serviceID == serviceID)
-                    return false;
-                else
-                    return true;
-            }
-            else
-                return true;
-	}
+        }
+        return true;
 }
                     
 /** Takes a 6-digit long int as input and displays the corresponding service and
@@ -124,13 +110,8 @@ bool providerDirectory :: displayService ( string * serviceID) {
                     return true;
                 }
             }
-            if(it -> serviceID == serviceID) {
-                cout << "\nService ID: " << it -> serviceID << "\nName: " << it -> name << "\nService Fee: $" << it -> fee << endl;
-                return true;
-            }
-            else
-                return false;
-	}
+        }
+        return false;
 }
 
 /** Takes a 6-digit long int, and a float up to 999.99 as input and updates the
@@ -154,14 +135,6 @@ bool providerDirectory :: updateFee ( string * serviceID, float newFee) {
                         return false;
                 }
             }
-            if(it -> serviceID == serviceID) {
-                it -> fee = newFee; 
-                if(it -> fee == newFee)
-                    return true;
-                else
-                    return false;
-            }
-            else
-                return false;
-	}
+        }
+        return false;
 }
