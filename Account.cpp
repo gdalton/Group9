@@ -102,14 +102,18 @@ Manager :: Manager ( void ) :
 Account ( ), password ( NULL ) {}
 
 Manager :: Manager ( string * newName, string * newEmail, string * newID, address * newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword) : Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), password ( NULL ) {
-	password = new   string ( *newPassword );
+	if(newPassword) {
+		password = new string ( *newPassword );
+	}
 }
 
 Manager :: Manager ( const Manager & copied) : 
 Account ( copied ) {//@todo
 	//Deep Copy
-
-	password = new string ( *copied.password );
+	if(copied.password) {
+		password = new string ( *copied.password );
+	}
+	
 }
 
 Manager :: ~Manager ( void ){
@@ -127,11 +131,10 @@ Manager :: ~Manager ( void ){
  */
 bool Manager :: setPassword (   string * newPassword ) {
 
-	if ( * password == * newPassword) // don't override if passwords are the same
-	{
-		return false;
-	}
 	if ( password ) {
+		if(*password == * newPassword) {
+			return false;
+		}
 		delete password;
 		password = NULL;
 	}
@@ -255,7 +258,7 @@ bool Provider :: addServiceRecord ( providerRecord * newServiceRecord ) {//@todo
 	
 	serviceRecord -> push_back ( * newServiceRecord );
 
-	//if ( serviceRecord - > end () - 1 == * newServiceRecord ) @toDo '==' operator for Record class
+	//if ( serviceRecord - > end () - 1 == * newServiceRecord ) @toDo '==' operator for Record class ??? this is a struct?
 		//return true; 
 
 	return false;
