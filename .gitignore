@@ -2,3 +2,7 @@ googletest/
 test.txt
 a.out
 .vscode/
+.idea/
+.idea/*
+ChocAn.xcodeproj/
+.DS_Store
