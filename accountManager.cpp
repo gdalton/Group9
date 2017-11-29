@@ -308,8 +308,6 @@ string* accountManager::generateAccountID(ACCOUNT_TYPE type){
     *toReturn += to_string(sum);
 
     return toReturn;
-
-
 }
 
 

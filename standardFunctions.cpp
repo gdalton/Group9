@@ -1,7 +1,7 @@
 //  CS300 - Group 9
 //  Filename: "standardFunctions.cpp"
 
-#include "standardHeader.h"
+#include "mainHeader.h"
 
 /*
  This is the implimentation file for all of my standard functions. They help with some
@@ -269,7 +269,11 @@ string currentDateTime () {
   return theTime;
 }
 
-
-
+string to_string(int convertToString)
+{
+    stringstream aStringStream;
+    aStringStream << convertToString;
+    return aStringStream.str();
+}
 
 
