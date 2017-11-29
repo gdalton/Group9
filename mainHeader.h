@@ -105,6 +105,7 @@ class accountManager{
     private:
     bool loadDataFromDisk();
     bool checkAccountType(string* idNumber, ACCOUNT_TYPE type);
+    string* generateAccountID(ACCOUNT_TYPE type);
     map<const string, Account*> memberTree;
     map<const string, Account*> providerTree;
     map<const string, Account*> managerTree;

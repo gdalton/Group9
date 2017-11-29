@@ -38,6 +38,8 @@ accountManager::~accountManager(){
 bool accountManager::addAccount(Account* toAdd, ACCOUNT_TYPE type){
     bool toReturn = false;
     string* memberID = toAdd->getID();
+    
+    //@todo - Check that we aren't overriding an account 
 
     //Make sure account type matches ID number
     if(checkAccountType(memberID, type)){
@@ -248,6 +250,7 @@ void accountManager::displayAllAccounts(ACCOUNT_TYPE type){
 
 //Private Function
 bool accountManager::loadDataFromDisk(){
+    //@go to file system
     
     return false;
 }
@@ -255,11 +258,59 @@ bool accountManager::loadDataFromDisk(){
 bool accountManager::checkAccountType(string* idNumber, ACCOUNT_TYPE type){
     bool toReturn = true;
 
+    //Check account number
+
     
     return toReturn;
 }
 
 
+/* Function to generate a user ID
+ * @param     accountType (type of account)
+ * @return    Account ID as a string
+ * Algorithm:
+  1. Select the first digit based upon account type.
+    a. Select 1 if manager.
+    b. Select 2 if provider.
+    c. If type is member, select a number between 3 and 9 randomly.
+    2. Select the next 6 digits randomly.
+  3. The final two digits are the sum of all the preceding digits.
+  4. Check that the ID number is not already in use.
+    a. If it is, restart at step 1.
+    b. Otherwise, return the ID number as a valid identification number.
+ */
+string* accountManager::generateAccountID(ACCOUNT_TYPE type){
+    string* toReturn = new string("");
+    int sum = 0;
+    int random = 0;
+
+    //Select FIRST DIGIT
+    switch (type){
+        case manager:
+            *toReturn += "1";
+            sum += 1;
+            break;
+        case provider:
+            *toReturn += "2";
+            sum += 2;
+            break;
+        case member:
+            random = rand() % 6 + 3;
+            sum += random;
+            *toReturn += to_string(random);
+            break;
+    }
+
+    //Generate next SIX DIGITS
+    *toReturn += to_string(rand() % 999999);
+
+    //Generate last TWO DIGITS as checksum
+    *toReturn += to_string(sum);
+
+    return toReturn;
+
+
+}
 
 
 
