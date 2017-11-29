@@ -109,13 +109,15 @@ Manager :: Manager ( const Manager & copied) :
 Account ( copied ) {//@todo
 	//Deep Copy
 
-	//password
+	password = new string ( *copied.password );
 }
 
-Manager :: ~Manager ( void ){//@todo
+Manager :: ~Manager ( void ){
 	//Delete dynamic memory
-
-	//password
+	if ( password ) {
+		delete password;
+		password = NULL;
+	}
 }
 
 /**
@@ -123,13 +125,20 @@ Manager :: ~Manager ( void ){//@todo
  * @param  newPassword The new password to be set
  * @return             True iff the password is set
  */
-bool Manager :: setPassword (   string * newPassword ) {//@todo
-	
-	//Delete old password
-	//set NULL
-	//Reinitialize and set new password
+bool Manager :: setPassword (   string * newPassword ) {
 
-	return false;
+	if ( * password == * newPassword) // don't override if passwords are the same
+	{
+		return false;
+	}
+	if ( password ) {
+		delete password;
+		password = NULL;
+	}
+
+	password = new string ( *newPassword );
+
+	return true;
 }
 
 /**
