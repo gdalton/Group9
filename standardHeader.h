@@ -1,7 +1,7 @@
 //  CS300 - Group 9
 //  Filename: main.cpp
 
-//Include the nessisary files
+//Include the necessary files
 #include <iostream>
 #include <cstring>
 #include <fstream>
@@ -12,6 +12,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iomanip>
+#include "list" //http://www.cplusplus.com/reference/list/list/
+#include "string" //http://www.cplusplus.com/reference/string/string/
+#include <sstream> // stringstream http://www.cplusplus.com/reference/sstream/stringstream/
 
 using namespace std;
 
@@ -47,6 +50,8 @@ void waitForEnter();
 //Returns a string with the current date and time
 string currentDateTime();
 
+//Integer to String Converter - for systems earlier than C++11
+string toString(int convertToString);
 
 
 

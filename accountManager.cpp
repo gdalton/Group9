@@ -297,15 +297,15 @@ string* accountManager::generateAccountID(ACCOUNT_TYPE type){
         case member:
             random = rand() % 6 + 3;
             sum += random;
-            *toReturn += to_string(random);
+            *toReturn += toString(random);
             break;
     }
 
     //Generate next SIX DIGITS
-    *toReturn += to_string(rand() % 999999);
+    *toReturn += toString(rand() % 999999);
 
     //Generate last TWO DIGITS as checksum
-    *toReturn += to_string(sum);
+    *toReturn += toString(sum);
 
     return toReturn;
 }
