@@ -6,6 +6,7 @@
 #include "standardHeader.h"
 #include "Account.h"
 #include <map>
+#include <set>
 #include <time.h> // time_t
 
 
@@ -46,10 +47,12 @@ struct providersReport {
 };
 
 struct managersReport {
-    map < string, map < int, float > > providerDetails;//<providerID, <numMembersSeen, feesDue>
+    map < string, map < int, float > > providerDetails; //<providerID, <numMembersSeen, feesDue>
     float totalFees;
 };
 
+//TYPDEF's
+typedef map< string, Account*>  accountMap;
 
 //-----------------------------
 //  File System Class
@@ -95,17 +98,18 @@ class accountManager{
     bool removeAccount(string* accountID, ACCOUNT_TYPE type);
     bool editAccount(string* accountID, Account* newAccount, ACCOUNT_TYPE type);
     Account* getAccount(string* accountID, ACCOUNT_TYPE type);
-    map<const string, Account* >* getAllAccounts(ACCOUNT_TYPE type);
+    accountMap* getAllAccounts(ACCOUNT_TYPE type);
     void displayAllAccounts(ACCOUNT_TYPE type); //For testing...
-    
+    void generateRandomAccounts(int amount);
     
     private:
     bool loadDataFromDisk();
     bool checkAccountType(string* idNumber, ACCOUNT_TYPE type);
     string* generateAccountID(ACCOUNT_TYPE type);
-    map<const string, Account*> memberTree;
-    map<const string, Account*> providerTree;
-    map<const string, Account*> managerTree;
+    accountMap memberTree;
+    accountMap providerTree;
+    accountMap managerTree;
+    set<string> allIdNumbers;
     
     //See for refrence: http://en.cppreference.com/w/cpp/container/map
 };

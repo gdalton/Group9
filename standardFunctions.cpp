@@ -269,6 +269,11 @@ string currentDateTime () {
   return theTime;
 }
 
+
+/**
+ * Returns a string of whatever number was passed in
+ * @return     String
+ */
 string toString(int convertToString)
 {
     stringstream aStringStream;

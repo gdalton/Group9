@@ -12,8 +12,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iomanip>
-#include "list" //http://www.cplusplus.com/reference/list/list/
-#include "string" //http://www.cplusplus.com/reference/string/string/
+#include <list> //http://www.cplusplus.com/reference/list/list/
+#include <string> //http://www.cplusplus.com/reference/string/string/
 #include <sstream> // stringstream http://www.cplusplus.com/reference/sstream/stringstream/
 
 using namespace std;
