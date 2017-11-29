@@ -200,18 +200,18 @@ Account* accountManager::getAccount(string* accountID, ACCOUNT_TYPE type){
 
 /**
  * Function to return a tree of all accounts from the database
- * @param              accountType (type of account to get)
+ * @param              type (type of account to get)
  * @return             map* if successful, NULL otherwise
  */
-map<const string, Account*>* accountManager::getAllAccounts(ACCOUNT_TYPE type){
+accountMap* accountManager::getAllAccounts(ACCOUNT_TYPE type){
     
-    map<const string, Account*>* toReturn = NULL;
+    map< string, Account*>* toReturn = NULL;
     
     //Find the right tree and return a copy
     switch (type) {
         case member:
             //Create a new tree
-            toReturn = new map<const string, Account*>;
+            toReturn = new map< string, Account*>;
             
             //Copy the tree over (using map's copy constructor)
             *toReturn = memberTree;
@@ -219,7 +219,7 @@ map<const string, Account*>* accountManager::getAllAccounts(ACCOUNT_TYPE type){
             
         case provider:
             //Create a new tree
-            toReturn = new map<const string, Account*>;
+            toReturn = new map< string, Account*>;
             
             //Copy the tree over (using map's copy constructor)
             *toReturn = providerTree;
@@ -227,7 +227,7 @@ map<const string, Account*>* accountManager::getAllAccounts(ACCOUNT_TYPE type){
             
         case manager:
             //Create a new tree
-            toReturn = new map<const string, Account*>;
+            toReturn = new map< string, Account*>;
             
             //Copy the tree over (using map's copy constructor)
             *toReturn = managerTree;
@@ -248,21 +248,107 @@ void accountManager::displayAllAccounts(ACCOUNT_TYPE type){
 }
 
 
-//Private Function
-bool accountManager::loadDataFromDisk(){
-    //@go to file system
-    
-    return false;
-}
-
 bool accountManager::checkAccountType(string* idNumber, ACCOUNT_TYPE type){
     bool toReturn = true;
-
+    
     //Check account number
-
+    
     
     return toReturn;
 }
+
+//Private Function
+bool accountManager::loadDataFromDisk(){
+    
+    ifstream allAccounts;
+    ifstream account;
+    ACCOUNT_TYPE type;
+    infoStruct newStruct;
+    Account* newAccount = NULL;
+    allAccounts.open("accounts/allIDs.txt");
+    char temp [50] = "accounts/";
+    
+    // Get all accounts
+    char accountID [20];
+     char name [100];
+     char email [100];
+    address* theAddress = NULL;
+    char streetAdress [100];
+    char  city [100];
+    char  state [10];
+    char  zipcode [10];
+    char status [50];
+    list<memberRecord>* records = NULL;
+    memberRecord memREC;
+    memREC.dateOfService = "11/2/17 1:59pm";
+    memREC.providerName = "Steve";
+    memREC.serviceName = "Chocolate!";
+    
+    while (allAccounts){
+        allAccounts.get(accountID, 20,'\n');
+        allAccounts.get();
+        cout<<"adding!!"<<endl;
+        //Look for data file
+        
+        char temp [50] = "accounts/";
+        strcat(temp,accountID);
+        account.open(temp);
+        
+        //Stop if account not found
+        if(!account) continue;
+        
+        account.get(accountID, 20, '\n');
+        account.get();
+        
+        //Set the type
+        if(accountID[0] == 1) type=manager;
+        if(accountID[0] == 2) type=provider;
+        else type = member;
+        
+        //Read in a member
+        if(type == member){
+            theAddress = new address;
+            records = new list<memberRecord>;
+
+            account.get(name, 100, '\n');
+            account.get();
+            account.get(email, 100, '\n');
+            account.get();
+            account.get(streetAdress,100,'^');
+            account.get();
+            account.get(city,100,'^');
+            account.get();
+            account.get(state,10,'^');
+            account.get();
+            account.get(zipcode,10,'\n');
+            account.get();
+            account.get(status, 50, '\n');
+            account.get();
+            
+            //TODO -- Read in records TEMPORARY
+            records->insert(records->begin(), memREC);
+            
+            newAccount = new Member(new string(name), new string(email), new string(accountID), new address(new string(streetAdress), new string(city), new string(state),new string(zipcode)),member, current, records);
+            
+            //Add the account
+            addAccount(newAccount, member);
+            
+            account.close();
+        }
+//        string * streetAdress;
+//        string * city;
+//        string * state;
+//        string * zipcode;
+
+        
+    }
+    allAccounts.close();
+    
+    
+    return true;
+}
+
+
 
 
 /* Function to generate a user ID
@@ -280,34 +366,204 @@ bool accountManager::checkAccountType(string* idNumber, ACCOUNT_TYPE type){
     b. Otherwise, return the ID number as a valid identification number.
  */
 string* accountManager::generateAccountID(ACCOUNT_TYPE type){
+
     string* toReturn = new string("");
-    int sum = 0;
     int random = 0;
+    bool again = false;
+    int a =10;
 
-    //Select FIRST DIGIT
-    switch (type){
-        case manager:
-            *toReturn += "1";
-            sum += 1;
-            break;
-        case provider:
-            *toReturn += "2";
-            sum += 2;
-            break;
-        case member:
-            random = rand() % 6 + 3;
-            sum += random;
-            *toReturn += toString(random);
-            break;
-    }
+    do{
+        //Select FIRST DIGIT
+        switch (type){
+            case manager:
+                *toReturn += "1";
+                break;
+            case provider:
+                *toReturn += "2";
+                break;
+            case member:
+                random = rand() % 6 + 3;
+                *toReturn += toString(random);
+                break;
+            default:
+                again = true;
+                break;
+        }
 
-    //Generate next SIX DIGITS
-    *toReturn += toString(rand() % 999999);
+        //Generate next EIGHT DIGITS
+        random = (rand() % 89999999)+10000000;
+        
+        //Add them to sum and ID string
+        *toReturn += toString(random);
 
-    //Generate last TWO DIGITS as checksum
-    *toReturn += toString(sum);
+        //Check that ID is not already assigned
+        if(allIdNumbers.find(*toReturn) == allIdNumbers.end()){
+            //If everything ok, go out of function
+            again = false;
 
+        } else { //Reset if ID already exists
+            //Delete String
+            delete toReturn;
+            toReturn = NULL;
+
+            //Reset counters
+            random = 0;
+
+            //Signal to do again
+            again = true;
+        }
+    } while (again);
+
+    //Add the ID number to ID tracker
+    allIdNumbers.insert(*toReturn);
+
+    //Return User ID
     return toReturn;
+}
+
+
+
+
+
+
+
+
+void accountManager::generateRandomAccounts(int amount){
+    
+    int counter = 0;
+    int random = 0;
+    string* id = NULL;
+    ofstream fileOut;
+    //12 names
+    string names [] = {"Waylon Dalton","Marcus Cruz","Justine Henderson","Thalia Cobb","Mathias Little","Steve Lang","Hadassah Hartman","Joanna Shaffer","Jimmy Fallon", "Steve Jobs","John Oliver","John Stewart"};
+    string emails [] = {"w@pdx.edu","M@pdx.edu","J@pdx.edu","Th@pdx.edu","Ma@pdx.edu","S@pdx.edu","Had@pdx.edu","Joan@pdx.edu","Jimmy@pdx.edu", "Steve@pdx.edu","John@pdx.edur","John@pdx.edu"};
+    string address [] = {"4 Goldfield Rd.^Honolulu^HI^96815","5 Goldfield Rd.^Honolulu^HI^96815","6 Goldfield Rd.^Honolulu^HI^96815","7 Goldfield Rd.^Honolulu^HI^96815","8 Goldfield Rd.^Honolulu^HI^96815","9 Goldfield Rd.^Honolulu^HI^96815","14 Goldfield Rd.^Honolulu^HI^96815","42 Goldfield Rd.^Honolulu^HI^96815","64 Goldfield Rd.^Honolulu^HI^968155", "47 Goldfield Rd.^Honolulu^HI^96815","74 Goldfield Rd.^Honolulu^HI^96815","34 Goldfield Rd.^Honolulu^HI^96815"};
+    string status []  = {"Current","NotCurrent"};
+    string dateOfService = currentDateTime();
+    string providerName = "NoChoc!";
+    string serviceName = "0.5lbs Choclate";
+    string passwords [] = {"zx9QzHHgv5", "ib6BmXPKIh", "KBwgjUrZCc", "60o1krBXwQ","Ibgr2oUFdC"};
+    
+ /*
+    //TO CREATE MANAGER ACCOUNTS
+    while(counter<amount){
+        //Generate random
+        random = rand() % 12;
+        id = generateAccountID(manager); //CHANGE MANUALLY
+        
+        fileOut.open ("accounts/"+*id+".txt");
+        fileOut << *id <<"\n";
+        fileOut << names[random]<<"\n";
+        
+        random = rand() % 12;
+        fileOut << emails[random]<<"\n";
+        
+        random = rand() % 12;
+        fileOut << address[random]<<"\n";
+        
+        random = rand() % 12;
+        if(random % 5 == 0) random = 1;
+        else random=0;
+        
+        
+        //Password
+        random = rand() % 4;
+        fileOut << passwords[random]<<"\n";
+        
+        fileOut.close();
+        
+        delete id;
+        
+        ++counter;
+    }
+    */
+    
+    
+/* TO CREATE PROVIDER ACCOUNTS
+    
+    while(counter<amount){
+        //Generate random
+        random = rand() % 12;
+        id = generateAccountID(provider); //CHANGE MANUALLY
+        
+        fileOut.open ("accounts/"+*id+".txt");
+        fileOut << *id <<"\n";
+        fileOut << names[random]<<"\n";
+        
+        random = rand() % 12;
+        fileOut << emails[random]<<"\n";
+        
+        random = rand() % 12;
+        fileOut << address[random]<<"\n";
+        
+        random = rand() % 12;
+        if(random % 5 == 0) random = 1;
+        else random=0;
+        
+
+        //Password
+        random = rand() % 4;
+        fileOut << passwords[random]<<"\n";
+        
+        //Member's seen
+        fileOut << rand() % 70<<"\n";
+        
+        //Provider Records
+        fileOut <<"^"<<currentDateTime()<<"^";
+        fileOut << currentDateTime()<<"^";
+        fileOut << *id<<"^";
+        fileOut << "467623877" <<"^";
+        fileOut << "110" <<"\n";
+        
+        fileOut <<"^"<<currentDateTime()<<"^";
+        fileOut << currentDateTime()<<"^";
+        fileOut << *id<<"^";
+        fileOut << "528777939" <<"^";
+        fileOut << "120" <<"\n";
+        
+        fileOut.close();
+        
+        delete id;
+        
+        ++counter;
+    }
+*/
+    
+    
+    // TO CREATE MEMBER ACCOUNTS
+     
+    while(counter<amount){
+        //Generate random
+        random = rand() % 12;
+        id = generateAccountID(member); //CHANGE MANUALLY
+        
+        fileOut.open ("accounts/"+*id+".txt");
+        fileOut << *id <<"\n";
+        fileOut << names[random]<<"\n";
+        
+        random = rand() % 12;
+        fileOut << emails[random]<<"\n";
+        
+        random = rand() % 12;
+        fileOut << address[random]<<"\n";
+        
+        random = rand() % 12;
+        if(random % 5 == 0) random = 1;
+        else random=0;
+        
+        fileOut << status[random]<<"\n";
+        
+        fileOut<<"-"<<dateOfService<<"-"<<providerName<<"-"<<serviceName<<"\n";
+        fileOut<<"-"<<dateOfService<<"-"<<providerName<<"-"<<serviceName<<"\n";
+
+        fileOut.close();
+        
+        delete id;
+    
+        ++counter;
+    }
+   
+    
 }
 
 

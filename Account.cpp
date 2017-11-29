@@ -284,19 +284,25 @@ bool Provider :: addMemberSeen ( int memberID ) {//@todo
  * Gets the fee.
  * @return     The fee.
  */
-float Provider :: getFee ( void ) {}
+float Provider :: getFee ( void ) {
+    return 0;
+}
 
 /**
  * Gets the number memers seen.
  * @return     The number memers seen.
  */
-int Provider :: getNumMembersSeen ( void ) {}
+int Provider :: getNumMembersSeen ( void ) {
+    return 0;
+}
 
 /**
  * Gets the provider record.
  * @return     The provider record.
  */
-list < providerRecord > * Provider :: getServiceRecord ( void ) {}
+list < providerRecord > * Provider :: getServiceRecord ( void ) {
+    return 0;
+}
 
 ////////////
 //Member //
@@ -384,6 +390,7 @@ address::address(){
     state = NULL;
     zipcode = NULL;
 }
+
 address::address(const address & toCopy){
     streetAdress = new string(*toCopy.streetAdress);
     city = new string(*toCopy.city);
