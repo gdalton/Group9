@@ -21,15 +21,9 @@
  * of the systems functionality. 
  */
 
-class address; //forward declaration
+class Address; //forward declaration
                
-struct infoStruct {
-    string* ID;
-    string* name;
-    address* theAddress;
-    string* email;
-    int securityLevel;
-};
+
 
 /**Service Record Structs**/
 
@@ -76,19 +70,19 @@ enum SECURITY_LEVEL {
 
 
 
-class address {
+class Address {
 public:
-	address();
-	address(string* streetAdress, string* city, string* state, string* zipcode);
-    address(const address & toCopy);
-	~address();
+	Address();
+	Address(string* streetAdress, string* city, string* state, string* zipcode);
+    Address(const Address & toCopy);
+	~Address();
 	bool setAddress(string* streetAdress, string* city, string* state, string* zipcode);
     void setAddress(const char* streetAdress, const char*  city, const char*  state, const char* zipcode);
-	string* getFullAddress();
-	string* getStreetAddress();
-	string* getCity();
-	string* getState();
-	string* getZipcode();
+	string* getFullAddress() const;
+	string* getStreetAddress() const;
+	string* getCity() const;
+	string* getState() const;
+	string* getZipcode() const;
 
 private:
 	string * streetAdress;
@@ -97,26 +91,36 @@ private:
 	string * zipcode;
 };
 
+//Forward declaration only allows address to be apointer, so I moved this down.
+//The only other option is to seperate headers.
+struct infoStruct {
+    string ID;
+    string name;
+    Address theAddress;
+    string email;
+    int securityLevel;
+};
+
 // ******* Account Class *******
 
 class Account {
 public:
 	Account ( void );
 	Account ( const Account & );
-    Account ( infoStruct* newInfo);
-	Account ( string * newName, string * newEmail, string *newID, address *newAddress, SECURITY_LEVEL newSecurityLevel );
+    Account ( infoStruct * newInfo);
+	Account ( string * newName, string * newEmail, string *newID, Address *newAddress, SECURITY_LEVEL newSecurityLevel );
 	~Account ( void );
-	void display();
-	infoStruct* getInfo();
-	SECURITY_LEVEL getSecurityLevel();
-    string* getID();
+	void display() const;
+	infoStruct* getInfo() const;
+	SECURITY_LEVEL getSecurityLevel() const;
+    string* getID() const;
 
 
 protected:
 	string * name;
 	string * ID;
 	string * email;
-    address * theAddress;
+    Address * theAddress;
 	SECURITY_LEVEL securityLevel;
     
 };
@@ -134,11 +138,11 @@ class Manager : public Account {
 public:
 	Manager ( void );
 	Manager ( const Manager & );
-	Manager ( string * newName, string * newEmail, string *newID, address *newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword );
+	Manager ( string * newName, string * newEmail, string *newID, Address *newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword );
 	~Manager ( void );
 
-	bool setPassword (   string * newPassword );
-	bool checkPassword (   string * passwordToCheck );
+	bool setPassword ( string * newPassword );
+	bool checkPassword ( string * passwordToCheck ) const ;
 
 protected:
 	string * password;
@@ -152,20 +156,20 @@ class Provider : public Account {
 public:
 	Provider ( void );
 	Provider ( const Provider & );
-	Provider ( string * newName, string * newEmail, string *newID, address *newAddress, SECURITY_LEVEL newSecurityLevel,
+	Provider ( string * newName, string * newEmail, string *newID, Address *newAddress, SECURITY_LEVEL newSecurityLevel,
   	string * newPassword, int newNumMembersSeen,   list < int > * newMembersSeen,   list < providerRecord >  * newServiceRecord);
 	~Provider ( void );
 
 
-	bool setPassword (   string * newPassword );
-	bool checkPassword (   string * passwordToCheck );
-	bool displayAllMembers ( void );
+	bool setPassword ( string * newPassword );
+	bool checkPassword ( string * passwordToCheck ) const ;
+	bool displayAllMembers ( void ) const ;
 	bool addServiceRecord ( providerRecord* newServiceRecord );
 	bool addMemberSeen ( int memberID );
 
-	float getFee ();
-	int getNumMembersSeen ();
-	list < providerRecord > * getServiceRecord ();
+	float getFee () const;
+	int getNumMembersSeen () const;
+	list < providerRecord > * getServiceRecord () const;
 
 
 protected:
@@ -183,14 +187,14 @@ class Member : public Account {
 public:
 	Member ( void );
 	Member ( const Member & );
-	Member ( string * newName, string * newEmail, string *newID, address *newAddress, SECURITY_LEVEL newSecurityLevel,
+	Member ( string * newName, string * newEmail, string *newID, Address *newAddress, SECURITY_LEVEL newSecurityLevel,
 	MEMBER_STATUS newStatus,   list < memberRecord > * newServiceRecord );
 	~Member ( void );
 
 	bool setMemberStatus ( MEMBER_STATUS newStatus );
-	MEMBER_STATUS getMemberStatus ( void );
+	MEMBER_STATUS getMemberStatus ( void ) const;
 	bool appendToServiceRecord ( memberRecord newServiceRecord);
-	list < memberRecord > * getServiceRecords ( void );
+	list < memberRecord > * getServiceRecords ( void ) const;
 
 protected:
 	list < memberRecord > * serviceRecord; //Should this be a pointer? // Yes, I think so...

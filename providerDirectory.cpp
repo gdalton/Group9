@@ -71,21 +71,27 @@ bool providerDirectory :: addService ( Service addedService) {
  */
 bool providerDirectory :: removeService ( string * serviceID) {
 	if(directory.empty())
-            return true;
+            return false;//Nothing was there to remove
         else {
             list < Service > :: iterator it = directory.begin(); 
             for(it; it != directory.end(); ++it) {
-                if(it -> serviceID == serviceID) {
-                    if(it -> serviceID)
-                        delete it -> serviceID;
-                    if(it -> name)
-                        delete it -> name;
-                    it = directory.erase(it);
-                    //Possible problems if list is emptied after deletion. 
-                    if(it -> serviceID == serviceID)
-                        return false;
-                    else
-                        return true;
+                if(it -> serviceID == *serviceID) {
+
+
+                    /*
+                        This stuff is breaking things.
+                    */
+                   
+                    // if(it -> serviceID)
+                    //     delete it -> serviceID;
+                    // if(it -> name)
+                    //     delete it -> name;
+                    // it = directory.erase(it);
+                    // //Possible problems if list is emptied after deletion. 
+                    // if(it -> serviceID == *serviceID)
+                    //     return false;
+                    // else
+                    //     return true;
                 }
             }
         }
@@ -105,7 +111,7 @@ bool providerDirectory :: displayService ( string * serviceID) {
         else {
             list < Service > :: iterator it = directory.begin(); 
             for(it; it != directory.end(); ++it) {
-                if(it -> serviceID == serviceID) {
+                if(it -> serviceID == *serviceID) {
                     cout << "\nService ID: " << it -> serviceID << "\nName: " << it -> name << "\nService Fee: $" << it -> fee << endl;
                     return true;
                 }
@@ -127,7 +133,7 @@ bool providerDirectory :: updateFee ( string * serviceID, float newFee) {
         else {
             list < Service > :: iterator it = directory.begin();
             for(it; it != directory.end(); ++it) {
-                if(it -> serviceID == serviceID) {
+                if(it -> serviceID == *serviceID) {
                     it -> fee = newFee; 
                     if(it -> fee == newFee)
                         return true;

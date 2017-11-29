@@ -272,7 +272,7 @@ bool accountManager::loadDataFromDisk(){
     char accountID [20];
      char name [100];
      char email [100];
-    address* theAddress = NULL;
+    Address * theAddress = NULL;
     char streetAdress [100];
     char  city [100];
     char  state [10];
@@ -306,7 +306,7 @@ bool accountManager::loadDataFromDisk(){
         
         //Read in a member
         if(type == member){
-            theAddress = new address;
+            theAddress = new Address;
             records = new list<memberRecord>;
 
             account.get(name, 100, '\n');
@@ -327,7 +327,7 @@ bool accountManager::loadDataFromDisk(){
             //TODO -- Read in records TEMPORARY
             records->insert(records->begin(), memREC);
             
-            newAccount = new Member(new string(name), new string(email), new string(accountID), new address(new string(streetAdress), new string(city), new string(state),new string(zipcode)),member, current, records);
+            newAccount = new Member(new string(name), new string(email), new string(accountID), new Address(new string(streetAdress), new string(city), new string(state),new string(zipcode)),member, current, records);
             
             //Add the account
             addAccount(newAccount, member);

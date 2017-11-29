@@ -17,12 +17,12 @@ Purpose:
 
 Account :: Account ( void ) : name ( NULL ), ID ( NULL ), email  ( NULL ), theAddress (NULL), securityLevel ( init ) {}
 
-Account :: Account (  string * newName,   string * newEmail, string * newID, address* newAddress, SECURITY_LEVEL newSecurityLevel) :
+Account :: Account (  string * newName,   string * newEmail, string * newID, Address* newAddress, SECURITY_LEVEL newSecurityLevel) :
 name ( NULL ), email ( NULL ), ID ( newID ), securityLevel ( newSecurityLevel ) {
 	name = new string ( * newName );
 	email = new string ( * newEmail );
 	ID = new string (*newID);
-    theAddress = new address(*newAddress);
+    theAddress = new Address(*newAddress);
 }
 
 
@@ -31,14 +31,14 @@ name ( NULL ), email ( NULL ), ID ( NULL), theAddress (NULL), securityLevel ( co
 	name = new   string ( * copied.name );
 	email = new   string ( * copied.email );
 	ID = new string (*copied.ID);
-    theAddress = new address(*copied.theAddress);
+    theAddress = new Address(*copied.theAddress);
 }
 
-Account :: Account ( infoStruct* newInfo){
-    name = new string ( *newInfo->name );
-    email = new string ( * newInfo->email );
-    ID = new string (*newInfo->ID);
-    theAddress = new address(*newInfo->theAddress);
+Account :: Account ( infoStruct * newInfo){
+    name = new string ( newInfo->name );
+    email = new string ( newInfo->email );
+    ID = new string ( newInfo->ID);
+    theAddress = new Address( newInfo->theAddress);
 }
 
 Account :: ~Account ( void ) {
@@ -65,7 +65,7 @@ Account :: ~Account ( void ) {
     }
 }
 
-void Account::display() {
+void Account::display() const {
 	string* fullAddress = theAddress->getFullAddress();
 	cout<<*name<<endl;
 	cout<<*email<<endl;
@@ -75,21 +75,21 @@ void Account::display() {
 	delete fullAddress;
 }
 
-infoStruct* Account::getInfo(){
+infoStruct* Account::getInfo() const {
 	infoStruct* toReturn = new infoStruct;
 
-	toReturn->name = name;
-	toReturn->email = email;
-	toReturn->theAddress = theAddress;
-	toReturn->ID = ID;
+	toReturn->name = *name;
+	toReturn->email = *email;
+	toReturn->theAddress = *theAddress;
+	toReturn->ID = *ID;
 	return toReturn;
 }
 
-SECURITY_LEVEL Account::getSecurityLevel(){
+SECURITY_LEVEL Account::getSecurityLevel() const {
 	return securityLevel;
 }
 
-string* Account::getID(){
+string* Account::getID() const {
     return ID;
 }
 
@@ -101,7 +101,7 @@ string* Account::getID(){
 Manager :: Manager ( void ) : 
 Account ( ), password ( NULL ) {}
 
-Manager :: Manager ( string * newName, string * newEmail, string * newID, address * newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword) : Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), password ( NULL ) {
+Manager :: Manager ( string * newName, string * newEmail, string * newID, Address * newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword) : Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), password ( NULL ) {
 	if(newPassword) {
 		password = new string ( *newPassword );
 	}
@@ -129,7 +129,7 @@ Manager :: ~Manager ( void ){
  * @param  newPassword The new password to be set
  * @return             True iff the password is set
  */
-bool Manager :: setPassword (   string * newPassword ) {
+bool Manager :: setPassword ( string * newPassword ) {
 
 	if ( password ) {
 		if(*password == * newPassword) {
@@ -149,7 +149,7 @@ bool Manager :: setPassword (   string * newPassword ) {
  * @param  passwordToCheck Provided by user
  * @return                 True if the passwords match, false otherwise
  */
-bool Manager :: checkPassword (   string * passwordToCheck ) {
+bool Manager :: checkPassword (   string * passwordToCheck ) const {
 	if ( * password == * passwordToCheck )
 		return true;
 
@@ -163,7 +163,7 @@ bool Manager :: checkPassword (   string * passwordToCheck ) {
 Provider :: Provider ( void ) : 
 Account ( ), password ( NULL ), numMembersSeen ( 0 ), membersSeen ( NULL ), serviceRecord ( NULL ) {}
 
-Provider :: Provider ( string * newName, string * newEmail, string * newID, address * newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword, int newNumMembersSeen,   list < int > * newMembersSeen,   list < providerRecord >  * newServiceRecord) :
+Provider :: Provider ( string * newName, string * newEmail, string * newID, Address * newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword, int newNumMembersSeen,   list < int > * newMembersSeen,   list < providerRecord >  * newServiceRecord) :
     Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), password ( newPassword ), numMembersSeen ( newNumMembersSeen ), membersSeen ( NULL ),
     serviceRecord ( NULL )  {
 	
@@ -227,7 +227,7 @@ bool Provider :: setPassword ( string * newPassword ) {
  * @param  passwordToCheck The string to verify
  * @return                 True if they match, false otherwise
  */
-bool Provider :: checkPassword ( string * passwordToCheck ) {//@todo
+bool Provider :: checkPassword ( string * passwordToCheck ) const {//@todo
 	if ( * password == * passwordToCheck)
 		return true;
 
@@ -238,7 +238,7 @@ bool Provider :: checkPassword ( string * passwordToCheck ) {//@todo
  * Displays all members
  * @return  True if the function displayed all members, false otherwise
  */
-bool Provider :: displayAllMembers ( void ) {//@todo
+bool Provider :: displayAllMembers ( void ) const {//@todo
 	
 	for ( list < int > :: const_iterator i = membersSeen->begin(), end = membersSeen -> end(); i != end; ++i )
 		cout << *i << endl;
@@ -284,7 +284,7 @@ bool Provider :: addMemberSeen ( int memberID ) {//@todo
  * Gets the fee.
  * @return     The fee.
  */
-float Provider :: getFee ( void ) {
+float Provider :: getFee ( void ) const {
     return 0;
 }
 
@@ -292,7 +292,7 @@ float Provider :: getFee ( void ) {
  * Gets the number memers seen.
  * @return     The number memers seen.
  */
-int Provider :: getNumMembersSeen ( void ) {
+int Provider :: getNumMembersSeen ( void ) const {
     return 0;
 }
 
@@ -300,7 +300,7 @@ int Provider :: getNumMembersSeen ( void ) {
  * Gets the provider record.
  * @return     The provider record.
  */
-list < providerRecord > * Provider :: getServiceRecord ( void ) {
+list < providerRecord > * Provider :: getServiceRecord ( void ) const {
     return 0;
 }
 
@@ -320,7 +320,7 @@ Account ( copied ), serviceRecord ( NULL ), status ( copied.status) {
 }
 
 
-Member :: Member (   string * newName,   string * newEmail, string * newID, address *newAddress, SECURITY_LEVEL newSecurityLevel,
+Member :: Member (   string * newName,   string * newEmail, string * newID, Address *newAddress, SECURITY_LEVEL newSecurityLevel,
 MEMBER_STATUS newStatus,   list < memberRecord > * newServiceRecord ) :
 Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), serviceRecord ( NULL ), status ( newStatus) {
 
@@ -354,7 +354,7 @@ bool Member :: setMemberStatus ( MEMBER_STATUS newStatus ) {
  * Getter for status data member
  * @return  The status data member
  */
-MEMBER_STATUS Member :: getMemberStatus ( void ) {
+MEMBER_STATUS Member :: getMemberStatus ( void ) const {
 	return status;
 }
 
@@ -373,7 +373,7 @@ bool Member :: appendToServiceRecord ( memberRecord newServiceRecord) {//@todo c
  * Getter for the serviceRecords data member
  * @return                  The service Records data member 
  */
-  list < memberRecord > * Member :: getServiceRecords ( void ) {
+  list < memberRecord > * Member :: getServiceRecords ( void ) const {
 	return serviceRecord; //@todo syntax?
 }
 
@@ -384,28 +384,28 @@ bool Member :: appendToServiceRecord ( memberRecord newServiceRecord) {//@todo c
 // Address //
 ////////////
 
-address::address(){
+Address::Address(){
     streetAdress = NULL;
     city = NULL;
     state = NULL;
     zipcode = NULL;
 }
 
-address::address(const address & toCopy){
+Address::Address(const Address & toCopy){
     streetAdress = new string(*toCopy.streetAdress);
     city = new string(*toCopy.city);
     state = new string(*toCopy.state);
     zipcode = new string(*toCopy.zipcode);
 }
 
-address::address(string* newStreetAdress, string* newCity, string* newState, string* newZipcode){
+Address::Address(string* newStreetAdress, string* newCity, string* newState, string* newZipcode){
     streetAdress = new string(*newStreetAdress);
     city = new string(*newCity);
     state = new string(*newState);
     zipcode = new string(*newZipcode);
 }
 
-address::~address(){
+Address::~Address(){
     if(streetAdress){
         delete streetAdress;
         streetAdress = NULL;
@@ -423,7 +423,7 @@ address::~address(){
         zipcode = NULL;
     }
 }
-bool address::setAddress(string* newStreetAdress, string* newCity, string* newState, string* newZipcode){
+bool Address::setAddress(string* newStreetAdress, string* newCity, string* newState, string* newZipcode){
     streetAdress = new string(*newStreetAdress);
     city = new string(*newCity);
     state = new string(*newState);
@@ -431,27 +431,27 @@ bool address::setAddress(string* newStreetAdress, string* newCity, string* newSt
     return true;
 }
 
-void address::setAddress(const char* newStreetAdress, const char*  newCity, const char*  newState, const char* newZipcode){
+void Address::setAddress(const char* newStreetAdress, const char*  newCity, const char*  newState, const char* newZipcode){
     streetAdress = new string(newStreetAdress);
     city = new string(newCity);
     state = new string(newState);
     zipcode = new string(newZipcode);
 }
 
-string* address::getFullAddress(){
+string* Address::getFullAddress() const {
     return new string(*streetAdress+", "+*city+", "+*state+" "+*zipcode);
 }
-string* address::getStreetAddress(){
+string* Address::getStreetAddress() const {
     return new string(*streetAdress);
 }
-string* address::getCity(){
+string* Address::getCity() const {
     return new string(*city);
 }
-string* address::getState(){
+string* Address::getState() const {
     return new string(*state);
     
 }
-string* address::getZipcode(){
+string* Address::getZipcode() const {
     return new string(*zipcode);
 }
 

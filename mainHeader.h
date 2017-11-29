@@ -19,15 +19,15 @@ using namespace std;
  */
 
 struct Service { 
-        string * serviceID;
-        string * name;
-        float fee;
+    string serviceID;
+    string name;
+    float fee;
 };
 
 struct eft { 
-        string providerName;
-        string providerID;
-        float totalFee; 
+    string providerName;
+    string providerID;
+    float totalFee; 
 };
 
 /**Report Structs**/
@@ -35,20 +35,51 @@ struct eft {
 struct membersReport {
     string memberName;
     string memberID;
-    address theAddress;
+    Address theAddress;
+
+    membersReport ( void ) {};
+
+    membersReport( const membersReport & toCopy) {
+        if ( this != &toCopy ){
+            memberName = toCopy.memberName;
+            memberID = toCopy.memberID;
+            theAddress = toCopy.theAddress;
+        }
+    }
 };
 
 struct providersReport {
     string providerName;
     string providerID;
-    address theAddress;
+    Address theAddress;
     int consultations;
     float weekFee;
+
+    providersReport ( void ) {};
+
+    providersReport( const providersReport & toCopy) {
+        if ( this != &toCopy ){
+            providerName = toCopy.providerName;
+            providerID = toCopy.providerID;
+            theAddress = toCopy.theAddress;
+            consultations = toCopy.consultations;
+            weekFee = toCopy.weekFee;
+        }
+    }
 };
 
 struct managersReport {
     map < string, map < int, float > > providerDetails; //<providerID, <numMembersSeen, feesDue>
     float totalFees;
+
+    managersReport ( void ) {};
+
+    managersReport( const managersReport & toCopy) {
+        if ( this != &toCopy ){
+            providerDetails = toCopy.providerDetails;
+            totalFees = toCopy.totalFees;
+        }
+    }
 };
 
 //TYPDEF's
@@ -138,12 +169,12 @@ public:
     reportManager ( const reportManager & toCopy );
     ~reportManager ( void );
 
-    managersReport managerReport ( map < string, Provider > );
-    providersReport providerReport ( Provider * );
-    membersReport memberReport ( Member * );
-    list < providersReport >  providerAllReports ( map < string, Provider > );
-    list < membersReport > memberAllReports ( map < string, Member > );
-    eft generateEFT ( Provider * );
+    managersReport managerReport ( const map < string, Provider > &);
+    providersReport providerReport ( const Provider &);
+    membersReport memberReport ( const Member &);
+    list < providersReport > providerAllReports ( const map < string, Provider > &);
+    list < membersReport > memberAllReports ( const map < string, Member > &);
+    eft generateEFT ( const Provider &);
 };
 
 class Warden { 

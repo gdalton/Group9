@@ -34,7 +34,7 @@
      * returned via a manager’s report struct.
      * @return     True if the changes were made, false otherwise
      */
-    managersReport reportManager :: managerReport ( map < string, Provider > providerTree ) {
+    managersReport reportManager :: managerReport ( const map < string, Provider > & providerTree ) {
 
         float providerFee = 0;
         float totalFees = 0;
@@ -42,35 +42,36 @@
         managersReport record;
         map < int, float > data;
 
-        //Loop over providers
-        for ( map < string, Provider > :: iterator i = providerTree.begin (); i != providerTree.end (); ++i ) {
-            
-            //If they saw anyone this week
-            if( i->second.getNumMembersSeen () != 0) {
+        if ( & providerTree ) {
+            //Loop over providers
+            for ( map < string, Provider > :: const_iterator i = providerTree . begin (); i != providerTree . end (); ++i ) {
                 
-                //loop over who they saw and record the fees
-                list < providerRecord > * providerServiceRecord = i -> second.getServiceRecord ();
+                //If they saw anyone this week
+                if( i->second.getNumMembersSeen () != 0) {
+                    
+                    //loop over who they saw and record the fees
+                    list < providerRecord > * providerServiceRecord = i -> second.getServiceRecord ();
 
-                for ( list < providerRecord > :: iterator j = providerServiceRecord -> begin (); j != providerServiceRecord -> end (); ++j ) {
-                    providerFee += j -> serviceFee;
+                    for ( list < providerRecord > :: const_iterator j = providerServiceRecord -> begin (); j != providerServiceRecord -> end (); ++j ) {
+                        providerFee += j -> serviceFee;
+                    }
+
+                    //store the data
+                    data.insert ( pair < int, float > ( i->second.getNumMembersSeen (), providerFee));
+
+                    //add the provider and their data
+                    record.providerDetails.insert ( pair < string, map < int, float > > ( i -> first, data));
                 }
 
-                //store the data
-                data.insert ( pair < int, float > ( i->second.getNumMembersSeen (), providerFee));
-
-                //add the provider and their data
-                record.providerDetails.insert ( pair < string, map < int, float > > ( i -> first, data));
+                //tie up the bits
+                totalFees += providerFee;
+                providerFee = 0;
             }
 
-            //tie up the bits
-            totalFees += providerFee;
-            providerFee = 0;
+            record.totalFees = totalFees;
         }
 
-        record.totalFees = totalFees;
-
         return record;
-
     }
     
     /** Reads in a 9-digit provider ID and generate an individual provider report
@@ -82,23 +83,23 @@
      * @param      newReport      The new report
      * @return     True if the report was generated, false otherwise
      */
-    providersReport reportManager :: providerReport ( Provider * theProvider ) {
+    providersReport reportManager :: providerReport ( const Provider & theProvider ) {
 
         int totalFees;
         int totalConsults;
         providersReport newReport;
 
-        if( theProvider ){
+        if( &theProvider ){
             //Static stuff
             
-            infoStruct * providerInfo = theProvider -> getInfo();
+            infoStruct * providerInfo = theProvider . getInfo();
 
-            newReport . providerName = * providerInfo -> name;//no get name
-            newReport . providerID = * providerInfo -> ID;//invalid from string* to char
-            newReport . theAddress = * providerInfo -> theAddress;//No get address
+            newReport . providerName = providerInfo -> name;//no get name
+            newReport . providerID = providerInfo -> ID;//invalid from string* to char
+            newReport . theAddress = providerInfo -> theAddress;//No get address
 
             //Dynamic stuff
-            list < providerRecord > * providerServiceRecord = theProvider -> getServiceRecord ();
+            list < providerRecord > * providerServiceRecord = theProvider . getServiceRecord ();
             for ( list < providerRecord > :: iterator j = providerServiceRecord -> begin (); j != providerServiceRecord -> end (); ++j ) {
                 totalFees += j -> serviceFee;
                 ++totalConsults;
@@ -120,20 +121,20 @@
      * @param      newReport      The new report
      * @return     True if the report was generated, false otherwise
      */
-    membersReport reportManager :: memberReport ( Member * theMember ) {
+    membersReport reportManager :: memberReport ( const Member & theMember ) {
 
         membersReport newReport;
 
-        if( theMember ){
+        if( &theMember ){
 
-            infoStruct * memberInfo = theMember -> getInfo();
+            infoStruct * memberInfo = theMember . getInfo();
 
-            newReport . memberName = * memberInfo -> name;
-            newReport . memberID = * memberInfo -> ID;
-            newReport . theAddress = * memberInfo -> theAddress;
+            newReport . memberName = memberInfo -> name;
+            newReport . memberID = memberInfo -> ID;
+            newReport . theAddress = memberInfo -> theAddress;
         }
 
-        return newReport;
+        return newReport;//@todo I think this memory is deleted once the func is out of scope
     }
 
     /** Reads in a tree of providers and cycle through all of the ChocAn
@@ -147,12 +148,12 @@
      * @param      theProvider   The provider
      * @return     True if the reports were generated, false otherwise
      */
-    list < providersReport > reportManager :: providerAllReports ( map < string, Provider > providerTree) {
+    list < providersReport >  reportManager :: providerAllReports ( const map < string, Provider > & providerTree) {
 
         list < providersReport > providerReports;
 
-        for ( map < string, Provider > :: iterator i = providerTree.begin (); i != providerTree.end (); ++i )
-            providerReports.push_back ( providerReport ( &i -> second ) );
+        for ( map < string, Provider > :: const_iterator i = providerTree.begin (); i != providerTree.end (); ++i )
+            providerReports.push_back ( providerReport ( i -> second ) );
 
         return providerReports;
         
@@ -169,11 +170,11 @@
      * @param      theMember   The member
      * @return     True if the reports were generated, false otherwise
      */
-    list < membersReport > reportManager :: memberAllReports ( map < string, Member > memberTree) {
+    list < membersReport > reportManager :: memberAllReports ( const map < string, Member > & memberTree) {
         list < membersReport > memberReports;
 
-        for ( map < string, Member > :: iterator i = memberTree.begin (); i != memberTree.end (); ++i )
-            memberReports.push_back ( memberReport ( &i -> second ) );
+        for ( map < string, Member > :: const_iterator i = memberTree.begin (); i != memberTree.end (); ++i )
+            memberReports.push_back ( memberReport ( i -> second ) );
 
         return memberReports;
     }
@@ -187,12 +188,12 @@
      * @param      trasferee  The trasferee
      * @return     True if the EFT was generated, false otherwise
      */
-    eft reportManager :: generateEFT ( Provider * trasferee) {
+    eft reportManager :: generateEFT ( const Provider & trasferee) {
 
         eft retEFT;
         providersReport report;
 
-        if ( trasferee ) {
+        if ( &trasferee ) {
             report = providerReport ( trasferee );
 
             retEFT . providerName = report.providerName;
