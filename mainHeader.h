@@ -167,7 +167,7 @@ private:
 
 class UserInterface {
 public:
-    UserInterface ( void );
+    UserInterface ( string newUser );
     UserInterface ( const UserInterface & toCopy );
     ~UserInterface ( void );
 

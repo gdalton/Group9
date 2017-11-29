@@ -1,5 +1,5 @@
 /* filename: userInterface.cpp
-* Programmers: Matthew Greenlaw, (Add your name here)
+* Programmers: Matthew Greenlaw, Katie Loveland
 * Class Number: CS-300
 * Date: 22NOV17
 * Purpose:The User Interface (UI) class manages all input from the user and all
@@ -18,21 +18,20 @@
 
 /** Constructs the object.
  */
-UserInterface :: UserInterface ( void ) {
-	//@todo
+UserInterface :: UserInterface ( string newUser ) {
+  currentUser = string(newUser);
 }
 
 /** Constructs the object.
  * @param      toCopy  To copy
  */
 UserInterface :: UserInterface ( const UserInterface & toCopy ) {
-	//@todo
+	currentUser = string(toCopy.currentUser);
 }
 
 /** Destroys the object.
  */
 UserInterface :: ~UserInterface ( void ) {
-	//@todo
 }
 
 /** Starts up the whole system and runs the UI.
