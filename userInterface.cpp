@@ -39,6 +39,9 @@ UserInterface :: ~UserInterface ( void ) {
  */
 bool UserInterface :: runSystem ( void ) {
 	//@todo
+    bool toReturn = false;
+    
+    return toReturn;
 }
 
 /** Runs the provider menu system. It presents the provider with a series of
@@ -47,6 +50,9 @@ bool UserInterface :: runSystem ( void ) {
  */
 bool UserInterface :: runProviderMenu ( void ) {
 	//@todo
+    bool toReturn = false;
+    
+    return toReturn;
 }
 
 /** Runs the manager menu system. It presents the manager with a series of
@@ -55,4 +61,7 @@ bool UserInterface :: runProviderMenu ( void ) {
  */
 bool UserInterface :: runManagerMenu ( void ) {
 	//@todo
+    bool toReturn = false;
+    
+    return toReturn;
 }

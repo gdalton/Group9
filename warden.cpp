@@ -36,7 +36,9 @@ Warden :: ~Warden ( void ) { //@todo
  * @return     True if the cred was added, false otherwise
  */
 bool Warden :: addCredential ( string newUsername, string newPassword) { //@todo
-
+    bool toReturn = false;
+    
+    return toReturn;
 }
 
 /** Updates a credential in systemCredentials.
@@ -45,7 +47,9 @@ bool Warden :: addCredential ( string newUsername, string newPassword) { //@todo
  * @return     True if the cred was updated, false otherwise
  */
 bool Warden :: updateCredential ( string newUsername, string newPassword) { //@todo
-
+    bool toReturn = false;
+    
+    return toReturn;
 }
 
 /** Deletes a credential from systemCredentials.
@@ -54,7 +58,9 @@ bool Warden :: updateCredential ( string newUsername, string newPassword) { //@t
  * @return     True if the cred was deleted, false otherwise
  */
 bool Warden :: deleteCredential ( string newUsername, string newPassword) { //@todo
-
+    bool toReturn = false;
+    
+    return toReturn;
 }
 
 /** Returns true if there is a match between the userID / userPassword pair and a
@@ -64,7 +70,9 @@ bool Warden :: deleteCredential ( string newUsername, string newPassword) { //@t
  * @return     True if the username/passowrd match, false otherwise.
  */
 bool Warden :: validateLogin ( string checkedUsername, string checkedPassword) { //@todo
-
+    bool toReturn = false;
+    
+    return toReturn;
 }
 
 /** Returns true if login attempts < 3.
@@ -72,7 +80,9 @@ bool Warden :: validateLogin ( string checkedUsername, string checkedPassword) {
  * @return     Returns true if login attempts < 3, false otherwise
  */
 bool Warden :: checkLoginAttempts ( int userID) { //@todo
-
+    bool toReturn = false;
+    
+    return toReturn;
 }
 
 
@@ -82,7 +92,9 @@ bool Warden :: checkLoginAttempts ( int userID) { //@todo
  *             logFile, false otherwise.
  */
 bool Warden :: addLog ( string logToAdd) { //@todo
-
+    bool toReturn = false;
+    
+    return toReturn;
 }
 
 
@@ -91,5 +103,7 @@ bool Warden :: addLog ( string logToAdd) { //@todo
  *             referenceTime is <5min, false otherwise
  */
 bool Warden :: checkActive ( void ) { //@todo
-
+    bool toReturn = false;
+    
+    return toReturn;
 }
