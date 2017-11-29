@@ -530,7 +530,7 @@ void accountManager::generateRandomAccounts(int amount){
     
     
     // TO CREATE MEMBER ACCOUNTS
-     
+/*     
     while(counter<amount){
         //Generate random
         random = rand() % 12;
@@ -561,7 +561,7 @@ void accountManager::generateRandomAccounts(int amount){
     
         ++counter;
     }
-   
+  */ 
     
 }
 
