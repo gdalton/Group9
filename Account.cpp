@@ -1,6 +1,6 @@
 /*
 Filename: Account.cpp
-Programmers: Matthew Greelaw, Dalton Gray, (Add your name here)
+Programmers: Matthew Greelaw, Dalton Gray, Katie Loveland
 Class: CS-300
 Date: 22NOV17
 Purpose:
