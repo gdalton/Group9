@@ -287,7 +287,6 @@ bool accountManager::loadDataFromDisk(){
     while (allAccounts){
         allAccounts.get(accountID, 20,'\n');
         allAccounts.get();
-        cout<<"adding!!"<<endl;
         //Look for data file
         
         char temp [50] = "accounts/";
