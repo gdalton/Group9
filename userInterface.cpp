@@ -616,13 +616,16 @@ void editAccount ( accountManager & accounts ) {
 
         type = (ACCOUNT_TYPE) ( ( int ) userInput.at ( 0 ) - '0' );
         accountToEdit = accounts.getAccount ( &userInput, type);
-        accountInfo = accountToEdit -> getInfo();
-        accountAddress = accountInfo -> theAddress;
+
+        if ( accountToEdit ){
+            accountInfo = accountToEdit -> getInfo();
+            accountAddress = accountInfo -> theAddress;
 
             cout << endl;
             cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
             cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
             cout << "│                Account Editing Menu" << endl;
+            cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
             cout << "│    ID......: " << accountInfo -> ID << endl; //Not updating
             cout << "│ 1. Name....: " << accountInfo -> name << endl; //Not updating
             cout << "│ 2. Email...: " << accountInfo -> email << endl; //Not updating
@@ -631,66 +634,72 @@ void editAccount ( accountManager & accounts ) {
             cout << "│ 5. State...: " << *accountAddress.getState() << endl;  
             cout << "│ 6. Zip Code: " << *accountAddress.getZipcode() << endl;  
 
-        if (( int ) userInput.at ( 0 ) - '0' < 3 )//show provider/manager level data members
-            cout << "│    password: XXXXXXXXX"<< endl;//Protected info //Need to be able to update password
-        
-            cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
-            cout << "        What would you like to update?: ";
+            if (( int ) userInput.at ( 0 ) - '0' < 3 )//show provider/manager level data members
+                cout << "│    password: XXXXXXXXX"<< endl;//Protected info //Need to be able to update password
+            
+                cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+                cout << "        What would you like to update?: ";
+                getline ( cin, userInput );
+                cout << "        What is the new value?........: ";
+                getline ( cin, newValue );
+
+                switch ( ( int ) userInput.at ( 0 ) - '0' ) {
+                case 1:
+                    accountToEdit -> setInfo(&newValue, &accountInfo -> email, &accountInfo -> ID, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                    break;
+                case 2:
+                    accountToEdit -> setInfo(&accountInfo -> name, &newValue, &accountInfo -> ID, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                    break;
+                case 3:
+                    accountAddress.setAddress(&newValue, accountAddress.getCity(), accountAddress.getState(), accountAddress.getZipcode());
+                    accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                    break;
+                case 4:
+                    accountAddress.setAddress(accountAddress.getStreetAddress(), &newValue, accountAddress.getState(), accountAddress.getZipcode());
+                    accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                    break;
+                case 5:
+                    accountAddress.setAddress(accountAddress.getStreetAddress(), accountAddress.getCity(), &newValue, accountAddress.getZipcode());
+                    accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                    break;
+                case 6:
+                    accountAddress.setAddress(accountAddress.getStreetAddress(), accountAddress.getCity(), accountAddress.getState(), &newValue);
+                    accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                    break;
+                //case 7: //Need to be able to update password
+                    //accountToEdit.setInfo(accountInfo -> name, accountInfo -> ID, accountInfo -> email, accountAddress, accountInfo -> securityLevel);
+                    break;
+                    
+                default:
+                    cout << "\n[✗] \"" << userInput << "\" is not an option\n" << endl;
+            }
+
+            accountInfo = accountToEdit -> getInfo();
+
+            cout << endl;
+                cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
+                cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+                cout << "│                Account Editing Menu" << endl;
+                cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+                cout << "│    ID......: " << accountInfo -> ID << endl;
+                cout << "│ 1. Name....: " << accountInfo -> name << endl; 
+                cout << "│ 2. Email...: " << accountInfo -> email << endl; 
+                cout << "│ 3. Address.: " << *accountAddress.getStreetAddress() << endl; 
+                cout << "│ 4. City....: " << *accountAddress.getCity() << endl; 
+                cout << "│ 5. State...: " << *accountAddress.getState() << endl;  
+                cout << "│ 6. Zip Code: " << *accountAddress.getZipcode() << endl;  
+
+            if (( int ) userInput.at ( 0 ) - '0' < 3 )//show provider/manager level data members
+                cout << "│    password: XXXXXXXXX"<< endl;//Protected info //Need to be able to update password
+            
+                cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+                cout << "               [✓] Account updated";
+
+            cout << "\nWould you like to edit another account (y/n)? ";
             getline ( cin, userInput );
-            cout << "        What is the new value?........: ";
-            getline ( cin, newValue );
 
-            switch ( ( int ) userInput.at ( 0 ) - '0' ) {
-            case 1:
-                accountToEdit -> setInfo(&newValue, &accountInfo -> ID, &accountInfo -> email, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
-                break;
-            case 2:
-                accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> ID, &newValue, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
-                break;
-            case 3:
-                accountAddress.setAddress(&newValue, accountAddress.getCity(), accountAddress.getState(), accountAddress.getZipcode());
-                accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> ID, &accountInfo -> email, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
-                break;
-            case 4:
-                accountAddress.setAddress(accountAddress.getStreetAddress(), &newValue, accountAddress.getState(), accountAddress.getZipcode());
-                accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> ID, &accountInfo -> email, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
-                break;
-            case 5:
-                accountAddress.setAddress(accountAddress.getStreetAddress(), accountAddress.getCity(), &newValue, accountAddress.getZipcode());
-                accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> ID, &accountInfo -> email, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
-                break;
-            case 6:
-                accountAddress.setAddress(accountAddress.getStreetAddress(), accountAddress.getCity(), accountAddress.getState(), &newValue);
-                accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> ID, &accountInfo -> email, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
-                break;
-            //case 7: //Need to be able to update password
-                //accountToEdit.setInfo(accountInfo -> name, accountInfo -> ID, accountInfo -> email, accountAddress, accountInfo -> securityLevel);
-                break;
-                
-            default:
-                cout << "\n[✗] \"" << userInput << "\" is not an option\n" << endl;
-        }
-
-        cout << endl;
-            cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
-            cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
-            cout << "│                Account Editing Menu" << endl;
-            cout << "│    ID......: " << accountInfo -> ID << endl;
-            cout << "│ 1. Name....: " << accountInfo -> name << endl; 
-            cout << "│ 2. Email...: " << accountInfo -> email << endl; 
-            cout << "│ 3. Address.: " << *accountAddress.getStreetAddress() << endl; 
-            cout << "│ 4. City....: " << *accountAddress.getCity() << endl; 
-            cout << "│ 5. State...: " << *accountAddress.getState() << endl;  
-            cout << "│ 6. Zip Code: " << *accountAddress.getZipcode() << endl;  
-
-        if (( int ) userInput.at ( 0 ) - '0' < 3 )//show provider/manager level data members
-            cout << "│    password: XXXXXXXXX"<< endl;//Protected info //Need to be able to update password
-        
-            cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
-            cout << "               [✓] Account updated";
-
-        cout << "\nWould you like to edit another account (y/n)? ";
-        getline ( cin, userInput );
+        } else 
+            cout << "\n[✗] No Account Exists for User ID#: "<< userInput << "\n" << endl;
 
     } while ( userInput.at ( 0 ) == 'y' );
 }
@@ -742,8 +751,8 @@ void viewAccount ( accountManager & accounts ) {
         //If an account is NOT found
         else {
             cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
-            cout << "   [✗] No Account Exists for User ID# "<< userInput << endl;
-            cout << "       Please check the ID number and try again! " << endl;
+            cout << "\n[✗] No Account Exists for User ID# "<< userInput << endl;
+            cout << "    Please check the ID number and try again! " << endl;
             
         }
         

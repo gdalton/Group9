@@ -28,10 +28,10 @@ name ( NULL ), email ( NULL ), ID ( newID ), securityLevel ( newSecurityLevel ) 
 
 Account :: Account ( const Account & copied) : 
 name ( NULL ), email ( NULL ), ID ( NULL), theAddress (NULL), securityLevel ( copied.securityLevel ) {
-	name = new   string ( * copied.name );
-	email = new   string ( * copied.email );
-	ID = new string (*copied.ID);
-    theAddress = new Address(*copied.theAddress);
+    name = new string ( * copied.name );
+    email = new string ( * copied.email );
+    ID = new string ( * copied.ID );
+    theAddress = new Address( * copied.theAddress );
 }
 
 Account :: Account ( infoStruct * newInfo){
@@ -86,17 +86,18 @@ infoStruct* Account::getInfo() const {
 }
 
 
-void Account :: setInfo ( string * _name, string * _ID, string *, Address * _theAddress, SECURITY_LEVEL _securityLevel ) {
+void Account :: setInfo ( string * _name, string * _email, string * _ID, Address * _theAddress, SECURITY_LEVEL _securityLevel ) {
+    
     if(name)
         *name = *_name;
     else name = new string ( *_name );
 
     if ( ID )
-    	*ID = *_ID;
+        *ID = *_ID;
     else ID = new string ( *_ID );
 
     if ( theAddress ) 
-    	*theAddress = *_theAddress;
+        *theAddress = *_theAddress;
     else theAddress = new Address ( *_theAddress );
     
     securityLevel = _securityLevel;
@@ -561,12 +562,29 @@ Address::~Address(){
         zipcode = NULL;
     }
 }
-bool Address::setAddress(string* newStreetAdress, string* newCity, string* newState, string* newZipcode){
-    streetAdress = new string(*newStreetAdress);
-    city = new string(*newCity);
-    state = new string(*newState);
-    zipcode = new string(*newZipcode);
-    return true;
+void Address::setAddress( string * newStreetAdress, string * newCity, string * newState, string * newZipcode){
+
+    if(streetAdress){
+        delete streetAdress;
+        streetAdress = NULL;
+    }
+    if(city){
+        delete city;
+        city = NULL;
+    }
+    if(state){
+        delete state;
+        state = NULL;
+    }
+    if(zipcode){
+        delete zipcode;
+        zipcode = NULL;
+    }
+    
+    streetAdress = new string( * newStreetAdress );
+    city = new string ( * newCity ) ;
+    state = new string ( * newState );
+    zipcode = new string ( * newZipcode );
 }
 
 void Address::setAddress(const char* newStreetAdress, const char*  newCity, const char*  newState, const char* newZipcode){
@@ -595,14 +613,3 @@ string* Address::getZipcode() const {
 string* Address::writeToString() {
     return new string(*streetAdress+"^"+*city+"^"+*state+"^"+*zipcode);
 }
-
-
-
-
-
-
-
-
-
-
-

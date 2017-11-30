@@ -75,7 +75,7 @@ public:
 	Address(string* streetAdress, string* city, string* state, string* zipcode);
     Address(const Address & toCopy);
 	~Address();
-	bool setAddress(string* streetAdress, string* city, string* state, string* zipcode);
+	void setAddress(string* streetAdress, string* city, string* state, string* zipcode);
     void setAddress(const char* streetAdress, const char*  city, const char*  state, const char* zipcode);
 	string* getFullAddress() const;
 	string* getStreetAddress() const;
