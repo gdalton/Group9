@@ -40,11 +40,9 @@ struct membersReport {
     membersReport ( void ) {};
 
     membersReport( const membersReport & toCopy) {
-        if ( this != &toCopy ){
             memberName = toCopy.memberName;
             memberID = toCopy.memberID;
             theAddress = toCopy.theAddress;
-        }
     }
 };
 
@@ -58,13 +56,12 @@ struct providersReport {
     providersReport ( void ) {};
 
     providersReport( const providersReport & toCopy) {
-        if ( this != &toCopy ){
             providerName = toCopy.providerName;
             providerID = toCopy.providerID;
             theAddress = toCopy.theAddress;
             consultations = toCopy.consultations;
             weekFee = toCopy.weekFee;
-        }
+        
     }
 };
 
@@ -75,10 +72,9 @@ struct managersReport {
     managersReport ( void ) {};
 
     managersReport( const managersReport & toCopy) {
-        if ( this != &toCopy ){
             providerDetails = toCopy.providerDetails;
             totalFees = toCopy.totalFees;
-        }
+        
     }
 };
 
@@ -176,12 +172,12 @@ public:
     reportManager ( const reportManager & toCopy );
     ~reportManager ( void );
 
-    managersReport managerReport ( const map < string, Provider > &);
-    providersReport providerReport ( const Provider &);
-    membersReport memberReport ( const Member &);
-    list < providersReport > providerAllReports ( const map < string, Provider > &);
-    list < membersReport > memberAllReports ( const map < string, Member > &);
-    eft generateEFT ( const Provider &);
+    managersReport * managerReport ( const map < string, Provider > &);
+    providersReport * providerReport ( const Provider &);
+    membersReport * memberReport ( const Member &);
+    list < providersReport > * providerAllReports ( const map < string, Provider > &);
+    list < membersReport >* memberAllReports ( const map < string, Member > &);
+    eft * generateEFT ( const Provider &);
 };
 
 class Warden { 

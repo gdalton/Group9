@@ -34,12 +34,12 @@
      * returned via a manager’s report struct.
      * @return     True if the changes were made, false otherwise
      */
-    managersReport reportManager :: managerReport ( const map < string, Provider > & providerTree ) {
+    managersReport * reportManager :: managerReport ( const map < string, Provider > & providerTree ) {
 
         float providerFee = 0;
         float totalFees = 0;
 
-        managersReport record;
+        managersReport * record = new managersReport;
         map < int, float > data;
 
         if ( & providerTree ) {
@@ -60,7 +60,7 @@
                     data.insert ( pair < int, float > ( i->second.getNumMembersSeen (), providerFee));
 
                     //add the provider and their data
-                    record.providerDetails.insert ( pair < string, map < int, float > > ( i -> first, data));
+                    record -> providerDetails.insert ( pair < string, map < int, float > > ( i -> first, data));
                 }
 
                 //tie up the bits
@@ -68,7 +68,7 @@
                 providerFee = 0;
             }
 
-            record.totalFees = totalFees;
+            record -> totalFees = totalFees;
         }
 
         return record;
@@ -83,20 +83,20 @@
      * @param      newReport      The new report
      * @return     True if the report was generated, false otherwise
      */
-    providersReport reportManager :: providerReport ( const Provider & theProvider ) {
+    providersReport * reportManager :: providerReport ( const Provider & theProvider ) {
 
         int totalFees;
         int totalConsults;
-        providersReport newReport;
+        providersReport * newReport = new providersReport;
 
         if( &theProvider ){
             //Static stuff
             
             infoStruct * providerInfo = theProvider . getInfo();
 
-            newReport . providerName = providerInfo -> name;//no get name
-            newReport . providerID = providerInfo -> ID;//invalid from string* to char
-            newReport . theAddress = providerInfo -> theAddress;//No get address
+            newReport -> providerName = providerInfo -> name;//no get name
+            newReport -> providerID = providerInfo -> ID;//invalid from string* to char
+            newReport -> theAddress = providerInfo -> theAddress;//No get address
 
             //Dynamic stuff
             list < providerRecord > * providerServiceRecord = theProvider . getServiceRecord ();
@@ -105,8 +105,8 @@
                 ++totalConsults;
             }
 
-            newReport . consultations = totalConsults;
-            newReport . weekFee = totalFees;
+            newReport -> consultations = totalConsults;
+            newReport -> weekFee = totalFees;
         }
 
         return newReport;
@@ -121,20 +121,46 @@
      * @param      newReport      The new report
      * @return     True if the report was generated, false otherwise
      */
-    membersReport reportManager :: memberReport ( const Member & theMember ) {
+    membersReport * reportManager :: memberReport ( const Member & theMember ) {
 
-        membersReport newReport;
+        membersReport * newReport = new membersReport;
 
         if( &theMember ){
 
             infoStruct * memberInfo = theMember . getInfo();
 
-            newReport . memberName = memberInfo -> name;
-            newReport . memberID = memberInfo -> ID;
-            newReport . theAddress = memberInfo -> theAddress;
+            newReport -> memberName = memberInfo -> name;
+            newReport -> memberID = memberInfo -> ID;
+            newReport -> theAddress = memberInfo -> theAddress;
         }
 
         return newReport;//@todo I think this memory is deleted once the func is out of scope
+    }
+
+    /** Reads in a tree of providers and cycle through all of the ChocAn
+     * providers creating a linear linked list of providers and total fees owed
+     * to them. The completed list will be returned via the eft pointer for use
+     * by the file system. The function will return true if the list is
+     * completed, or false if there is an error in the process.
+     * @param      newEFT     The new eft
+     * @param      trasferee  The trasferee
+     * @return     True if the EFT was generated, false otherwise
+     */
+    eft * reportManager :: generateEFT ( const Provider & trasferee) {
+
+        eft * retEFT = NULL;
+        // infoStruct * providerInfo = NULL;
+
+        // if ( &trasferee ) {
+        //     retEFT = new eft;
+        //     providerInfo = trasferee.getInfo();
+
+        //     retEFT -> providerName = *providerInfo -> name ;
+        //     retEFT -> providerID = *providerInfo -> ID;
+        //     //retEFT -> totalFee = *providerInfo -> fee;
+        // }
+
+        return retEFT;
     }
 
     /** Reads in a tree of providers and cycle through all of the ChocAn
@@ -148,12 +174,18 @@
      * @param      theProvider   The provider
      * @return     True if the reports were generated, false otherwise
      */
-    list < providersReport >  reportManager :: providerAllReports ( const map < string, Provider > & providerTree) {
+    list < providersReport >  * reportManager :: providerAllReports ( const map < string, Provider > & providerTree) {
 
-        list < providersReport > providerReports;
+        list < providersReport > * providerReports = NULL;
 
-        for ( map < string, Provider > :: const_iterator i = providerTree.begin (); i != providerTree.end (); ++i )
-            providerReports.push_back ( providerReport ( i -> second ) );
+        if ( & providerTree ) {//Can't remember if I need this if statment or not
+            providerReports = new list < providersReport >;
+
+            for ( map < string, Provider > :: const_iterator i = providerTree.begin (); i != providerTree.end (); ++i )
+                providerReports -> push_back ( *providerReport ( i -> second ) );
+        }
+
+        
 
         return providerReports;
         
@@ -170,39 +202,20 @@
      * @param      theMember   The member
      * @return     True if the reports were generated, false otherwise
      */
-    list < membersReport > reportManager :: memberAllReports ( const map < string, Member > & memberTree) {
-        list < membersReport > memberReports;
+    list < membersReport > * reportManager :: memberAllReports ( const map < string, Member > & memberTree) {
+        list < membersReport > * memberReports = NULL;
 
-        for ( map < string, Member > :: const_iterator i = memberTree.begin (); i != memberTree.end (); ++i )
-            memberReports.push_back ( memberReport ( i -> second ) );
+        if ( & memberTree ) {//Can't remember if I need this if statment or not
+            memberReports = new list < membersReport >;
+
+            for ( map < string, Member > :: const_iterator i = memberTree.begin (); i != memberTree.end (); ++i )
+                memberReports -> push_back ( *memberReport ( i -> second ) );
+        }
 
         return memberReports;
     }
 
-    /** Reads in a tree of providers and cycle through all of the ChocAn
-     * providers creating a linear linked list of providers and total fees owed
-     * to them. The completed list will be returned via the eft pointer for use
-     * by the file system. The function will return true if the list is
-     * completed, or false if there is an error in the process.
-     * @param      newEFT     The new eft
-     * @param      trasferee  The trasferee
-     * @return     True if the EFT was generated, false otherwise
-     */
-    eft reportManager :: generateEFT ( const Provider & trasferee) {
-
-        eft retEFT;
-        providersReport report;
-
-        if ( &trasferee ) {
-            report = providerReport ( trasferee );
-
-            retEFT . providerName = report.providerName;
-            retEFT . providerID = report.providerID;
-            retEFT .  totalFee = report.weekFee;
-        }
-
-        return retEFT;
-    }
+    
 
     /**
      PARKING LOT
