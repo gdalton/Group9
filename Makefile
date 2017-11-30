@@ -6,8 +6,8 @@ all:
 
 test: 
 	cd googletest && \
-	g++ $(addprefix ../, $(filter-out main.cpp, $(wildcard *.cpp))) -Igoogletest/include -pthread ../tests/*.cc libgtest.a -o ../testdir/test_executable && \
-	../testdir/test_executable
+	g++ $(addprefix ../, $(filter-out main.cpp, $(wildcard *.cpp))) -Igoogletest/include -pthread ../tests/*.cc libgtest.a -o ../testdir/test_executable.out && \
+	../testdir/test_executable.out
 
 
 get-test-suite:
