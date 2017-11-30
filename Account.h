@@ -45,14 +45,6 @@ struct providerRecord {
     float serviceFee;
 };
 
-//struct provSysRecord { //Conflict Resolved?
-//    string currentDateTime;
-//    string DateOfService;
-//    string providerID;
-//    string memberID;
-//    string serviceCode;
-//    string comments; 
-//};
 
 /* *** Enumerations
  * - Use to denote different statuses
@@ -90,6 +82,7 @@ public:
 	string* getCity() const;
 	string* getState() const;
 	string* getZipcode() const;
+    string* writeToString(); 
 
 private:
 	string * streetAdress;
@@ -121,6 +114,7 @@ public:
 	infoStruct* getInfo() const;
 	SECURITY_LEVEL getSecurityLevel() const;
     string* getID() const;
+    string* writeToString();
 
 
 protected:
@@ -150,6 +144,7 @@ public:
 
 	bool setPassword ( string * newPassword );
 	bool checkPassword ( string * passwordToCheck ) const ;
+    string* writeToString();
 
 protected:
 	string * password;
@@ -173,6 +168,7 @@ public:
 	bool displayAllMembers ( void ) const ;
 	bool addServiceRecord ( providerRecord* newServiceRecord );
 	bool addMemberSeen ( int memberID );
+    string* writeToString();
 
 	float getFee () const;
 	int getNumMembersSeen () const;
@@ -199,6 +195,7 @@ public:
 	~Member ( void );
 
 	bool setMemberStatus ( MEMBER_STATUS newStatus );
+    string* writeToString();
 	MEMBER_STATUS getMemberStatus ( void ) const;
 	bool appendToServiceRecord ( memberRecord newServiceRecord);
 	list < memberRecord > * getServiceRecords ( void ) const;

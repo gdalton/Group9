@@ -93,6 +93,10 @@ string* Account::getID() const {
     return ID;
 }
 
+string* Account::writeToString(){
+    return new string(*ID+"\n"+*name+"\n"+*email+"\n"+*theAddress->writeToString());
+}
+
 
 ////////////
 //Manager //
@@ -154,6 +158,10 @@ bool Manager :: checkPassword (   string * passwordToCheck ) const {
 		return true;
 
 	return false;
+}
+
+string* Manager::writeToString(){
+     return new string(*ID+"\n"+*name+"\n"+*email+"\n"+*theAddress->writeToString()+"\n"+*password);
 }
 
 /////////////
@@ -296,6 +304,18 @@ list < providerRecord > * Provider :: getServiceRecord ( void ) const {
     return new providerRecordList(serviceRecord);
 }
 
+
+string* Provider::writeToString(){
+    
+    string serviceRecords = "";
+    
+    for (providerRecordList::iterator it=serviceRecord.begin(); it != serviceRecord.end(); ++it){
+        serviceRecords += ("^")+it->currentDateTime+("^")+it->dateOfService+("^")+it->providerID+("^")+it->memberID+("^")+it->serviceCode+("^")+toString(it->serviceFee)+("^")+it->comments+("^")+it->memberName+("\n");
+    }
+    
+    return new string(*ID+"\n"+*name+"\n"+*email+"\n"+*theAddress->writeToString()+"\n"+*password+"\n"+toString(numMembersSeen)+"\n"+serviceRecords);
+}
+
 ////////////
 //Member //
 ////////////
@@ -369,6 +389,22 @@ bool Member :: appendToServiceRecord ( memberRecord newServiceRecord) {//@todo c
 	return serviceRecord; //@todo syntax?
 }
 
+string* Member::writeToString(){
+    
+    string serviceRecords = "";
+    string strStatus = "Current";
+    
+    //Set to expired if expired
+    if(status == expired)
+        strStatus = "Expired";
+    
+    //Loop through and convert
+    for (memberRecordList::iterator it=serviceRecord->begin(); it != serviceRecord->end(); ++it){
+        serviceRecords += ("^")+it->dateOfService+("^")+it->providerName+("^")+it->serviceName+("\n");
+    }
+    
+    return new string(*ID+"\n"+*name+"\n"+*email+"\n"+*theAddress->writeToString()+"\n"+strStatus+"\n"+serviceRecords);
+}
 
 
 
@@ -446,6 +482,17 @@ string* Address::getState() const {
 string* Address::getZipcode() const {
     return new string(*zipcode);
 }
+string* Address::writeToString() {
+    return new string(*streetAdress+"^"+*city+"^"+*state+"^"+*zipcode);
+}
+
+
+
+
+
+
+
+
 
 
 
