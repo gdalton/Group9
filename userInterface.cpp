@@ -20,6 +20,7 @@ void createAccount ( accountManager & );
 void createManager ( accountManager & );
 void createProvider ( accountManager & );
 void createMember ( accountManager & );
+void deleteAccount ( accountManager & );
 bool createService(providerDirectory &master);
 
 /** Constructs the object.
@@ -313,13 +314,11 @@ bool UserInterface :: runManagerMenu ( void ) {
                 break;
 
             case 1:
-
                 createAccount ( accounts );
-                
                 break;
 
             case 2:
-
+                deleteAccount ( accounts );
                 break;
 
             case 3:
