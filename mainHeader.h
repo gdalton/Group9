@@ -164,6 +164,8 @@ public:
 
 private:
     list < Service > directory;
+    void loadDirectory();
+    void writeDirectory();
 };
 
 

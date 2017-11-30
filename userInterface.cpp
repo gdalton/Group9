@@ -206,6 +206,7 @@ int UserInterface::userSelection()
 bool UserInterface :: runProviderMenu () {
     Account * accountToCheck = NULL;
     Member * memberToCheck = NULL;
+    int selection = 0;
     string userInput = "";
 
     do {
@@ -220,12 +221,11 @@ bool UserInterface :: runProviderMenu () {
         cout << "│ 2. Validate Member Status" << endl;
         cout << "│ 3. Create Service Record" << endl;
         cout << "│ 4. Create Service Report" << endl;
-        cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
-        cout << "                       Option: ";
+        cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙";
+        read_num("                        Option: ", selection);
 
-        getline( cin, userInput );
 
-        switch ( (int) userInput.at ( 0 ) - '0' ) {
+        switch ( selection) {
             case 0:
                 return true;
                 break;
@@ -234,7 +234,8 @@ bool UserInterface :: runProviderMenu () {
                 cout << "\nEnter service ID: ";
                 getline( cin, userInput );
                 if (!directory.displayService ( userInput ) )
-                    cout << "\n[✗] Invlaid service ID.\n";
+                    cout << "\n[✗] Invlaid service ID.\n"<<endl;
+                waitForEnter();
                 break;
 
             case 2:
@@ -247,25 +248,28 @@ bool UserInterface :: runProviderMenu () {
                     cout << "Member " << userInput << ": ";
 
                     if ( memberToCheck -> getMemberStatus() == current )
-                        cout  << "CURRENT";
-                    else cout  << "EXPIRED";
+                        cout  << "CURRENT"<<endl;
+                    else cout  << "EXPIRED"<<endl;
 
-                } else cout << "\n[✗] Invlaid member ID.\n";
+                } else cout << "\n[✗] Invlaid member ID.\n"<<endl;
+                waitForEnter();
 
                 break;
 
             case 3:
                 //@todo Where is generateServiceRecord()?
+                waitForEnter();
                 break;
 
             case 4:
                 //@todo Where is generateServiceReport()?
+                waitForEnter();
                 break;
 
             default:
-                cout << "\n[✗] \"" << userInput << "\" is not an option\n" << endl;
+                cout << "\n[✗] \"" << selection << "\" is not an option\n" << endl;
         }
-    } while ( ( int ) userInput.at ( 0 ) - '0' != 0 );
+    } while ( selection );
 
 
 }
@@ -275,7 +279,7 @@ bool UserInterface :: runProviderMenu () {
  * @return     True if the user exits  normally, false otherwise
  */
 bool UserInterface :: runManagerMenu ( void ) {
-    string userInput = "";
+    int userInput = -1;
     int numAccounts = 0;
     int numServices = 0;
 
@@ -306,12 +310,12 @@ bool UserInterface :: runManagerMenu ( void ) {
         cout << "│ 10. Generate Provider Report" << endl;
         cout << "│ 11. Generate Member Report" << endl;
         cout << "│ 12. Generate EFT Report" << endl;
-        cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
-        cout << "                       Option: ";
+        cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙";
+        read_num("                        Option: ", userInput);
 
-        getline( cin, userInput );
-
-        switch ( (int) userInput.at ( 0 ) - '0' ) {
+        
+        //Run selected functionality
+        switch (userInput) {
             case 0:
                 return true;
                 break;
@@ -338,6 +342,7 @@ bool UserInterface :: runManagerMenu ( void ) {
                     cout << "\nService added successfully!" << endl;
                 else
                     cout << "\nService was not added." << endl;
+                waitForEnter();
 
                 break;
 
@@ -347,6 +352,7 @@ bool UserInterface :: runManagerMenu ( void ) {
                     cout << "\nService removed successfully!" << endl;
                 else
                     cout << "\nNo service has been removed." << endl;
+                waitForEnter();
 
                 break;
 
@@ -356,11 +362,13 @@ bool UserInterface :: runManagerMenu ( void ) {
                     cout << "\nService updated successfully!" << endl;
                 else
                     cout << "\nNo services updated." << endl;
+                waitForEnter();
 
                 break;
 
             case 8:
                 directory.displayAll();
+                waitForEnter();
                 break;
 
             case 9:
@@ -381,9 +389,10 @@ bool UserInterface :: runManagerMenu ( void ) {
 
             default:
                 cout << "\n[✗] \"" << userInput << "\" is not an option\n" << endl;
+                waitForEnter();
         }
 
-    } while ( ( int ) userInput.at ( 0 ) - '0' != 0 );
+    } while (userInput != 0 );
 }
 
 void createAccount( accountManager & accounts ) {
@@ -392,32 +401,34 @@ void createAccount( accountManager & accounts ) {
     Manager * newManager = NULL;
     Provider * newProvider = NULL;
     Member * newMember = NULL;
+    
+    do{
+        cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
+        cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+        cout << "│              Account Generation Menu" << endl;
+        cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+        cout << "│ 1. Manager" << endl;
+        cout << "│ 2. Provider" << endl;
+        cout << "│ 3. Member" << endl;
+        cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+        cout << "                 Enter account type: ";
 
-    cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
-    cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
-    cout << "│              Account Generation Menu" << endl;
-    cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
-    cout << "│ 1. Manager" << endl;
-    cout << "│ 2. Provider" << endl;
-    cout << "│ 3. Member" << endl;
-    cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
-    cout << "                 Enter account type: ";
+        getline ( cin, userInput );
 
-    getline ( cin, userInput );
-
-    switch ( ( int ) userInput.at ( 0 ) - '0' ) {
-        case 1://Manager
-            createManager ( accounts );
-            break;
-        case 2://Provider
-            createProvider ( accounts );
-            break;
-        case 3://Member
-            createMember ( accounts );
-            break;
-        default:
-            cout << "\n[✗] \"" << userInput << "\" is not an option\n" << endl;
-    }
+        switch ( ( int ) userInput.at ( 0 ) - '0' ) {
+            case 1://Manager
+                createManager ( accounts );
+                break;
+            case 2://Provider
+                createProvider ( accounts );
+                break;
+            case 3://Member
+                createMember ( accounts );
+                break;
+            default:
+                cout << "\n[✗] \"" << userInput << "\" is not an option\n" << endl;
+        }
+    } while(again("Would you like to create another account? (y/n):"));
 
 }
 
@@ -432,7 +443,7 @@ void createManager ( accountManager & accounts ) {
     string password;
     string ID;
     string userInput;
-
+    
     do {
         cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
         cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
@@ -454,12 +465,11 @@ void createManager ( accountManager & accounts ) {
         getline ( cin, userInput);
     } while ( userInput.at ( 0 ) != 'y' );
 
-    ID = *accounts.generateAccountID(manager);
     newAddress.setAddress ( &address, &city, &state, &zip );
     
     if ( accounts.addAccount ( new Manager ( &name, &email, &ID, &newAddress, manager, &password ), manager ) )
         cout << "\n[✓] Account added." << endl;
-    else 
+    else
         cout << "\n[✗]Failed to add account." << endl;
 }
 
@@ -498,7 +508,6 @@ void createProvider ( accountManager & accounts ) {
         getline ( cin, userInput);
     } while ( userInput.at ( 0 ) != 'y' );
 
-    ID = *accounts.generateAccountID(provider);
     newAddress.setAddress ( &address, &city, &state, &zip );
     
     if ( accounts.addAccount (new Provider ( &name, &email, &ID, &newAddress, provider, &password, 0, *newServiceRecord ), provider ) )
@@ -541,7 +550,6 @@ void createMember ( accountManager & accounts ) {
         getline ( cin, userInput);
     } while ( userInput.at ( 0 ) != 'y' );
 
-    ID = *accounts.generateAccountID(member);
     newAddress.setAddress ( &address, &city, &state, &zip );
     
     if ( accounts.addAccount ( new Member ( &name, &email, &ID, &newAddress, member, current, newMemberRecords ), member ) )

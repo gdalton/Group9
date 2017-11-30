@@ -17,6 +17,7 @@
 /** Constructs the object.
  */
 providerDirectory :: providerDirectory ( void ) {
+	loadDirectory();
 }
 
 /** Constructs the object.
@@ -29,6 +30,7 @@ providerDirectory :: providerDirectory ( const providerDirectory & toCopy ) {
 /** Destroys the object.
  */
 providerDirectory :: ~providerDirectory ( void ) {
+	writeDirectory();
 }
 
 /** Returns a list of services providers have that agreed to perform for ChocAn
@@ -161,4 +163,45 @@ bool providerDirectory :: checkID(string serviceID) {
             }
         }
         return false;
+}
+
+void providerDirectory :: loadDirectory() {
+
+	ifstream toLoad;
+        Service toAdd;
+        char temp[21];
+        int i = 0;
+        
+	toLoad.open("directory.txt");
+        
+        while(toLoad) {
+            toLoad.get(temp, 7, '^');
+            toLoad.get();
+             
+            if(toLoad.eof())
+                break;
+            else {
+                toAdd.serviceID = temp;
+                toLoad.get(temp, 21, '^');
+                toLoad.get();
+                toAdd.name = temp;
+                toLoad >> toAdd.fee;
+                toLoad.get();
+            }
+            addService(toAdd);
+        }
+}
+
+void providerDirectory :: writeDirectory() {
+
+	ofstream toWrite;
+
+        toWrite.open("directory.txt");
+
+        list < Service > :: iterator it = directory.begin(); 
+        for(it; it != directory.end(); ++it) {
+            toWrite << it -> serviceID << "^" << it -> name << "^" << it -> fee << "\n";
+        }
+
+        toWrite.close();
 }
