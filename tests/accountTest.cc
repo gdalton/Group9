@@ -7,7 +7,7 @@ TEST(accountTesting, allUsersExistInTable) {
     accountManager testAccountManager = accountManager();
     ifstream allAccounts;
     ifstream account;
-    allAccounts.open("../accounts/allIDs.txt");
+    allAccounts.open("accounts/allIDs.txt");
     ASSERT_TRUE(allAccounts) << "Failed to open allIDs.txt" << endl;
     while(!allAccounts.eof())
     {
@@ -22,7 +22,7 @@ TEST(accountTesting, allUsersExistInTable) {
         }
         else type = member;
 
-        char temp [60] = "../accounts/";
+        char temp [60] = "accounts/";
         strcat(temp,accountID);
         account.open(temp);//Dynamically opens file
         ASSERT_TRUE(account) << "Failed to open " << temp;
