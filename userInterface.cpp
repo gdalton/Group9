@@ -275,7 +275,7 @@ bool UserInterface :: runProviderMenu () {
  * @return     True if the user exits  normally, false otherwise
  */
 bool UserInterface :: runManagerMenu ( void ) {
-    string userInput = "";
+    int userInput = -1;
     int numAccounts = 0;
     int numServices = 0;
 
@@ -307,11 +307,11 @@ bool UserInterface :: runManagerMenu ( void ) {
         cout << "│ 11. Generate Member Report" << endl;
         cout << "│ 12. Generate EFT Report" << endl;
         cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
-        cout << "                       Option: ";
+        read_num("                        Option: ", userInput);
 
-        getline( cin, userInput );
+        //getline( cin, userInput );
 
-        switch ( (int) userInput.at ( 0 ) - '0' ) {
+        switch (userInput) {
             case 0:
                 return true;
                 break;
@@ -385,9 +385,10 @@ bool UserInterface :: runManagerMenu ( void ) {
 
             default:
                 cout << "\n[✗] \"" << userInput << "\" is not an option\n" << endl;
+                waitForEnter();
         }
 
-    } while ( ( int ) userInput.at ( 0 ) - '0' != 0 );
+    } while (userInput != 0 );
 }
 
 void createAccount( accountManager & accounts ) {
