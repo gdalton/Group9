@@ -202,22 +202,21 @@ private:
 
 class UserInterface {
 public:
-    UserInterface ( string newUser );
+    UserInterface ();
     UserInterface ( const UserInterface & toCopy );
     ~UserInterface ( void );
-
-    string currentUser;
-    int clearanceLevel;
-
-private:
     bool runSystem ( void );
     bool runProviderMenu ( void );
     bool runManagerMenu ( void );
 
+private:
+    int userSelection();
     Warden warden;
     accountManager accounts;
     providerDirectory directory;
     reportManager reports;
     fileSystem database;
     float timeInactive;
+    string currentUser;
+    int clearanceLevel;
 };
