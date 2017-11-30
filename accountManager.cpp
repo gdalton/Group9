@@ -306,13 +306,19 @@ bool accountManager::loadDataFromDisk(){
     char  state [10];
     char  zipcode [10];
     char status [50];
+    char password [50];
+    char currentDate [50];
+    char memberID[12];
+    char providerID[12];
+    char serviceCode[25];
+    char comments[1000];
+    char serviceDate [50];
+    char providerName [100];
+    char serviceName [100];
+    int membersSeen = 0;
 
     //Member record data
-    list<memberRecord>* records = NULL;
-    memberRecord memREC;
-    memREC.dateOfService = "11/2/17 1:59pm";
-    memREC.providerName = "Steve";
-    memREC.serviceName = "Chocolate!";
+    memberRecordList* memberRecords = NULL;
 
     //Loop over each line (each line is a filename)
     while (allAccounts){
@@ -339,74 +345,148 @@ bool accountManager::loadDataFromDisk(){
         }
         else type = member;
         
-        //Read in a member
-        if(type == member){//@todo where does it build the Managers and Providers?
-            theAddress = new Address;
-            records = new list<memberRecord>;
-
-            account.get(name, 100, '\n');
-            account.get();
-            account.get(email, 100, '\n');
-            account.get();
-            account.get(streetAdress,100,'^');
-            account.get();
-            account.get(city,100,'^');
-            account.get();
-            account.get(state,10,'^');
-            account.get();
-            account.get(zipcode,10,'\n');
-            account.get();
-            account.get(status, 50, '\n');
-            account.get();
-            
-            //TODO -- Read in records TEMPORARY
-            records->insert(records->begin(), memREC);
-            
-            newAccount = new Member(new string(name), new string(email), new string(accountID), new Address(new string(streetAdress), new string(city), new string(state),new string(zipcode)),member, current, records);
-            
-            //Add the account
-            addAccount(newAccount, member);
-            
-            account.close();
-        }
-
-        //Read in a Manager
-        if(type == manager){
-            theAddress = new Address;
-            records = new list<memberRecord>;
-
-            account.get(name, 100, '\n');
-            account.get();
-            account.get(email, 100, '\n');
-            account.get();
-            account.get(streetAdress,100,'^');
-            account.get();
-            account.get(city,100,'^');
-            account.get();
-            account.get(state,10,'^');
-            account.get();
-            account.get(zipcode,10,'\n');
-            account.get();
-            account.get(status, 50, '\n');
-            account.get();
-            
-            newAccount = new Member(new string(name), new string(email), new string(accountID), new Address(new string(streetAdress), new string(city), new string(state),new string(zipcode)),member, current, records);
-            
-            
-            //Add the account
-            addAccount(newAccount, manager);
-            
-            account.close();
-        }
-
-
-//        string * streetAdress;
-//        string * city;
-//        string * state;
-//        string * zipcode;
-
         
+        // Get The Core Info About An Account 
+        theAddress = new Address;
+        memberRecords = new list<memberRecord>;
+        
+        //Get Core Info
+        account.get(name, 100, '\n');
+        account.get();
+        account.get(email, 100, '\n');
+        account.get();
+        account.get(streetAdress,100,'^');
+        account.get();
+        account.get(city,100,'^');
+        account.get();
+        account.get(state,10,'^');
+        account.get();
+        account.get(zipcode,10,'\n');
+        account.get();
+        
+        
+        //****************************
+        //Read in unique MEMBER info
+        //****************************
+        if(type == member){
+            
+            //Get member status
+            account.get(status, 50, '\n');
+            account.get();
+            
+            //Create a new record list
+            memberRecords = new memberRecordList;
+            
+            while(!account.eof())
+            {
+                //Member record to fill in
+                memberRecord memREC;
+                
+                if(account.get() != '^') //Check that record exists on line
+                    break;
+                
+                //Read in all member record information
+                account.get(serviceDate, 50, '^');
+                account.get();  //Get the ^
+                account.get(providerName, 100, '^');
+                account.get();  //Get the ^
+                account.get(serviceName,100,'^');
+                account.get();  //Get the \n
+                
+                //Add Info to record list
+                memREC.dateOfService = serviceDate;
+                memREC.providerName = providerName;
+                memREC.serviceName = serviceName;
+                memberRecords->insert(memberRecords->begin(), memREC);
+            }
+
+            
+            newAccount = new Member(new string(name), new string(email), new string(accountID), new Address(new string(streetAdress), new string(city), new string(state),new string(zipcode)),member, current, memberRecords);
+            
+            //Clear Memory
+            delete memberRecords;
+            
+        }
+        
+        //****************************
+        //Read in unique PROVIDER info
+        //****************************
+        if(type == provider){
+            
+            //Get provider password
+            account.get(password, 50, '\n');
+            account.get();
+            
+            //Get number of members seen
+            account >> membersSeen;
+            account.get();
+            
+            //Create a new record list
+            providerRecordList provList;
+            
+            while(!account.eof())
+            {
+                //Member record to fill in
+                providerRecord provREC;
+                
+                if(account.get() != '^') //Check that record exists on line
+                    break;
+                
+                //Read in all member record information
+                account.get(currentDate, 50, '^');
+                account.get();  //Get the ^
+                account.get(serviceDate, 50, '^');
+                account.get();  //Get the ^
+                account.get(providerID, 12, '^');
+                account.get();  //Get the ^
+                account.get(memberID, 12, '^');
+                account.get();  //Get the ^
+                account.get(serviceCode,25,'\n');
+                account.get();  //Get the \n
+                
+                //Add Info to record list
+                provREC.currentDateTime = currentDate;
+                provREC.dateOfService = serviceDate;
+                provREC.providerID = providerID;
+                provREC.memberID = memberID;
+                provREC.serviceCode = serviceCode;
+                
+                //@TODO !!! NEED TO UPDATE TEST DATA and RESPOLVE
+                provREC.memberName = "N/A";
+                provREC.comments = "N/A";
+                provREC.serviceFee = rand() % 100; //TEMPORARY
+                provList.push_back(provREC);
+                
+            }
+            
+           
+            newAccount = new Provider(new string(name), new string(email), new string(accountID), new Address(new string(streetAdress), new string(city), new string(state),new string(zipcode)),provider, new string(password), membersSeen , provList);
+            
+//            //Clear Memory
+//            delete providerRecords;
+        }
+
+        //****************************
+        //Read in unique MANAGER info
+        //****************************
+        if(type == manager){
+            
+            //Get manager password
+            account.get(password, 50, '\n');
+            account.get();
+            
+            newAccount = new Manager(new string(name), new string(email), new string(accountID), new Address(new string(streetAdress), new string(city), new string(state),new string(zipcode)),manager, new string(password));
+        }
+        
+        
+        //Add the account
+        addAccount(newAccount, type);
+        
+        //Close the Account File
+        account.close();
     }
+    
+    //Close the list of all Accounts
     allAccounts.close();
     
     
@@ -435,7 +515,6 @@ string* accountManager::generateAccountID(ACCOUNT_TYPE type){
     string* toReturn = new string("");
     int random = 0;
     bool again = false;
-    int a =10;
 
     do{
         //Select FIRST DIGIT
@@ -509,7 +588,7 @@ void accountManager::generateRandomAccounts(int amount){
     string serviceName = "0.5lbs Choclate";
     string passwords [] = {"zx9QzHHgv5", "ib6BmXPKIh", "KBwgjUrZCc", "60o1krBXwQ","Ibgr2oUFdC"};
     
- /*
+/*
     //TO CREATE MANAGER ACCOUNTS
     while(counter<amount){
         //Generate random
@@ -541,11 +620,12 @@ void accountManager::generateRandomAccounts(int amount){
         
         ++counter;
     }
+
+    
     */
-    
-    
-/* TO CREATE PROVIDER ACCOUNTS
-    
+
+    //TO CREATE PROVIDER ACCOUNTS
+    /*
     while(counter<amount){
         //Generate random
         random = rand() % 12;
@@ -595,10 +675,11 @@ void accountManager::generateRandomAccounts(int amount){
 */
     
     
-    // TO CREATE MEMBER ACCOUNTS
-/*     
+   //  TO CREATE MEMBER ACCOUNTS
+    
+/*
     while(counter<amount){
-        //Generate random
+        //Generate random;
         random = rand() % 12;
         id = generateAccountID(member); //CHANGE MANUALLY
         
@@ -618,8 +699,8 @@ void accountManager::generateRandomAccounts(int amount){
         
         fileOut << status[random]<<"\n";
         
-        fileOut<<"-"<<dateOfService<<"-"<<providerName<<"-"<<serviceName<<"\n";
-        fileOut<<"-"<<dateOfService<<"-"<<providerName<<"-"<<serviceName<<"\n";
+        fileOut<<"^"<<dateOfService<<"^"<<providerName<<"^"<<serviceName<<"\n";
+        fileOut<<"^"<<dateOfService<<"^"<<providerName<<"^"<<serviceName<<"\n";
 
         fileOut.close();
         
@@ -627,7 +708,7 @@ void accountManager::generateRandomAccounts(int amount){
     
         ++counter;
     }
-  */ 
+*/
     
 }
 
