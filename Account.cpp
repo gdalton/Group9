@@ -164,8 +164,7 @@ Provider :: Provider ( void ) :
 Account ( ), password ( NULL ), numMembersSeen ( 0 ), membersSeen ( NULL ) {}
 
 Provider :: Provider ( string * newName, string * newEmail, string * newID, Address * newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword, int newNumMembersSeen,  list < providerRecord >  & newServiceRecord) :
-    Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), password ( newPassword ), numMembersSeen ( newNumMembersSeen ), membersSeen ( NULL ),
-    serviceRecord ( NULL )  {
+    Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), password ( newPassword ), numMembersSeen ( newNumMembersSeen ), membersSeen ( NULL ){
 	
 	password = new string ( * newPassword );
 
@@ -175,7 +174,7 @@ Provider :: Provider ( string * newName, string * newEmail, string * newID, Addr
 }
 
 Provider :: Provider ( const Provider & copied) : 
-Account ( copied ), password ( NULL ), numMembersSeen ( copied.numMembersSeen ), membersSeen ( NULL ), serviceRecord ( NULL ){
+Account ( copied ), password ( NULL ), numMembersSeen ( copied.numMembersSeen ), membersSeen ( NULL ){
 	//Deep Copy
 	
 	password = new string ( * copied.password );
