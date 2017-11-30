@@ -156,6 +156,8 @@ public:
     bool removeService (string serviceID);
     bool displayService (string serviceID);
     bool updateFee (string serviceID, float newFee);
+    void displayAll(); 
+    bool checkID(string serviceID); 
 
 private:
     list < Service > directory;

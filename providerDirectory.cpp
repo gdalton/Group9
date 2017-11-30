@@ -76,15 +76,11 @@ bool providerDirectory :: removeService (string serviceID) {
             list < Service > :: iterator it = directory.begin(); 
             for(it; it != directory.end(); ++it) {
                 if(it -> serviceID == serviceID) {
-
-
                     /*
                         This stuff is breaking things.
                         -- This should work now. - Dalton
-                    */
-                   
+                    */ 
                     it = directory.erase(it);
-                    //Possible problems if list is emptied after deletion. 
                     if(it -> serviceID == serviceID)
                         return false;
                     else
@@ -137,6 +133,31 @@ bool providerDirectory :: updateFee (string serviceID, float newFee) {
                     else
                         return false;
                 }
+            }
+        }
+        return false;
+}
+
+void providerDirectory :: displayAll() {
+	if(directory.empty())
+            cout << "\nDirectory is empty!" << endl;
+        else {
+            list < Service > :: iterator it = directory.begin(); 
+            for(it; it != directory.end(); ++it) {
+                cout << "\nService ID: " << it -> serviceID << "\nName: " 
+                     << it -> name << "\nService Fee: $" << it -> fee << endl;
+            }
+        }
+}
+
+bool providerDirectory :: checkID(string serviceID) {
+	if(directory.empty())
+            return false;
+        else {
+            list < Service > :: iterator it = directory.begin(); 
+            for(it; it != directory.end(); ++it) {
+                if(it -> serviceID == serviceID)
+                    return true;
             }
         }
         return false;
