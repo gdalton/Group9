@@ -396,7 +396,7 @@ bool accountManager::loadDataFromDisk(){
                 account.get();  //Get the ^
                 account.get(providerName, 100, '^');
                 account.get();  //Get the ^
-                account.get(serviceName,100,'^');
+                account.get(serviceName,100,'\n');
                 account.get();  //Get the \n
                 
                 //Add Info to record list
