@@ -684,7 +684,7 @@ void editAccount ( accountManager & accounts ) {
             cout << "│ 5. State...: " << *accountAddress.getState() << endl;  
             cout << "│ 6. Zip Code: " << *accountAddress.getZipcode() << endl;  
 
-        if (( int ) userInput.at ( 0 ) - '0' > 1 )//show provider/manager level data members
+        if (( int ) userInput.at ( 0 ) - '0' < 3 )//show provider/manager level data members
             cout << "│    password: XXXXXXXXX"<< endl;//Protected info //Need to be able to update password
         
             cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
