@@ -30,12 +30,13 @@ TEST(accountTesting, allUsersExistInTable) {
         if(!account) continue;
         
         account.getline(accountID, 20, '\n');
-        account.get();
+        account.close();
 
         string * stringAccountID = new string(accountID);
         ASSERT_TRUE(testAccountManager.getAccount(stringAccountID, type) != NULL) << "Account failed to load " << accountID;
         delete stringAccountID;
     }
+    allAccounts.close();
 }
 
 TEST(accountTesting, canLogin) {
