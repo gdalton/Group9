@@ -696,8 +696,59 @@ void editAccount ( accountManager & accounts ) {
     } while ( userInput.at ( 0 ) == 'y' );
 }
 
+//Display an account on the screen
 void viewAccount ( accountManager & accounts ) {
-
+    
+    string userInput = "";
+    string typeSTR = "";
+    ACCOUNT_TYPE type = init;
+    Account * toDisplay = NULL;
+    
+    do {
+        cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
+        cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+        cout << "│                Account Viewing Menu" << endl;
+        cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+        cout << "              Enter account ID to view: ";
+        
+        getline ( cin, userInput );
+        
+        //Check account type
+        if(userInput[0] == '1') {
+            type = manager;
+            typeSTR = "Manager";
+        }
+        else if(userInput[0] == '2') {
+            type = provider;
+            typeSTR = "Provider";
+        }
+        else{
+            type = member;
+            typeSTR = "Member";
+        }
+        
+        //Find the Account
+        toDisplay = accounts.getAccount(&userInput, type);
+        
+        //If an account is found
+        if(toDisplay){
+            if(type == manager)
+                static_cast<Manager*>(toDisplay)->displayToUI();
+            if(type == provider)
+                static_cast<Provider*>(toDisplay)->displayToUI();
+            if(type == member)
+                static_cast<Member*>(toDisplay)->displayToUI();
+        
+        }
+        //If an account is NOT found
+        else {
+            cout << "│       " << endl;
+            cout << "│    - No Account Exists for User ID# "<< userInput << endl;
+            cout << "│    - Please check the ID number and try again! " << endl;
+            cout << "│       " << endl;
+}
+        
+    }while(again("Would you like to view another account? (y/n):"));
 }
 
 bool createService(providerDirectory &master) {
