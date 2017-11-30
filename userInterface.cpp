@@ -576,18 +576,17 @@ void deleteAccount ( accountManager & accounts ) {//Doesn't check if we are dele
             default:
                 deletedType = member;
         }
+        
+        if ( accounts.removeAccount( &userInput, deletedType ) )
+            cout << "\n[✓] Account deleted." << endl;
+        else
+            cout << "\n[✗] Failed to delete account." << endl;
+    
 
         cout << "\nWould you like to delete another account (y/n)? ";
         getline ( cin, userInput );
 
     } while ( userInput.at ( 0 ) == 'y' );
-    
-
-    if ( accounts.removeAccount( &userInput, deletedType ) )
-        cout << "\n[✓] Account deleted." << endl;
-    else 
-        cout << "\n[✗]Failed to delete account." << endl;
-
 }
 
 
