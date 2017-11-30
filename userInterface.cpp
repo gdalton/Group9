@@ -623,9 +623,9 @@ void editAccount ( accountManager & accounts ) {
             cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
             cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
             cout << "│                Account Editing Menu" << endl;
-            cout << "│    ID......: " << accountInfo -> ID << endl;
-            cout << "│ 1. Name....: " << accountInfo -> name << endl; 
-            cout << "│ 2. Email...: " << accountInfo -> email << endl; 
+            cout << "│    ID......: " << accountInfo -> ID << endl; //Not updating
+            cout << "│ 1. Name....: " << accountInfo -> name << endl; //Not updating
+            cout << "│ 2. Email...: " << accountInfo -> email << endl; //Not updating
             cout << "│ 3. Address.: " << *accountAddress.getStreetAddress() << endl; 
             cout << "│ 4. City....: " << *accountAddress.getCity() << endl; 
             cout << "│ 5. State...: " << *accountAddress.getState() << endl;  
@@ -741,11 +741,11 @@ void viewAccount ( accountManager & accounts ) {
         }
         //If an account is NOT found
         else {
-            cout << "│       " << endl;
-            cout << "│    - No Account Exists for User ID# "<< userInput << endl;
-            cout << "│    - Please check the ID number and try again! " << endl;
-            cout << "│       " << endl;
-}
+            cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+            cout << "   [✗] No Account Exists for User ID# "<< userInput << endl;
+            cout << "       Please check the ID number and try again! " << endl;
+            
+        }
         
     }while(again("Would you like to view another account? (y/n):"));
 }
