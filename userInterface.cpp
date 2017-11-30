@@ -21,25 +21,6 @@ void createManager ( accountManager & );
 void createProvider ( accountManager & );
 void createMember ( accountManager & );
 bool createService(providerDirectory &master);
-/* UI skeleton
-    cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
-    cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
-    cout << "│                    Main Menu" << endl;
-    cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
-    cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
-    cout << "│                  Choose an option:" << endl;
-    cout << "│ 0. Exit" << endl;      
-    cout << "│ 1. " << endl;
-      
-    if (  )
-    cout << "│ 2. " << endl;
-    //IF case 2
-    cout << "│" << endl;
-    cout << "│ (Do SOMETHING to see more)" << endl;
-    }
-    cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
-    cout << "                       Option: " << endl;
- */
 
 /** Constructs the object.
  */
@@ -400,7 +381,7 @@ void createAccount( accountManager & accounts ) {
     Provider * newProvider = NULL;
     Member * newMember = NULL;
 
-    cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ChocAn━┑" << endl;
+    cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
     cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
     cout << "│              Account Generation Menu" << endl;
     cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
@@ -441,7 +422,7 @@ void createManager ( accountManager & accounts ) {
     string userInput;
 
     do {
-        cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ChocAn━┑" << endl;
+        cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
         cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
         cout << "│              Manager Generation Menu" << endl;
         cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
@@ -491,7 +472,7 @@ void createProvider ( accountManager & accounts ) {
     string userInput;
 
     do {
-        cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ChocAn━┑" << endl;
+        cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
         cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
         cout << "│              Provider Generation Menu" << endl;
         cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
@@ -542,7 +523,7 @@ void createMember ( accountManager & accounts ) {
     string userInput;
 
     do {
-        cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ChocAn━┑" << endl;
+        cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
         cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
         cout << "│              Member Generation Menu" << endl;
         cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
