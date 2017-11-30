@@ -290,7 +290,7 @@ bool accountManager::loadDataFromDisk(){
     
     ifstream allAccounts;
     ifstream account;
-    ACCOUNT_TYPE type;
+    ACCOUNT_TYPE type = init;
     infoStruct newStruct;
     Account* newAccount = NULL;
     allAccounts.open("accounts/allIDs.txt");//allIDs.txt is a file full of filenames
@@ -331,8 +331,12 @@ bool accountManager::loadDataFromDisk(){
         account.get();
         
         //Set the type
-        if(accountID[0] == 1) type=manager;
-        if(accountID[0] == 2) type=provider;
+        if(accountID[0] == '1'){
+            type=manager;
+        }
+        else if(accountID[0] == '2'){
+            type=provider;
+        }
         else type = member;
         
         //Read in a member
@@ -385,6 +389,9 @@ bool accountManager::loadDataFromDisk(){
             account.get();
             account.get(status, 50, '\n');
             account.get();
+            
+            newAccount = new Member(new string(name), new string(email), new string(accountID), new Address(new string(streetAdress), new string(city), new string(state),new string(zipcode)),member, current, records);
+            
             
             //Add the account
             addAccount(newAccount, manager);
