@@ -1,5 +1,5 @@
 /* filename: userInterface.cpp
-* Programmers: Matthew Greenlaw, Katie Loveland
+* Programmers: Matthew Greenlaw, Katie Loveland, Dalton Gray
 * Class Number: CS-300
 * Date: 22NOV17
 * Purpose:The User Interface (UI) class manages all input from the user and all
@@ -626,8 +626,7 @@ bool createService(providerDirectory &master) {
 
         //Makes sure input is within correct range. 
         if(fee > 999.99 || fee < 0) {
-            cout << "That service is too expensive we will not accept services\n"
-                 << "costing more than $999.99." << endl;
+            cout << "That value is not within the acceptable price range ($0-$999.99)" << endl;
             return false;
         }
         else {
