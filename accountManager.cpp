@@ -43,6 +43,9 @@ bool accountManager::addAccount(Account* toAdd, ACCOUNT_TYPE type){
     //Check that we aren't overriding an account
     if((*memberID=="") || allIdNumbers.find(*memberID) != allIdNumbers.end()){
         return false; //Stop and return if account exists
+    } else {
+        //Add the ID number to ID tracker
+        allIdNumbers.insert(*memberID);
     }
 
     //Make sure account type matches ID number
@@ -575,9 +578,6 @@ string* accountManager::generateAccountID(ACCOUNT_TYPE type){
             again = true;
         }
     } while (again);
-
-    //Add the ID number to ID tracker
-    allIdNumbers.insert(*toReturn);
 
     //Return User ID
     return toReturn;
