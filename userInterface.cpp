@@ -20,6 +20,7 @@ void createAccount ( accountManager & );
 void createManager ( accountManager & );
 void createProvider ( accountManager & );
 void createMember ( accountManager & );
+bool createService(providerDirectory &master);
 /* UI skeleton
     cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
     cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
@@ -349,6 +350,11 @@ bool UserInterface :: runManagerMenu ( void ) {
                 break;
 
             case 5:
+            
+                if(createService( directory ))
+                    cout << "\nService added successfully!" << endl;
+                else
+                    cout << "\nService was not added." << endl;
 
                 break;
 
@@ -571,6 +577,80 @@ void createMember ( accountManager & accounts ) {
     );
 }
 
+bool createService(providerDirectory &master) {
+	char input[21];
+        char * temp;
+        float fee = 0;
+        string id;
+        char c;
+        int getID = 0;
+        Service toAdd;
+
+	//Gets Service Name from user.
+        cout << "\nPlease enter the name of the service: ";
+        cin.get(input, 21, '\n');
+        cin.ignore(100, '\n');
+        temp = new char[strlen(input) + 1];
+        strcpy(temp, input);
+        for(int i = 0; i < strlen(temp); ++i) {
+            temp[i] = toupper(temp[i]);
+        }
+        toAdd.name = temp;
+
+        //Gets Service Fee from user.
+	cout << "\nPlease enter the cost of the service: $";
+        cin >> fee;
+ 
+        //Checks for numerical input.
+        if(cin.fail()) {
+            cout << "Please enter #'s only eg. (000.00)" << endl;
+            cin.clear();
+            cin.ignore(100, '\n');
+            return false;
+        }
+        cin.ignore(100, '\n');
+
+        //Makes sure input is within correct range. 
+        if(fee > 999.99 || fee < 0) {
+            cout << "That service is too expensive we will not accept services\n"
+                 << "costing more than $999.99." << endl;
+            return false;
+        }
+        else {
+            toAdd.fee = fee;
+            srand(time(NULL));
+
+	    //Generates random Service ID number.
+            do {
+                getID = (rand() % 899999) + 100000;
+                id = toString(getID);
+            }while(master.checkID(id));
+
+            toAdd.serviceID = id;
+
+            if(master.addService(toAdd)) {
+                master.displayService(id);
+
+                //Gets confirmation from user.
+                do {
+                    cout << "\nIs this information correct?" << endl
+                         << "Please enter (y/n): ";
+                    cin >> c;
+                    c = tolower(c);
+                    cin.ignore(100, '\n');
+                }while(!(c == 'y' || c == 'n'));
+
+                if(c == 'y')
+                    return true;
+                else {
+                    if(master.removeService(id))
+                        return false;
+                }
+            }
+            else
+                return false;
+	}
+}
 
 /*
 PARKING LOT
