@@ -3,19 +3,28 @@ all:
 	g++ *.cpp
 	./a.out
 
-clean-test:
+setuptest:
+	rm -rf testdir/*
 	mkdir -p testdir/accounts
-	rm -rf testdir/accounts/*
 	cp accounts/* testdir/accounts/
-	sed 's/\r$///' testdir/accounts/*.txt
-
+	sed --silent 's/\r$///' testdir/accounts/*.txt
+	cp directory.txt testdir/
+	sed --silent 's/\r$///' testdir/directory.txt
 
 test: 	
+	make setuptest
+	cd googletest && \
+	g++ -g $(addprefix ../, $(filter-out main.cpp, $(wildcard *.cpp))) -Igoogletest/include -pthread $(addprefix ../, $(filter-out tests/manualTests.cc, $(wildcard tests/*.cc))) libgtest.a -o ../testdir/test_executable.out && \
+	cd ../testdir/ && \
+	./test_executable.out
+
+manualtest:
+	make setuptest
+
 	cd googletest && \
 	g++ $(addprefix ../, $(filter-out main.cpp, $(wildcard *.cpp))) -Igoogletest/include -pthread ../tests/*.cc libgtest.a -o ../testdir/test_executable.out && \
 	cd ../testdir/ && \
 	./test_executable.out
-
 
 get-test-suite:
 	git clone https://github.com/google/googletest.git

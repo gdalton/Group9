@@ -6,4 +6,5 @@ a.out
 .idea/*
 ChocAn.xcodeproj/
 .DS_Store
+testdir/
 testdir/*
