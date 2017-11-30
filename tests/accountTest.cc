@@ -3,7 +3,7 @@
 #include "../mainHeader.h"
 
 //File for Account Testing 
-TEST(accountTesting, allUsersExistInTable) {
+TEST(smokeTesting, allUsersExistInTable) {
     accountManager testAccountManager = accountManager();
     ifstream allAccounts;
     ifstream account;
@@ -45,7 +45,7 @@ TEST(accountTesting, allUsersExistInTable) {
     allAccounts.close();
 }
 
-TEST(accountTesting, canLogin) {
+TEST(smokeTesting, canLogin) {
     
     accountManager testAccountManager = accountManager();
     string * userID = new string("224938990");
@@ -58,7 +58,7 @@ TEST(accountTesting, canLogin) {
     delete userID;
 }
 
-TEST(accountTesting, checkMemberStatus) {
+TEST(smokeTesting, checkMemberStatus) {
     
     accountManager testAccountManager = accountManager();
     Member * memberCurrent = new Member(new string("John Freewaffle"), new string("johnnyfreewaffles@gmail.com"), new string("564788132"), new Address(new string("Apple"), new string("Apple City"), new string("Apple State"), new string("APPLES")), member, current, new memberRecordList());
@@ -74,17 +74,13 @@ TEST(accountTesting, checkMemberStatus) {
     ASSERT_TRUE(memberExpired->getMemberStatus() == expired) << "Failed to get expired status";
 }
 
-TEST(accountTesting, displayServicesList) { // @todo I'm not sure how to test this
-    UserInterface ui;
-    
-    ASSERT_TRUE(ui.runProviderMenu()) << "Failed to see provider menu?";
-    ASSERT_TRUE(ui.runManagerMenu()) << "Failed to see manager menu?";
+
+
+TEST(smokeTesting, runAReport) { //@todo
+    ASSERT_TRUE(false) << "Not implemented";
 }
 
-TEST(accountTesting, runAReport) { 
-}
-
-TEST(accountTesting, addServiceToMemberRecord) { 
+TEST(smokeTesting, addServiceToMemberRecord) { 
     Member * memberCurrent = new Member(new string("John Freewaffle"), new string("johnnyfreewaffles@gmail.com"), new string("564788132"), new Address(new string("Apple"), new string("Apple City"), new string("Apple State"), new string("APPLES")), member, current, new memberRecordList());
     memberRecord record;
     string providerToLookFor = string("New Service Record Test 231323231");
@@ -102,7 +98,7 @@ TEST(accountTesting, addServiceToMemberRecord) {
 
 }
 
-TEST(accountTesting, saveFileSuccess) { 
+TEST(smokeTesting, saveFileSuccess) { 
     accountManager testAccountManager = accountManager();
     Member * memberCurrent = new Member(new string("John Freewaffle"), new string("johnnyfreewaffles@gmail.com"), new string("522222222"), new Address(new string("Apple"), new string("Apple City"), new string("Apple State"), new string("APPLES")), member, current, new memberRecordList());
     ASSERT_TRUE(testAccountManager.addAccount(memberCurrent, member)) << "Failed to add account";
