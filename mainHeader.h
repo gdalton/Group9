@@ -186,7 +186,7 @@ public:
     bool addCredential ( string newUsername, string newPassword);
     bool updateCredential ( string newUsername, string newPassword);
     bool deleteCredential ( string newUsername, string newPassword);
-    bool validateLogin ( string, string );
+    Account * validateLogin ( string, string );
     bool checkLoginAttempts ( int );
     bool addLog ( string logToAdd);
     bool checkActive ( void );
