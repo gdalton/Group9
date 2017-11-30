@@ -23,6 +23,7 @@ void createMember ( accountManager & );
 void deleteAccount ( accountManager & );
 bool createService(providerDirectory &master);
 bool deleteService(providerDirectory &master);
+bool updateService(providerDirectory &master);
 
 /** Constructs the object.
  */
@@ -349,6 +350,11 @@ bool UserInterface :: runManagerMenu ( void ) {
                 break;
 
             case 7:
+
+                if(updateService( directory ))
+                    cout << "\nService updated successfully!" << endl;
+                else
+                    cout << "\nNo services updated." << endl;
 
                 break;
 
@@ -689,6 +695,63 @@ bool deleteService(providerDirectory &master) {
                     return true;
                 else
                     return false;
+            }
+        }
+	else {
+            cout << "\nService ID was not found." << endl;
+            return false;     
+        }
+}
+
+bool updateService(providerDirectory &master) {
+	char input[7];
+	char * temp;
+        char c;
+	string id;
+        float fee;
+
+	cout << "Please enter the 6-digit ID of the service to be updated: ";
+	cin.get(input, 7, '\n');
+	cin.ignore(100, '\n');
+	temp = new char[strlen(input) + 1];
+	strcpy(temp, input);
+	id = temp;
+
+        if(master.displayService(id)) {
+            do {
+                cout << "\nAre you sure you want to update this service?" << endl
+                     << "Please enter (y/n): ";
+                cin >> c;
+                c = tolower(c);
+                cin.ignore(100, '\n');
+            }while(!(c == 'y' || c == 'n'));
+
+            if(c == 'n')
+                return false;
+            else {
+ 	        cout << "\nPlease enter the cost of the service: $";
+                cin >> fee;
+ 
+                //Checks for numerical input.
+                if(cin.fail()) {
+                cout << "Please enter #'s only eg. (000.00)" << endl;
+                cin.clear();
+                cin.ignore(100, '\n');
+                return false;
+                }
+                cin.ignore(100, '\n');
+
+            //Makes sure input is within correct range. 
+                if(fee > 999.99 || fee < 0) {
+                    cout << "That value is not within the acceptable price range ($0-$999.99)" << endl;
+                    return false;
+                }
+                else {
+                    if(master.updateFee(id, fee))
+                        return true;
+                    else
+                        return false;
+                }
             }
         }
 	else {
