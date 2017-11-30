@@ -58,6 +58,19 @@ bool accountManager::addAccount(Account* toAdd, ACCOUNT_TYPE type){
 
             case manager:
                 managerTree[*memberID] = toAdd;
+
+                /*Matts debugging - BEGIN */
+                cout << "accountManager::addAccount - Running" << endl;
+
+                if( managerTree[*memberID] )
+                    if ( managerTree[*memberID] == toAdd )
+                        cout << "accountManager::addAccount - Running correctly" << endl;
+                    else
+                        cout << "accountManager::addAccount - Failed to add && no match" << endl;
+                else 
+                    cout << "accountManager::addAccount - Failed to add && NULL pointer" << endl;
+
+                /*Matts debugging - END */
                 toReturn = true;
                 break;
 
@@ -172,8 +185,12 @@ bool accountManager::editAccount(string* accountID, Account* newAccount, ACCOUNT
  */
 Account* accountManager::getAccount(string* accountID, ACCOUNT_TYPE type){
     Account* toReturn = NULL;
+    // Manager * manager = NULL;
+    // Provider * provider = NULL;
+
     //Make sure account type matches ID number
     if(checkAccountType(accountID, type)){
+        cout << "Account type: " << (int)type << endl;
         
         //Add the account
         switch (type) {
@@ -187,13 +204,24 @@ Account* accountManager::getAccount(string* accountID, ACCOUNT_TYPE type){
                 
             case manager:
                 toReturn=managerTree[*accountID];
+
+                //@todo - Need to figure out why we are getting undefined behavior
+                /* Matt's debigging - BEGIN*/
+                //
+                //Getting NULL pointers from the manager tree.
+                if ( managerTree[*accountID] )
+                    cerr << "ID: " << managerTree[*accountID]->getID() << endl;
+                else
+                    cerr << "NULL pointer" << endl;
+                /* Matt's debigging - END*/
                 break;
                 
             default:
                 toReturn = NULL;
                 break;
         }
-    }
+    }        
+
     return toReturn;
 }
 
@@ -265,33 +293,36 @@ bool accountManager::loadDataFromDisk(){
     ACCOUNT_TYPE type;
     infoStruct newStruct;
     Account* newAccount = NULL;
-    allAccounts.open("accounts/allIDs.txt");
+    allAccounts.open("accounts/allIDs.txt");//allIDs.txt is a file full of filenames
     char temp [50] = "accounts/";
     
     // Get all accounts
     char accountID [20];
-     char name [100];
-     char email [100];
+    char name [100];
+    char email [100];
     Address * theAddress = NULL;
     char streetAdress [100];
     char  city [100];
     char  state [10];
     char  zipcode [10];
     char status [50];
+
+    //Member record data
     list<memberRecord>* records = NULL;
     memberRecord memREC;
     memREC.dateOfService = "11/2/17 1:59pm";
     memREC.providerName = "Steve";
     memREC.serviceName = "Chocolate!";
-    
+
+    //Loop over each line (each line is a filename)
     while (allAccounts){
-        allAccounts.get(accountID, 20,'\n');
+        allAccounts.get(accountID, 20,'\n');//accountID is a filename stored on a line
         allAccounts.get();
         //Look for data file
         
         char temp [50] = "accounts/";
         strcat(temp,accountID);
-        account.open(temp);
+        account.open(temp);//Dynamically opens file
         
         //Stop if account not found
         if(!account) continue;
@@ -305,7 +336,7 @@ bool accountManager::loadDataFromDisk(){
         else type = member;
         
         //Read in a member
-        if(type == member){
+        if(type == member){//@todo where does it build the Managers and Providers?
             theAddress = new Address;
             records = new list<memberRecord>;
 
@@ -334,6 +365,34 @@ bool accountManager::loadDataFromDisk(){
             
             account.close();
         }
+
+        //Read in a Manager
+        if(type == manager){
+            theAddress = new Address;
+            records = new list<memberRecord>;
+
+            account.get(name, 100, '\n');
+            account.get();
+            account.get(email, 100, '\n');
+            account.get();
+            account.get(streetAdress,100,'^');
+            account.get();
+            account.get(city,100,'^');
+            account.get();
+            account.get(state,10,'^');
+            account.get();
+            account.get(zipcode,10,'\n');
+            account.get();
+            account.get(status, 50, '\n');
+            account.get();
+            
+            //Add the account
+            addAccount(newAccount, manager);
+            
+            account.close();
+        }
+
+
 //        string * streetAdress;
 //        string * city;
 //        string * state;
