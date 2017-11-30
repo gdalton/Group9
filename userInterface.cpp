@@ -18,6 +18,8 @@
 //Forward declarations
 void createAccount ( accountManager & );
 void createManager ( accountManager & );
+void createProvider ( accountManager & );
+void createMember ( accountManager & );
 /* UI skeleton
     cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
     cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
@@ -49,7 +51,7 @@ UserInterface :: UserInterface () {
  * @param      toCopy  To copy
  */
 UserInterface :: UserInterface ( const UserInterface & toCopy ) {
-	currentUser = string(toCopy.currentUser);
+    currentUser = string(toCopy.currentUser);
 }
 
 /** Destroys the object.
@@ -217,7 +219,7 @@ int UserInterface::userSelection()
  */
 bool UserInterface :: runProviderMenu () {
     Account * accountToCheck = NULL;
-	Member * memberToCheck = NULL;
+    Member * memberToCheck = NULL;
     string userInput = "";
 
     do {
@@ -245,7 +247,7 @@ bool UserInterface :: runProviderMenu () {
             case 1:
                 cout << "\nEnter service ID: ";
                 getline( cin, userInput );
-                if (!directory.displayService ( &userInput ) )
+                if (!directory.displayService ( userInput ) )
                     cout << "\n[✗] Invlaid service ID.\n";
                 break;
 
@@ -409,10 +411,10 @@ void createAccount( accountManager & accounts ) {
             createManager ( accounts );
             break;
         case 2://Provider
-            //createProvider ( accounts );
+            createProvider ( accounts );
             break;
         case 3://Member
-            //createMember ( accounts );
+            createMember ( accounts );
             break;
         default:
             cout << "\n[✗] \"" << userInput << "\" is not an option\n" << endl;
@@ -469,11 +471,104 @@ void createManager ( accountManager & accounts ) {
 }
 
 void createProvider ( accountManager & accounts ) {
-    
+    Address newAddress;
+    list < providerRecord > * newServiceRecord = new list < providerRecord >;
+    list < int > * newMembersSeen = new list < int >;
+    string name;
+    string email;
+    string address;
+    string city;
+    string state;
+    string zip;
+    string password;
+    string ID;
+    string userInput;
+
+    do {
+        cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ChocAn━┑" << endl;
+        cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+        cout << "│              Provider Generation Menu" << endl;
+        cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+        cout << "│ New Provider Information: " << endl;
+        cout << "│" << endl;
+        cout << "│ Name....: "; getline ( cin, name);
+        cout << "│ Email...: "; getline ( cin, email);
+        cout << "│ Address.: "; getline ( cin, address);
+        cout << "│ City....: "; getline ( cin, city);
+        cout << "│ State...: "; getline ( cin, state);
+        cout << "│ Zip Code: "; getline ( cin, zip);
+        cout << "│ password: "; getline ( cin, password);
+        ID = *accounts.generateAccountID(provider);
+        cout << "│ ID......: " << ID << endl;
+        cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+        cout << "         Is this information correct? (y/n):"; 
+        getline ( cin, userInput);
+    } while ( userInput.at ( 0 ) != 'y' );
+
+    ID = *accounts.generateAccountID(provider);
+    newAddress.setAddress ( &address, &city, &state, &zip );
+    accounts.addAccount ( 
+        new Provider ( 
+            &name, 
+            &email, 
+            &ID, 
+            &newAddress, 
+            provider, 
+            &password,
+            0,
+            *newServiceRecord
+        ), 
+        provider
+    );
 }
 
 void createMember ( accountManager & accounts ) {
-    
+    Address newAddress;
+    list < memberRecord > * newMemberRecords = new list < memberRecord >;
+    string name;
+    string email;
+    string address;
+    string city;
+    string state;
+    string zip;
+    string password;
+    string ID;
+    string userInput;
+
+    do {
+        cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ChocAn━┑" << endl;
+        cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+        cout << "│              Member Generation Menu" << endl;
+        cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+        cout << "│ New Member Information: " << endl;
+        cout << "│" << endl;
+        cout << "│ Name....: "; getline ( cin, name);
+        cout << "│ Email...: "; getline ( cin, email);
+        cout << "│ Address.: "; getline ( cin, address);
+        cout << "│ City....: "; getline ( cin, city);
+        cout << "│ State...: "; getline ( cin, state);
+        cout << "│ Zip Code: "; getline ( cin, zip);
+        ID = *accounts.generateAccountID(member);
+        cout << "│ ID......: " << ID << endl;
+        cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+        cout << "         Is this information correct? (y/n):"; 
+        getline ( cin, userInput);
+    } while ( userInput.at ( 0 ) != 'y' );
+
+    ID = *accounts.generateAccountID(member);
+    newAddress.setAddress ( &address, &city, &state, &zip );
+    accounts.addAccount ( 
+        new Member ( 
+            &name, 
+            &email, 
+            &ID, 
+            &newAddress, 
+            member, 
+            current,
+            newMemberRecords
+        ), 
+        member
+    );
 }
 
 
