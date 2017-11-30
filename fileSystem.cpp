@@ -50,7 +50,7 @@ bool fileSystem::writeSTR(string & dataToReadOut, string & filename)
     ofstream fileOut; //Var to read out to file
     
     //Open the filestream
-    fileOut.open(filename);
+    fileOut.open(filename.c_str());
     
     //Read out to the file
     
