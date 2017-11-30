@@ -41,7 +41,7 @@ bool accountManager::addAccount(Account* toAdd, ACCOUNT_TYPE type){
     string filename("accounts/"+*memberID+".txt");
     
     //Check that we aren't overriding an account
-    if(allIdNumbers.find(*memberID) != allIdNumbers.end()){
+    if((*memberID=="") || allIdNumbers.find(*memberID) != allIdNumbers.end()){
         return false; //Stop and return if account exists
     }
 
@@ -323,7 +323,12 @@ bool accountManager::loadDataFromDisk(){
     while (allAccounts){
         allAccounts.get(accountID, 20,'\n');//accountID is a filename stored on a line
         allAccounts.get();
-        //Look for data file
+        
+        //Make sure we have input
+        if(allAccounts.eof())
+            break;
+        else if(strcmp(accountID, "") == 0)
+            continue;
         
         char temp [50] = "accounts/";
         strcat(temp,accountID);
