@@ -22,6 +22,7 @@ void createProvider ( accountManager & );
 void createMember ( accountManager & );
 void deleteAccount ( accountManager & );
 bool createService(providerDirectory &master);
+bool deleteService(providerDirectory &master);
 
 /** Constructs the object.
  */
@@ -339,6 +340,11 @@ bool UserInterface :: runManagerMenu ( void ) {
                 break;
 
             case 6:
+               
+                if(deleteService( directory ))
+                    cout << "\nService removed successfully!" << endl;
+                else
+                    cout << "\nNo service has been removed." << endl;
 
                 break;
 
@@ -652,6 +658,43 @@ bool createService(providerDirectory &master) {
             else
                 return false;
 	}
+}
+
+bool deleteService(providerDirectory &master) {
+	char input[7];
+	char * temp;
+        char c;
+	string id;
+
+	cout << "Please enter the 6-digit ID of the service to be removed: ";
+	cin.get(input, 7, '\n');
+	cin.ignore(100, '\n');
+	temp = new char[strlen(input) + 1];
+	strcpy(temp, input);
+	id = temp;
+
+        if(master.displayService(id)) {
+            do {
+                cout << "\nAre you sure you want to remove this service?" << endl
+                     << "Please enter (y/n): ";
+                cin >> c;
+                c = tolower(c);
+                cin.ignore(100, '\n');
+            }while(!(c == 'y' || c == 'n'));
+
+            if(c == 'n')
+                return false;
+            else {
+                if(master.removeService(id))
+                    return true;
+                else
+                    return false;
+            }
+        }
+	else {
+            cout << "\nService ID was not found." << endl;
+            return false;     
+        }
 }
 
 /*
