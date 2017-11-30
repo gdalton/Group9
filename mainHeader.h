@@ -132,11 +132,11 @@ class accountManager{
     accountMap* getAllAccounts(ACCOUNT_TYPE type);
     void displayAllAccounts(ACCOUNT_TYPE type); //For testing...
     void generateRandomAccounts(int amount);
+    string* generateAccountID(ACCOUNT_TYPE type);
     
     private:
     bool loadDataFromDisk();
     bool checkAccountType(string* idNumber, ACCOUNT_TYPE type);
-    string* generateAccountID(ACCOUNT_TYPE type);
     accountMap memberTree;
     accountMap providerTree;
     accountMap managerTree;
@@ -207,6 +207,7 @@ public:
     UserInterface ();
     UserInterface ( const UserInterface & toCopy );
     ~UserInterface ( void );
+    bool login ();
     bool runSystem ( void );
     bool runProviderMenu ( void );
     bool runManagerMenu ( void );
