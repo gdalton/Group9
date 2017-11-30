@@ -392,32 +392,34 @@ void createAccount( accountManager & accounts ) {
     Manager * newManager = NULL;
     Provider * newProvider = NULL;
     Member * newMember = NULL;
+    
+    do{
+        cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
+        cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+        cout << "│              Account Generation Menu" << endl;
+        cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+        cout << "│ 1. Manager" << endl;
+        cout << "│ 2. Provider" << endl;
+        cout << "│ 3. Member" << endl;
+        cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+        cout << "                 Enter account type: ";
 
-    cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
-    cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
-    cout << "│              Account Generation Menu" << endl;
-    cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
-    cout << "│ 1. Manager" << endl;
-    cout << "│ 2. Provider" << endl;
-    cout << "│ 3. Member" << endl;
-    cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
-    cout << "                 Enter account type: ";
+        getline ( cin, userInput );
 
-    getline ( cin, userInput );
-
-    switch ( ( int ) userInput.at ( 0 ) - '0' ) {
-        case 1://Manager
-            createManager ( accounts );
-            break;
-        case 2://Provider
-            createProvider ( accounts );
-            break;
-        case 3://Member
-            createMember ( accounts );
-            break;
-        default:
-            cout << "\n[✗] \"" << userInput << "\" is not an option\n" << endl;
-    }
+        switch ( ( int ) userInput.at ( 0 ) - '0' ) {
+            case 1://Manager
+                createManager ( accounts );
+                break;
+            case 2://Provider
+                createProvider ( accounts );
+                break;
+            case 3://Member
+                createMember ( accounts );
+                break;
+            default:
+                cout << "\n[✗] \"" << userInput << "\" is not an option\n" << endl;
+        }
+    } while(again("Would you like to create another account? (y/n):"));
 
 }
 
@@ -432,7 +434,7 @@ void createManager ( accountManager & accounts ) {
     string password;
     string ID;
     string userInput;
-
+    
     do {
         cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
         cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
@@ -454,12 +456,11 @@ void createManager ( accountManager & accounts ) {
         getline ( cin, userInput);
     } while ( userInput.at ( 0 ) != 'y' );
 
-    ID = *accounts.generateAccountID(manager);
     newAddress.setAddress ( &address, &city, &state, &zip );
     
     if ( accounts.addAccount ( new Manager ( &name, &email, &ID, &newAddress, manager, &password ), manager ) )
         cout << "\n[✓] Account added." << endl;
-    else 
+    else
         cout << "\n[✗]Failed to add account." << endl;
 }
 
@@ -498,7 +499,6 @@ void createProvider ( accountManager & accounts ) {
         getline ( cin, userInput);
     } while ( userInput.at ( 0 ) != 'y' );
 
-    ID = *accounts.generateAccountID(provider);
     newAddress.setAddress ( &address, &city, &state, &zip );
     
     if ( accounts.addAccount (new Provider ( &name, &email, &ID, &newAddress, provider, &password, 0, *newServiceRecord ), provider ) )
@@ -541,7 +541,6 @@ void createMember ( accountManager & accounts ) {
         getline ( cin, userInput);
     } while ( userInput.at ( 0 ) != 'y' );
 
-    ID = *accounts.generateAccountID(member);
     newAddress.setAddress ( &address, &city, &state, &zip );
     
     if ( accounts.addAccount ( new Member ( &name, &email, &ID, &newAddress, member, current, newMemberRecords ), member ) )
