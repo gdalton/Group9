@@ -21,11 +21,12 @@ void createManager ( accountManager & );
 void createProvider ( accountManager & );
 void createMember ( accountManager & );
 void deleteAccount ( accountManager & );
+void editAccount ( accountManager & );
+void viewAccount ( accountManager & );
 bool createService(providerDirectory &master);
 
 /** Constructs the object.
  */
-
 UserInterface :: UserInterface () {
 
 }
@@ -135,7 +136,7 @@ bool UserInterface :: login () {
       getline ( cin, password );
 
 
-      account = accounts.getAccount( &userID, ( ACCOUNT_TYPE ) ( userID.at ( 0 ) - '0' ) );//check what this is returning, account?
+      account = accounts.getAccount( &userID, ( ACCOUNT_TYPE ) ( userID.at ( 0 ) - '0' ) );
       
       if ( account ) {
          switch ( userID.at ( 0 ) - '0' ) {
@@ -322,11 +323,11 @@ bool UserInterface :: runManagerMenu ( void ) {
                 break;
 
             case 3:
-
+                editAccount ( accounts );
                 break;
 
             case 4:
-
+                viewAccount ( accounts );
                 break;
 
             case 5:
@@ -537,8 +538,7 @@ void createMember ( accountManager & accounts ) {
         cout << "\n[✗]Failed to add account." << endl;
 }
 
-void deleteAccount ( accountManager & accounts ) {
-//bool accountManager::removeAccount(string* accountID, ACCOUNT_TYPE type){
+void deleteAccount ( accountManager & accounts ) {//Doesn't check if we are deleting this account
     string userInput = "";
     ACCOUNT_TYPE deletedType = (ACCOUNT_TYPE)0;
 
@@ -578,6 +578,115 @@ void deleteAccount ( accountManager & accounts ) {
 
 }
 
+
+/**
+ * 
+ * NOT FUNCTIONING CORRECTLY - Doesn't update stuff. Prob because I am not using pointers correctly somewhere. Its late...
+ * 
+ */
+void editAccount ( accountManager & accounts ) {
+    string userInput = "";
+    string newValue = "";
+    Address accountAddress;
+    infoStruct * accountInfo = NULL;
+    Account * accountToEdit = NULL;
+    Account * editedAccount = NULL;
+    ACCOUNT_TYPE type = (ACCOUNT_TYPE)0;
+
+    do { 
+        cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
+        cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+        cout << "│                Account Editing Menu" << endl;
+        cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+        cout << "              Enter account ID to edit: ";
+
+        getline ( cin, userInput );
+
+
+        type = (ACCOUNT_TYPE) ( ( int ) userInput.at ( 0 ) - '0' );
+        accountToEdit = accounts.getAccount ( &userInput, type);
+        accountInfo = accountToEdit -> getInfo();
+        accountAddress = accountInfo -> theAddress;
+
+            cout << endl;
+            cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
+            cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+            cout << "│                Account Editing Menu" << endl;
+            cout << "│    ID......: " << accountInfo -> ID << endl;
+            cout << "│ 1. Name....: " << accountInfo -> name << endl; 
+            cout << "│ 2. Email...: " << accountInfo -> email << endl; 
+            cout << "│ 3. Address.: " << *accountAddress.getStreetAddress() << endl; 
+            cout << "│ 4. City....: " << *accountAddress.getCity() << endl; 
+            cout << "│ 5. State...: " << *accountAddress.getState() << endl;  
+            cout << "│ 6. Zip Code: " << *accountAddress.getZipcode() << endl;  
+
+        if (( int ) userInput.at ( 0 ) - '0' < 3 )//show provider/manager level data members
+            cout << "│    password: XXXXXXXXX"<< endl;//Protected info //Need to be able to update password
+        
+            cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+            cout << "        What would you like to update?: ";
+            getline ( cin, userInput );
+            cout << "        What is the new value?........: ";
+            getline ( cin, newValue );
+
+            switch ( ( int ) userInput.at ( 0 ) - '0' ) {
+            case 1:
+                accountToEdit -> setInfo(&newValue, &accountInfo -> ID, &accountInfo -> email, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                break;
+            case 2:
+                accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> ID, &newValue, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                break;
+            case 3:
+                accountAddress.setAddress(&newValue, accountAddress.getCity(), accountAddress.getState(), accountAddress.getZipcode());
+                accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> ID, &accountInfo -> email, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                break;
+            case 4:
+                accountAddress.setAddress(accountAddress.getStreetAddress(), &newValue, accountAddress.getState(), accountAddress.getZipcode());
+                accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> ID, &accountInfo -> email, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                break;
+            case 5:
+                accountAddress.setAddress(accountAddress.getStreetAddress(), accountAddress.getCity(), &newValue, accountAddress.getZipcode());
+                accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> ID, &accountInfo -> email, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                break;
+            case 6:
+                accountAddress.setAddress(accountAddress.getStreetAddress(), accountAddress.getCity(), accountAddress.getState(), &newValue);
+                accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> ID, &accountInfo -> email, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                break;
+            //case 7: //Need to be able to update password
+                //accountToEdit.setInfo(accountInfo -> name, accountInfo -> ID, accountInfo -> email, accountAddress, accountInfo -> securityLevel);
+                break;
+                
+            default:
+                cout << "\n[✗] \"" << userInput << "\" is not an option\n" << endl;
+        }
+
+        cout << endl;
+            cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
+            cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+            cout << "│                Account Editing Menu" << endl;
+            cout << "│    ID......: " << accountInfo -> ID << endl;
+            cout << "│ 1. Name....: " << accountInfo -> name << endl; 
+            cout << "│ 2. Email...: " << accountInfo -> email << endl; 
+            cout << "│ 3. Address.: " << *accountAddress.getStreetAddress() << endl; 
+            cout << "│ 4. City....: " << *accountAddress.getCity() << endl; 
+            cout << "│ 5. State...: " << *accountAddress.getState() << endl;  
+            cout << "│ 6. Zip Code: " << *accountAddress.getZipcode() << endl;  
+
+        if (( int ) userInput.at ( 0 ) - '0' > 1 )//show provider/manager level data members
+            cout << "│    password: XXXXXXXXX"<< endl;//Protected info //Need to be able to update password
+        
+            cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+            cout << "               [✓] Account updated";
+
+        cout << "\nWould you like to edit another account (y/n)? ";
+        getline ( cin, userInput );
+
+    } while ( userInput.at ( 0 ) == 'y' );
+}
+
+void viewAccount ( accountManager & accounts ) {
+
+}
 
 bool createService(providerDirectory &master) {
 	char input[21];

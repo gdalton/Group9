@@ -121,6 +121,7 @@ public:
 	infoStruct* getInfo() const;
 	SECURITY_LEVEL getSecurityLevel() const;
     string* getID() const;
+    void setInfo ( string *, string *, string *, Address *, SECURITY_LEVEL);
 
 
 protected:

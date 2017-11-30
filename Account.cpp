@@ -85,6 +85,23 @@ infoStruct* Account::getInfo() const {
 	return toReturn;
 }
 
+
+void Account :: setInfo ( string * _name, string * _ID, string *, Address * _theAddress, SECURITY_LEVEL _securityLevel ) {
+    if(name)
+        *name = *_name;
+    else name = new string ( *_name );
+
+    if ( ID )
+    	*ID = *_ID;
+    else ID = new string ( *_ID );
+
+    if ( theAddress ) 
+    	*theAddress = *_theAddress;
+    else theAddress = new Address ( *_theAddress );
+    
+    securityLevel = _securityLevel;
+}
+
 SECURITY_LEVEL Account::getSecurityLevel() const {
 	return securityLevel;
 }
