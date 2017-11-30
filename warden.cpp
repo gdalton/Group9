@@ -69,8 +69,8 @@ bool Warden :: deleteCredential ( string newUsername, string newPassword) { //@t
  * @param      checkedPassword  The checked password
  * @return     True if the username/passowrd match, false otherwise.
  */
-bool Warden :: validateLogin ( string checkedUsername, string checkedPassword) { //@todo
-    bool toReturn = false;
+Account* Warden :: validateLogin ( string checkedUsername, string checkedPassword) { //@todo
+    Account* toReturn = NULL;
     
     return toReturn;
 }
