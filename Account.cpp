@@ -88,18 +88,20 @@ infoStruct* Account::getInfo() const {
 
 void Account :: setInfo ( string * _name, string * _email, string * _ID, Address * _theAddress, SECURITY_LEVEL _securityLevel ) {
     
-    if(name)
-        *name = *_name;
-    else name = new string ( *_name );
+    if( !name )
+        name = new string;
 
-    if ( ID )
-        *ID = *_ID;
-    else ID = new string ( *_ID );
+    if ( !ID )
+        ID = new string;
 
-    if ( theAddress ) 
-        *theAddress = *_theAddress;
-    else theAddress = new Address ( *_theAddress );
-    
+    if ( !theAddress )
+        theAddress = new Address;
+
+    * name = *_name;
+    * ID = * _ID;
+    * theAddress = * _theAddress;
+
+    //theAddress-> setAddress ( _theAddress -> getStreetAddress(), _theAddress -> getCity(), _theAddress -> getState(), _theAddress -> getZipcode() );   
     securityLevel = _securityLevel;
 }
 

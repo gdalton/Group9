@@ -606,7 +606,7 @@ void deleteAccount ( accountManager & accounts ) {//Doesn't check if we are dele
 void editAccount ( accountManager & accounts ) {
     string userInput = "";
     string newValue = "";
-    Address accountAddress;
+    Address * accountAddress = NULL;
     infoStruct * accountInfo = NULL;
     Account * accountToEdit = NULL;
     Account * editedAccount = NULL;
@@ -627,23 +627,23 @@ void editAccount ( accountManager & accounts ) {
 
         if ( accountToEdit ){
             accountInfo = accountToEdit -> getInfo();
-            accountAddress = accountInfo -> theAddress;
+            accountAddress = &accountInfo -> theAddress;
 
             cout << endl;
             cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
             cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
             cout << "│                Account Editing Menu" << endl;
             cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
-            cout << "│    ID......: " << accountInfo -> ID << endl; //Not updating
-            cout << "│ 1. Name....: " << accountInfo -> name << endl; //Not updating
-            cout << "│ 2. Email...: " << accountInfo -> email << endl; //Not updating
-            cout << "│ 3. Address.: " << *accountAddress.getStreetAddress() << endl; 
-            cout << "│ 4. City....: " << *accountAddress.getCity() << endl; 
-            cout << "│ 5. State...: " << *accountAddress.getState() << endl;  
-            cout << "│ 6. Zip Code: " << *accountAddress.getZipcode() << endl;  
+            cout << "│    ID......: " << accountInfo -> ID << endl;
+            cout << "│ 1. Name....: " << accountInfo -> name << endl;
+            cout << "│ 2. Email...: " << accountInfo -> email << endl;
+            cout << "│ 3. Address.: " << *accountAddress -> getStreetAddress() << endl; 
+            cout << "│ 4. City....: " << *accountAddress -> getCity() << endl; 
+            cout << "│ 5. State...: " << *accountAddress -> getState() << endl;  
+            cout << "│ 6. Zip Code: " << *accountAddress -> getZipcode() << endl;  
 
             if (( int ) userInput.at ( 0 ) - '0' < 3 )//show provider/manager level data members
-                cout << "│    password: XXXXXXXXX"<< endl;//Protected info //Need to be able to update password
+                cout << "│    password: XXXXXXXXX"<< endl;//Protected info
             
                 cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
                 cout << "        What would you like to update?: ";
@@ -653,26 +653,26 @@ void editAccount ( accountManager & accounts ) {
 
                 switch ( ( int ) userInput.at ( 0 ) - '0' ) {
                 case 1:
-                    accountToEdit -> setInfo(&newValue, &accountInfo -> email, &accountInfo -> ID, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                    accountToEdit -> setInfo(&newValue, &accountInfo -> email, &accountInfo -> ID, accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
                     break;
                 case 2:
-                    accountToEdit -> setInfo(&accountInfo -> name, &newValue, &accountInfo -> ID, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                    accountToEdit -> setInfo(&accountInfo -> name, &newValue, &accountInfo -> ID, accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
                     break;
                 case 3:
-                    accountAddress.setAddress(&newValue, accountAddress.getCity(), accountAddress.getState(), accountAddress.getZipcode());
-                    accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                    accountAddress -> setAddress(&newValue, accountAddress -> getCity(), accountAddress -> getState(), accountAddress -> getZipcode());
+                    accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
                     break;
                 case 4:
-                    accountAddress.setAddress(accountAddress.getStreetAddress(), &newValue, accountAddress.getState(), accountAddress.getZipcode());
-                    accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                    accountAddress -> setAddress(accountAddress -> getStreetAddress(), &newValue, accountAddress -> getState(), accountAddress -> getZipcode());
+                    accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
                     break;
                 case 5:
-                    accountAddress.setAddress(accountAddress.getStreetAddress(), accountAddress.getCity(), &newValue, accountAddress.getZipcode());
-                    accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                    accountAddress -> setAddress(accountAddress -> getStreetAddress(), accountAddress -> getCity(), &newValue, accountAddress -> getZipcode());
+                    accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
                     break;
                 case 6:
-                    accountAddress.setAddress(accountAddress.getStreetAddress(), accountAddress.getCity(), accountAddress.getState(), &newValue);
-                    accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, &accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                    accountAddress -> setAddress(accountAddress -> getStreetAddress(), accountAddress -> getCity(), accountAddress -> getState(), &newValue);
+                    accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
                     break;
                 //case 7: //Need to be able to update password
                     //accountToEdit.setInfo(accountInfo -> name, accountInfo -> ID, accountInfo -> email, accountAddress, accountInfo -> securityLevel);
@@ -683,6 +683,7 @@ void editAccount ( accountManager & accounts ) {
             }
 
             accountInfo = accountToEdit -> getInfo();
+            accountAddress = &accountInfo -> theAddress;//ERROR
 
             cout << endl;
                 cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
@@ -692,10 +693,10 @@ void editAccount ( accountManager & accounts ) {
                 cout << "│    ID......: " << accountInfo -> ID << endl;
                 cout << "│ 1. Name....: " << accountInfo -> name << endl; 
                 cout << "│ 2. Email...: " << accountInfo -> email << endl; 
-                cout << "│ 3. Address.: " << *accountAddress.getStreetAddress() << endl; 
-                cout << "│ 4. City....: " << *accountAddress.getCity() << endl; 
-                cout << "│ 5. State...: " << *accountAddress.getState() << endl;  
-                cout << "│ 6. Zip Code: " << *accountAddress.getZipcode() << endl;  
+                cout << "│ 3. Address.: " << *accountAddress -> getStreetAddress() << endl; 
+                cout << "│ 4. City....: " << *accountAddress -> getCity() << endl; 
+                cout << "│ 5. State...: " << *accountAddress -> getState() << endl;  
+                cout << "│ 6. Zip Code: " << *accountAddress -> getZipcode() << endl;  
 
             if (( int ) userInput.at ( 0 ) - '0' < 3 )//show provider/manager level data members
                 cout << "│    password: XXXXXXXXX"<< endl;//Protected info //Need to be able to update password
