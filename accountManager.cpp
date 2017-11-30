@@ -59,18 +59,6 @@ bool accountManager::addAccount(Account* toAdd, ACCOUNT_TYPE type){
             case manager:
                 managerTree[*memberID] = toAdd;
 
-                /*Matts debugging - BEGIN */
-                cout << "accountManager::addAccount - Running" << endl;
-
-                if( managerTree[*memberID] )
-                    if ( managerTree[*memberID] == toAdd )
-                        cout << "accountManager::addAccount - Running correctly" << endl;
-                    else
-                        cout << "accountManager::addAccount - Failed to add && no match" << endl;
-                else 
-                    cout << "accountManager::addAccount - Failed to add && NULL pointer" << endl;
-
-                /*Matts debugging - END */
                 toReturn = true;
                 break;
 
@@ -190,7 +178,6 @@ Account* accountManager::getAccount(string* accountID, ACCOUNT_TYPE type){
 
     //Make sure account type matches ID number
     if(checkAccountType(accountID, type)){
-        cout << "Account type: " << (int)type << endl;
         
         //Add the account
         switch (type) {
