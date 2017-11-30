@@ -181,11 +181,28 @@ string* Manager::writeToString(){
      return new string(*ID+"\n"+*name+"\n"+*email+"\n"+*theAddress->writeToString()+"\n"+*password);
 }
 
+//Function to display the account
+void Manager::displayToUI(){
+    cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
+    cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+    cout << "│              Manager Account Info" << endl;
+    cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+    cout << "│ Name....: "<<*name<<endl;
+    cout << "│ Email...: "<<*email<<endl;
+    cout << "│ Address.: "<<*theAddress->getStreetAddress()<<endl;
+    cout << "│ City....: "<<*theAddress->getCity()<<endl;
+    cout << "│ State...: "<<*theAddress->getState()<<endl;
+    cout << "│ Zip Code: "<<*theAddress->getZipcode()<<endl;
+    cout << "│ password: "<<*password<<endl;
+    cout << "│ ID......: " << *ID << endl;
+    cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+}
+
 /////////////
 //Provider //
 /////////////
 
-Provider :: Provider ( void ) : 
+Provider :: Provider ( void ) :
 Account ( ), password ( NULL ), numMembersSeen ( 0 ), membersSeen ( NULL ) {}
 
 Provider :: Provider ( string * newName, string * newEmail, string * newID, Address * newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword, int newNumMembersSeen,  list < providerRecord >  & newServiceRecord) :
@@ -333,6 +350,46 @@ string* Provider::writeToString(){
     return new string(*ID+"\n"+*name+"\n"+*email+"\n"+*theAddress->writeToString()+"\n"+*password+"\n"+toString(numMembersSeen)+"\n"+serviceRecords);
 }
 
+//Function to display the account
+void Provider::displayToUI(){
+    int counter = 1;
+    
+    cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
+    cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+    cout << "│              Provider Account Info" << endl;
+    cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+    cout << "│ Name....: "<<*name<<endl;
+    cout << "│ Email...: "<<*email<<endl;
+    cout << "│ Address.: "<<*theAddress->getStreetAddress()<<endl;
+    cout << "│ City....: "<<*theAddress->getCity()<<endl;
+    cout << "│ State...: "<<*theAddress->getState()<<endl;
+    cout << "│ Zip Code: "<<*theAddress->getZipcode()<<endl;
+    cout << "│ password: "<<*password<<endl;
+    cout << "│ ID......: " << *ID << endl;
+    cout << "│ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ " << endl;
+    cout << "│                      Records                       " << endl;
+    cout << "│ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ " << endl;
+
+    //Loop through all records
+    for (providerRecordList::iterator it=serviceRecord.begin(); it != serviceRecord.end(); ++it){
+        cout << "│ Record #"<<counter<< endl;
+        cout << "| ━━━━━━━━━━━"<<endl;
+        cout << "│ Date Created....: "<<it->currentDateTime<<endl;
+        cout << "│ Date Performed..: "<<it->dateOfService<<endl;
+        cout << "│ Provider ID.....: "<<it->providerID<<endl;
+        cout << "│ Member ID.......: "<<it->memberID<<endl;
+        cout << "│ Member Name.....: "<<it->dateOfService<<endl;
+        cout << "│ Service Code....: "<<it->serviceCode<<endl;
+        cout << "│ Service Fee.....: "<<it->serviceFee<<endl;
+        cout << "│ Comments........: "<<it->comments<<endl;
+        cout << "| "<<endl;
+        
+        counter++;
+    }
+    
+    cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+}
+
 ////////////
 //Member //
 ////////////
@@ -422,6 +479,42 @@ string* Member::writeToString(){
     
     return new string(*ID+"\n"+*name+"\n"+*email+"\n"+*theAddress->writeToString()+"\n"+strStatus+"\n"+serviceRecords);
 }
+
+
+//Function to display the account
+void Member::displayToUI(){
+    int counter = 1;
+    
+    cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
+    cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+    cout << "│              Member Account Info" << endl;
+    cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+    cout << "│ Name....: "<<*name<<endl;
+    cout << "│ Email...: "<<*email<<endl;
+    cout << "│ Address.: "<<*theAddress->getStreetAddress()<<endl;
+    cout << "│ City....: "<<*theAddress->getCity()<<endl;
+    cout << "│ State...: "<<*theAddress->getState()<<endl;
+    cout << "│ Zip Code: "<<*theAddress->getZipcode()<<endl;
+    cout << "│ ID......: " << *ID << endl;
+    cout << "│ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ " << endl;
+    cout << "│                      Records                       " << endl;
+    cout << "│ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ " << endl;
+    
+    //Loop through all records
+    for (memberRecordList::iterator it=serviceRecord->begin(); it != serviceRecord->end(); ++it){
+        cout << "│ Record #"<<counter<< endl;
+        cout << "| ━━━━━━━━━━━"<<endl;
+        cout << "│ Date of Service: "<<it->dateOfService<<endl;
+        cout << "│ Service Name...: "<<it->serviceName<<endl;
+        cout << "│ Provider Name..: "<<it->providerName<<endl;
+        cout << "| "<<endl;
+        
+        counter++;
+    }
+    
+    cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+}
+
 
 
 

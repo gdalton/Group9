@@ -145,6 +145,7 @@ public:
 
 	bool setPassword ( string * newPassword );
 	bool checkPassword ( string * passwordToCheck ) const ;
+    void displayToUI();
     string* writeToString();
 
 protected:
@@ -169,6 +170,7 @@ public:
 	bool displayAllMembers ( void ) const ;
 	bool addServiceRecord ( providerRecord* newServiceRecord );
 	bool addMemberSeen ( int memberID );
+    void displayToUI();
     string* writeToString();
 
 	float getFee () const;
@@ -196,13 +198,14 @@ public:
 	~Member ( void );
 
 	bool setMemberStatus ( MEMBER_STATUS newStatus );
+    void displayToUI(); 
     string* writeToString();
 	MEMBER_STATUS getMemberStatus ( void ) const;
 	bool appendToServiceRecord ( memberRecord newServiceRecord);
 	list < memberRecord > * getServiceRecords ( void ) const;
 
 protected:
-	list < memberRecord > * serviceRecord; //Should this be a pointer? // Yes, I think so...
+	list < memberRecord > * serviceRecord; 
 	MEMBER_STATUS status;
 };
 
