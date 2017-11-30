@@ -51,3 +51,26 @@ TEST(accountTesting, canLogin) {
     ASSERT_TRUE(account != NULL) << "Failed to login to test account " << *userID;
     delete userID;
 }
+
+TEST(accountTesting, checkMemberStatus) {
+    
+    accountManager testAccountManager = accountManager();
+    Member * memberCurrent = new Member(new string("John Freewaffle"), new string("johnnyfreewaffles@gmail.com"), new string("564788132"), new Address(new string("Apple"), new string("Apple City"), new string("Apple State"), new string("APPLES")), member, current, new memberRecordList());
+    Member * memberExpired = new Member(new string("Tim Freewaffle"), new string("timfreewaffles@gmail.com"), new string("564788131"), new Address(new string("Apple"), new string("Apple City"), new string("Apple State"), new string("APPLES")), member, expired, new memberRecordList());
+    testAccountManager.addAccount(memberCurrent, member);
+    testAccountManager.addAccount(memberExpired, member);
+    memberCurrent = (static_cast<Member*>(testAccountManager.getAccount(memberCurrent->getID(), member)));
+    memberExpired = (static_cast<Member*>(testAccountManager.getAccount(memberExpired->getID(), member)));
+    ASSERT_TRUE(memberCurrent != NULL) << "Failed to get member current";
+    ASSERT_TRUE(memberExpired != NULL) << "Failed to get member expired";
+
+    ASSERT_TRUE(memberCurrent->getMemberStatus() == current) << "Failed to get current status";
+    ASSERT_TRUE(memberExpired->getMemberStatus() == expired) << "Failed to get expired status";
+}
+
+TEST(accountTesting, displayServicesList) { // @todo I'm not sure how to test this
+    UserInterface ui;
+    
+    ASSERT_TRUE(ui.runProviderMenu()) << "Failed to see provider menu?";
+    ASSERT_TRUE(ui.runManagerMenu()) << "Failed to see manager menu?";
+}
