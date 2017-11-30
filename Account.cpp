@@ -284,7 +284,7 @@ float Provider :: getFee ( void ) const {
  * @return     The number memers seen.
  */
 int Provider :: getNumMembersSeen ( void ) const {
-    return 0;
+    return numMembersSeen;
 }
 
 /**
@@ -292,7 +292,8 @@ int Provider :: getNumMembersSeen ( void ) const {
  * @return     The provider record.
  */
 list < providerRecord > * Provider :: getServiceRecord ( void ) const {
-    return 0;
+    
+    return new providerRecordList(serviceRecord);
 }
 
 ////////////
