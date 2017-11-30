@@ -338,6 +338,7 @@ bool UserInterface :: runManagerMenu ( void ) {
                     cout << "\nService added successfully!" << endl;
                 else
                     cout << "\nService was not added." << endl;
+                waitForEnter();
 
                 break;
 
@@ -347,6 +348,7 @@ bool UserInterface :: runManagerMenu ( void ) {
                     cout << "\nService removed successfully!" << endl;
                 else
                     cout << "\nNo service has been removed." << endl;
+                waitForEnter();
 
                 break;
 
@@ -356,11 +358,13 @@ bool UserInterface :: runManagerMenu ( void ) {
                     cout << "\nService updated successfully!" << endl;
                 else
                     cout << "\nNo services updated." << endl;
+                waitForEnter();
 
                 break;
 
             case 8:
                 directory.displayAll();
+                waitForEnter();
                 break;
 
             case 9:
