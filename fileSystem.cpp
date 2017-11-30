@@ -44,6 +44,32 @@ bool fileSystem::write(const char* dataToReadOut, const char* filename)
     return false;
 }
 
+//Read out to a file, deletes anything previously in the file
+bool fileSystem::writeSTR(string & dataToReadOut, string & filename)
+{
+    ofstream fileOut; //Var to read out to file
+    
+    //Open the filestream
+    fileOut.open(filename);
+    
+    //Read out to the file
+    
+    //Checking the connection to the file
+    if(fileOut)
+    {
+        //Read out the data
+        fileOut<<dataToReadOut;
+        
+        //Close the file
+        fileOut.close();
+        
+        return true;
+    }
+    
+    return false;
+}
+
+
 bool fileSystem::read(char* & allData, int length, const char* fileName){
     ifstream fileIn;
 //    char toCheck [101];

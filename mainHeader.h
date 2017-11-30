@@ -98,7 +98,9 @@ class fileSystem{
         
         //Read out to a file
         bool write(const char* dataToReadOut, const char* filename);
-        
+    
+        bool writeSTR(string & dataToReadOut, string & filename);
+    
         //Read in from a file
         bool read(char* & allData, int length, const char* fileName);
     
@@ -141,6 +143,7 @@ class accountManager{
     accountMap providerTree;
     accountMap managerTree;
     set<string> allIdNumbers;
+    fileSystem fileSys; 
     
     //See for refrence: http://en.cppreference.com/w/cpp/container/map
 };
