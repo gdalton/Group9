@@ -105,4 +105,8 @@ TEST(smokeTesting, saveFileSuccess) {
     ifstream account;
     account.open("accounts/522222222.txt");
     ASSERT_TRUE(account) << "Failed to write account file";
+
+    accountManager newAccountManager = accountManager();
+
+    ASSERT_TRUE(newAccountManager.getAccount(new string("522222222"), member) != NULL) << "Failed to read member after save";
 }
