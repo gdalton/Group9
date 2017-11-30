@@ -206,6 +206,7 @@ int UserInterface::userSelection()
 bool UserInterface :: runProviderMenu () {
     Account * accountToCheck = NULL;
     Member * memberToCheck = NULL;
+    int selection = 0;
     string userInput = "";
 
     do {
@@ -220,12 +221,11 @@ bool UserInterface :: runProviderMenu () {
         cout << "│ 2. Validate Member Status" << endl;
         cout << "│ 3. Create Service Record" << endl;
         cout << "│ 4. Create Service Report" << endl;
-        cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
-        cout << "                       Option: ";
+        cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙";
+        read_num("                        Option: ", selection);
 
-        getline( cin, userInput );
 
-        switch ( (int) userInput.at ( 0 ) - '0' ) {
+        switch ( selection) {
             case 0:
                 return true;
                 break;
@@ -234,7 +234,8 @@ bool UserInterface :: runProviderMenu () {
                 cout << "\nEnter service ID: ";
                 getline( cin, userInput );
                 if (!directory.displayService ( userInput ) )
-                    cout << "\n[✗] Invlaid service ID.\n";
+                    cout << "\n[✗] Invlaid service ID.\n"<<endl;
+                waitForEnter();
                 break;
 
             case 2:
@@ -247,25 +248,28 @@ bool UserInterface :: runProviderMenu () {
                     cout << "Member " << userInput << ": ";
 
                     if ( memberToCheck -> getMemberStatus() == current )
-                        cout  << "CURRENT";
-                    else cout  << "EXPIRED";
+                        cout  << "CURRENT"<<endl;
+                    else cout  << "EXPIRED"<<endl;
 
-                } else cout << "\n[✗] Invlaid member ID.\n";
+                } else cout << "\n[✗] Invlaid member ID.\n"<<endl;
+                waitForEnter();
 
                 break;
 
             case 3:
                 //@todo Where is generateServiceRecord()?
+                waitForEnter();
                 break;
 
             case 4:
                 //@todo Where is generateServiceReport()?
+                waitForEnter();
                 break;
 
             default:
-                cout << "\n[✗] \"" << userInput << "\" is not an option\n" << endl;
+                cout << "\n[✗] \"" << selection << "\" is not an option\n" << endl;
         }
-    } while ( ( int ) userInput.at ( 0 ) - '0' != 0 );
+    } while ( selection );
 
 
 }
@@ -306,11 +310,11 @@ bool UserInterface :: runManagerMenu ( void ) {
         cout << "│ 10. Generate Provider Report" << endl;
         cout << "│ 11. Generate Member Report" << endl;
         cout << "│ 12. Generate EFT Report" << endl;
-        cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+        cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙";
         read_num("                        Option: ", userInput);
 
-        //getline( cin, userInput );
-
+        
+        //Run selected functionality
         switch (userInput) {
             case 0:
                 return true;
