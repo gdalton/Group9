@@ -74,3 +74,24 @@ TEST(accountTesting, displayServicesList) { // @todo I'm not sure how to test th
     ASSERT_TRUE(ui.runProviderMenu()) << "Failed to see provider menu?";
     ASSERT_TRUE(ui.runManagerMenu()) << "Failed to see manager menu?";
 }
+
+TEST(accountTesting, runAReport) { 
+}
+
+TEST(accountTesting, addServiceToMemberRecord) { 
+    Member * memberCurrent = new Member(new string("John Freewaffle"), new string("johnnyfreewaffles@gmail.com"), new string("564788132"), new Address(new string("Apple"), new string("Apple City"), new string("Apple State"), new string("APPLES")), member, current, new memberRecordList());
+    memberRecord record;
+    string providerToLookFor = string("New Service Record Test 231323231");
+    record.providerName = providerToLookFor;
+    ASSERT_TRUE(memberCurrent->appendToServiceRecord(record)) << "Failed to add service record";
+    bool found = false;
+    list < memberRecord >* providerServiceRecord = memberCurrent->getServiceRecords();
+    for ( list < memberRecord > :: iterator j = providerServiceRecord -> begin (); j != providerServiceRecord -> end (); ++j ) {
+        if (j->providerName == providerToLookFor)
+        {
+            found = true;
+        }
+    }
+    ASSERT_TRUE(found) << "Failed to add Service Record to member";
+
+}
