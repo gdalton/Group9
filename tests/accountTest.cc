@@ -9,10 +9,17 @@ TEST(accountTesting, allUsersExistInTable) {
     ifstream account;
     allAccounts.open("accounts/allIDs.txt");
     ASSERT_TRUE(allAccounts) << "Failed to open allIDs.txt" << endl;
-    while(!allAccounts.eof())
+    while(allAccounts)
     {
-        char accountID [20];
-        allAccounts.getline(accountID, 20, '\n');
+        char accountID [30];
+        allAccounts.get(accountID, 20,'\n');
+        allAccounts.get();
+
+        if(allAccounts.eof())
+            break;
+        else if(strcmp(accountID, "") == 0)
+            continue;
+        
         ACCOUNT_TYPE type = init;
         if(accountID[0] == '1'){
             type=manager;
@@ -21,7 +28,6 @@ TEST(accountTesting, allUsersExistInTable) {
             type=provider;
         }
         else type = member;
-
         char temp [60] = "accounts/";
         strcat(temp,accountID);
         account.open(temp);//Dynamically opens file
@@ -29,7 +35,7 @@ TEST(accountTesting, allUsersExistInTable) {
         //Stop if account not found
         if(!account) continue;
         
-        account.getline(accountID, 20, '\n');
+        account.get(accountID, 20, '\n');
         account.close();
 
         string * stringAccountID = new string(accountID);
@@ -94,4 +100,13 @@ TEST(accountTesting, addServiceToMemberRecord) {
     }
     ASSERT_TRUE(found) << "Failed to add Service Record to member";
 
+}
+
+TEST(accountTesting, saveFileSuccess) { 
+    accountManager testAccountManager = accountManager();
+    Member * memberCurrent = new Member(new string("John Freewaffle"), new string("johnnyfreewaffles@gmail.com"), new string("522222222"), new Address(new string("Apple"), new string("Apple City"), new string("Apple State"), new string("APPLES")), member, current, new memberRecordList());
+    ASSERT_TRUE(testAccountManager.addAccount(memberCurrent, member)) << "Failed to add account";
+    ifstream account;
+    account.open("accounts/522222222.txt");
+    ASSERT_TRUE(account) << "Failed to write account file";
 }
