@@ -281,4 +281,9 @@ string toString(int convertToString)
     return aStringStream.str();
 }
 
-
+string toString(float convertToString)
+{
+    stringstream aStringStream;
+    aStringStream << convertToString;
+    return aStringStream.str();
+}
