@@ -444,17 +444,11 @@ void createManager ( accountManager & accounts ) {
 
     ID = *accounts.generateAccountID(manager);
     newAddress.setAddress ( &address, &city, &state, &zip );
-    accounts.addAccount ( 
-        new Manager ( 
-            &name, 
-            &email, 
-            &ID, 
-            &newAddress, 
-            manager, 
-            &password
-        ), 
-        manager
-    );
+    
+    if ( accounts.addAccount ( new Manager ( &name, &email, &ID, &newAddress, manager, &password ), manager ) )
+        cout << "\n[✓] Account added." << endl;
+    else 
+        cout << "\n[✗]Failed to add account." << endl;
 }
 
 void createProvider ( accountManager & accounts ) {
@@ -494,19 +488,12 @@ void createProvider ( accountManager & accounts ) {
 
     ID = *accounts.generateAccountID(provider);
     newAddress.setAddress ( &address, &city, &state, &zip );
-    accounts.addAccount ( 
-        new Provider ( 
-            &name, 
-            &email, 
-            &ID, 
-            &newAddress, 
-            provider, 
-            &password,
-            0,
-            *newServiceRecord
-        ), 
-        provider
-    );
+    
+    if ( accounts.addAccount (new Provider ( &name, &email, &ID, &newAddress, provider, &password, 0, *newServiceRecord ), provider ) )
+        cout << "\n[✓] Account added." << endl;
+    else 
+        cout << "\n[✗]Failed to add account." << endl;
+
 }
 
 void createMember ( accountManager & accounts ) {
@@ -544,19 +531,54 @@ void createMember ( accountManager & accounts ) {
 
     ID = *accounts.generateAccountID(member);
     newAddress.setAddress ( &address, &city, &state, &zip );
-    accounts.addAccount ( 
-        new Member ( 
-            &name, 
-            &email, 
-            &ID, 
-            &newAddress, 
-            member, 
-            current,
-            newMemberRecords
-        ), 
-        member
-    );
+    
+    if ( accounts.addAccount ( new Member ( &name, &email, &ID, &newAddress, member, current, newMemberRecords ), member ) )
+        cout << "\n[✓] Account added." << endl;
+    else 
+        cout << "\n[✗]Failed to add account." << endl;
 }
+
+void deleteAccount ( accountManager & accounts ) {
+//bool accountManager::removeAccount(string* accountID, ACCOUNT_TYPE type){
+    string userInput = "";
+    ACCOUNT_TYPE deletedType = (ACCOUNT_TYPE)0;
+
+    do { 
+        cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
+        cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+        cout << "│               Account Deletion Menu" << endl;
+        cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+        cout << "              Enter account ID to delete: ";
+
+        getline ( cin, userInput );
+
+        switch ( ( int ) userInput.at ( 0 ) - '0' ) {
+            case 1://Manager
+                deletedType = manager;
+                break;
+            case 2://Provider
+                deletedType = provider;
+                break;
+            case 3://Member
+                deletedType = member;
+                break;
+            default:
+                deletedType = member;
+        }
+
+        cout << "\nWould you like to delete another account (y/n)? ";
+        getline ( cin, userInput );
+
+    } while ( userInput.at ( 0 ) == 'y' );
+    
+
+    if ( accounts.removeAccount( &userInput, deletedType ) )
+        cout << "\n[✓] Account deleted." << endl;
+    else 
+        cout << "\n[✗]Failed to delete account." << endl;
+
+}
+
 
 bool createService(providerDirectory &master) {
 	char input[21];
@@ -636,46 +658,4 @@ bool createService(providerDirectory &master) {
 /*
 PARKING LOT
 
-int userOption = 0;
-    
-   do{
-      cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑" << endl;
-      cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
-      cout << "│                       ChocAn" << endl;
-      cout << "│                      Main Menu" << endl;
-      cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
-      cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
-      cout << "│                  Choose an option:" << endl;
-      cout << "│ 0. Exit" << endl;      
-      cout << "│ 1. " << endl;
-      
-      if (  )
-      cout << "│ 2. " << endl;
-      //IF case 2
-      cout << "│" << endl;
-      cout << "│ (Do SOMETHING to see more)" << endl;
-      }
-      cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
-      cout << "                       Option: " << endl;
-
-      //get input 
-      
-      //while(!userInput.anOption()){
-         cout << "[✗] \"" + scanner.next() + "\" is not an option" << endl;
-         cout << "                       Option: " << endl;
-         //get input
-      //}
-
-      
-
-      switch(userOption){
-         case 0: 
-            return;
-         case 1:
-            //menu option 1
-         break;
-
-         default:
-
-   }while(userOption != 0);
 */
