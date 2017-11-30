@@ -38,8 +38,12 @@ accountManager::~accountManager(){
 bool accountManager::addAccount(Account* toAdd, ACCOUNT_TYPE type){
     bool toReturn = false;
     string* memberID = toAdd->getID();
+    string filename("accounts/"+*memberID+".txt");
     
-    //@todo - Check that we aren't overriding an account 
+    //Check that we aren't overriding an account
+    if(allIdNumbers.find(*memberID) != allIdNumbers.end()){
+        return false; //Stop and return if account exists
+    }
 
     //Make sure account type matches ID number
     if(checkAccountType(memberID, type)){
@@ -48,18 +52,18 @@ bool accountManager::addAccount(Account* toAdd, ACCOUNT_TYPE type){
         switch (type) {
             case member:
                 memberTree[*memberID] = toAdd;
-                toReturn = true;
+                toReturn = fileSys.writeSTR(*(static_cast<Member*>(toAdd)->writeToString()), filename);
                 break;
 
             case provider:
                 providerTree[*memberID] = toAdd;
-                toReturn = true;
+                toReturn = fileSys.writeSTR(*(static_cast<Provider*>(toAdd)->writeToString()), filename);
+                
                 break;
 
             case manager:
                 managerTree[*memberID] = toAdd;
-
-                toReturn = true;
+                toReturn = fileSys.writeSTR(*(static_cast<Manager*>(toAdd)->writeToString()), filename);
                 break;
 
             default:
@@ -80,28 +84,39 @@ bool accountManager::addAccount(Account* toAdd, ACCOUNT_TYPE type){
  */
 bool accountManager::removeAccount(string* accountID, ACCOUNT_TYPE type){
     bool toReturn = false;
-
+    string filename("accounts/"+*accountID+".txt");
+    accountMap::iterator it;
+    
+    //Make sure that member already exists
+    if(allIdNumbers.find(*accountID) == allIdNumbers.end()){
+        return true; //Stop and return if it does not exist
+    }
+    
     //Make sure account type matches ID number
     if(checkAccountType(accountID, type)){
         
         //Add the account
         switch (type) {
             case member:
+                //Delete from tree and file system
                 delete memberTree[*accountID];
                 memberTree.erase(*accountID);
-                toReturn = true;
+                if(remove(filename.c_str()) == 0)
+                    toReturn = true;
                 break;
                 
             case provider:
                 delete providerTree[*accountID];
                 providerTree.erase(*accountID);
-                toReturn = true;
+                if(remove(filename.c_str()) == 0)
+                    toReturn = true;
                 break;
                 
             case manager:
                 delete providerTree[*accountID];
                 providerTree.erase(*accountID);
-                toReturn = true;
+                if(remove(filename.c_str()) == 0)
+                    toReturn = true;
                 break;
                 
             default:
@@ -123,7 +138,10 @@ bool accountManager::removeAccount(string* accountID, ACCOUNT_TYPE type){
 bool accountManager::editAccount(string* accountID, Account* newAccount, ACCOUNT_TYPE type){
     bool toReturn = false;
     
-    //@todo - make sure that member already exists
+    //Make sure that member already exists
+    if(allIdNumbers.find(*accountID) == allIdNumbers.end()){
+        return false; //Stop and return if does not exist
+    }
     
     //Make sure account type matches ID number
     if(checkAccountType(accountID, type)){
@@ -136,7 +154,8 @@ bool accountManager::editAccount(string* accountID, Account* newAccount, ACCOUNT
                 
                 //Reset the account
                 memberTree[*accountID] = newAccount;
-                toReturn = true;
+                if(memberTree.find(*accountID)  != memberTree.end())
+                    toReturn = true;
                 break;
                 
             case provider:
@@ -145,7 +164,8 @@ bool accountManager::editAccount(string* accountID, Account* newAccount, ACCOUNT
                 
                 //Reset the account
                 providerTree[*accountID] = newAccount;
-                toReturn = true;
+                if(providerTree.find(*accountID)  != providerTree.end())
+                    toReturn = true;
                 break;
                 
             case manager:
@@ -154,7 +174,8 @@ bool accountManager::editAccount(string* accountID, Account* newAccount, ACCOUNT
                 
                 //Reset the account
                 managerTree[*accountID] = newAccount;
-                toReturn = true;
+                if(managerTree.find(*accountID)  != managerTree.end())
+                    toReturn = true;
                 break;
                 
             default:
@@ -173,8 +194,6 @@ bool accountManager::editAccount(string* accountID, Account* newAccount, ACCOUNT
  */
 Account* accountManager::getAccount(string* accountID, ACCOUNT_TYPE type){
     Account* toReturn = NULL;
-    // Manager * manager = NULL;
-    // Provider * provider = NULL;
 
     //Make sure account type matches ID number
     if(checkAccountType(accountID, type)){
@@ -191,16 +210,6 @@ Account* accountManager::getAccount(string* accountID, ACCOUNT_TYPE type){
                 
             case manager:
                 toReturn=managerTree[*accountID];
-
-                //@todo - Need to figure out why we are getting undefined behavior
-                /* Matt's debigging - BEGIN*/
-                //
-                //Getting NULL pointers from the manager tree.
-                if ( managerTree[*accountID] )
-                    cerr << "ID: " << managerTree[*accountID]->getID() << endl;
-                else
-                    cerr << "NULL pointer" << endl;
-                /* Matt's debigging - END*/
                 break;
                 
             default:
@@ -302,7 +311,10 @@ bool accountManager::loadDataFromDisk(){
     char serviceDate [50];
     char providerName [100];
     char serviceName [100];
+    char memberName [75];
     int membersSeen = 0;
+    float serviceFee = 0;
+    MEMBER_STATUS memStatus = current;
 
     //Member record data
     memberRecordList* memberRecords = NULL;
@@ -361,6 +373,13 @@ bool accountManager::loadDataFromDisk(){
             account.get(status, 50, '\n');
             account.get();
             
+            //Convert to bool
+            if(strcmp(status, "Current") == 0)
+                memStatus = current;
+            else
+                memStatus = expired;
+                
+            
             //Create a new record list
             memberRecords = new memberRecordList;
             
@@ -377,7 +396,7 @@ bool accountManager::loadDataFromDisk(){
                 account.get();  //Get the ^
                 account.get(providerName, 100, '^');
                 account.get();  //Get the ^
-                account.get(serviceName,100,'^');
+                account.get(serviceName,100,'\n');
                 account.get();  //Get the \n
                 
                 //Add Info to record list
@@ -388,7 +407,7 @@ bool accountManager::loadDataFromDisk(){
             }
 
             
-            newAccount = new Member(new string(name), new string(email), new string(accountID), new Address(new string(streetAdress), new string(city), new string(state),new string(zipcode)),member, current, memberRecords);
+            newAccount = new Member(new string(name), new string(email), new string(accountID), new Address(new string(streetAdress), new string(city), new string(state),new string(zipcode)),member, memStatus, memberRecords);
             
             //Clear Memory
             delete memberRecords;
@@ -428,8 +447,15 @@ bool accountManager::loadDataFromDisk(){
                 account.get();  //Get the ^
                 account.get(memberID, 12, '^');
                 account.get();  //Get the ^
-                account.get(serviceCode,25,'\n');
+                account.get(serviceCode,25,'^');
+                account.get();  //Get the ^
+                account >> serviceFee;
+                account.get();  //Get the ^
+                account.get(comments,1000,'^');
+                account.get();  //Get the ^
+                account.get(memberName, 75, '\n');
                 account.get();  //Get the \n
+
                 
                 //Add Info to record list
                 provREC.currentDateTime = currentDate;
@@ -437,11 +463,10 @@ bool accountManager::loadDataFromDisk(){
                 provREC.providerID = providerID;
                 provREC.memberID = memberID;
                 provREC.serviceCode = serviceCode;
-                
-                //@TODO !!! NEED TO UPDATE TEST DATA and RESPOLVE
-                provREC.memberName = "N/A";
-                provREC.comments = "N/A";
-                provREC.serviceFee = rand() % 100; //TEMPORARY
+                provREC.comments = comments;
+                provREC.serviceFee = serviceFee;
+                provREC.memberName = memberName;
+           
                 provList.push_back(provREC);
                 
             }
@@ -449,8 +474,6 @@ bool accountManager::loadDataFromDisk(){
            
             newAccount = new Provider(new string(name), new string(email), new string(accountID), new Address(new string(streetAdress), new string(city), new string(state),new string(zipcode)),provider, new string(password), membersSeen , provList);
             
-//            //Clear Memory
-//            delete providerRecords;
         }
 
         //****************************
@@ -468,6 +491,9 @@ bool accountManager::loadDataFromDisk(){
         
         //Add the account
         addAccount(newAccount, type);
+        
+        //Log the account ID Number
+        allIdNumbers.insert(accountID);
         
         //Close the Account File
         account.close();
@@ -535,7 +561,7 @@ string* accountManager::generateAccountID(ACCOUNT_TYPE type){
         } else { //Reset if ID already exists
             //Delete String
             delete toReturn;
-            toReturn = NULL;
+            toReturn = new string("");
 
             //Reset counters
             random = 0;
@@ -612,7 +638,7 @@ void accountManager::generateRandomAccounts(int amount){
     */
 
     //TO CREATE PROVIDER ACCOUNTS
-    /*
+/*
     while(counter<amount){
         //Generate random
         random = rand() % 12;
@@ -645,13 +671,20 @@ void accountManager::generateRandomAccounts(int amount){
         fileOut << currentDateTime()<<"^";
         fileOut << *id<<"^";
         fileOut << "467623877" <<"^";
-        fileOut << "110" <<"\n";
+        fileOut << "110" <<"^";
+        fileOut << "15.5" <<"^";
+        fileOut << "Good patient!" <<"^";
+        fileOut << "Paul M." <<"\n";
+
         
         fileOut <<"^"<<currentDateTime()<<"^";
         fileOut << currentDateTime()<<"^";
         fileOut << *id<<"^";
         fileOut << "528777939" <<"^";
-        fileOut << "120" <<"\n";
+        fileOut << "120" <<"^";
+        fileOut << "50.5" <<"^";
+        fileOut << "Really addicted to dark choc..." <<"^";
+        fileOut << "Dave W." <<"\n";
         
         fileOut.close();
         
@@ -659,8 +692,7 @@ void accountManager::generateRandomAccounts(int amount){
         
         ++counter;
     }
-*/
-    
+    */
     
    //  TO CREATE MEMBER ACCOUNTS
     

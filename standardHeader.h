@@ -53,6 +53,9 @@ string currentDateTime();
 //Integer to String Converter - for systems earlier than C++11
 string toString(int convertToString);
 
+//Integer to String Converter - for systems earlier than C++11
+string toString(float convertToString);
+
 
 
 //Can probably delete this later... if we use a list library
