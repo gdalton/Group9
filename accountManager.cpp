@@ -52,20 +52,18 @@ bool accountManager::addAccount(Account* toAdd, ACCOUNT_TYPE type){
         switch (type) {
             case member:
                 memberTree[*memberID] = toAdd;
-                fileSys.writeSTR(*(static_cast<Member*>(toAdd)->writeToString()), filename);
-                toReturn = true;
+                toReturn = fileSys.writeSTR(*(static_cast<Member*>(toAdd)->writeToString()), filename);
                 break;
 
             case provider:
                 providerTree[*memberID] = toAdd;
-                fileSys.writeSTR(*(static_cast<Provider*>(toAdd)->writeToString()), filename);
-                toReturn = true;
+                toReturn = fileSys.writeSTR(*(static_cast<Provider*>(toAdd)->writeToString()), filename);
+                
                 break;
 
             case manager:
                 managerTree[*memberID] = toAdd;
-                fileSys.writeSTR(*(static_cast<Manager*>(toAdd)->writeToString()), filename);
-                toReturn = true;
+                toReturn = fileSys.writeSTR(*(static_cast<Manager*>(toAdd)->writeToString()), filename);
                 break;
 
             default:
@@ -87,7 +85,13 @@ bool accountManager::addAccount(Account* toAdd, ACCOUNT_TYPE type){
 bool accountManager::removeAccount(string* accountID, ACCOUNT_TYPE type){
     bool toReturn = false;
     string filename("accounts/"+*accountID+".txt");
-
+    accountMap::iterator it;
+    
+    //Make sure that member already exists
+    if(allIdNumbers.find(*accountID) == allIdNumbers.end()){
+        return true; //Stop and return if it does not exist
+    }
+    
     //Make sure account type matches ID number
     if(checkAccountType(accountID, type)){
         
@@ -97,22 +101,22 @@ bool accountManager::removeAccount(string* accountID, ACCOUNT_TYPE type){
                 //Delete from tree and file system
                 delete memberTree[*accountID];
                 memberTree.erase(*accountID);
-                remove(filename.c_str());
-                toReturn = true;
+                if(remove(filename.c_str()) == 0)
+                    toReturn = true;
                 break;
                 
             case provider:
                 delete providerTree[*accountID];
                 providerTree.erase(*accountID);
-                remove(filename.c_str());
-                toReturn = true;
+                if(remove(filename.c_str()) == 0)
+                    toReturn = true;
                 break;
                 
             case manager:
                 delete providerTree[*accountID];
                 providerTree.erase(*accountID);
-                remove(filename.c_str());
-                toReturn = true;
+                if(remove(filename.c_str()) == 0)
+                    toReturn = true;
                 break;
                 
             default:
@@ -150,7 +154,8 @@ bool accountManager::editAccount(string* accountID, Account* newAccount, ACCOUNT
                 
                 //Reset the account
                 memberTree[*accountID] = newAccount;
-                toReturn = true;
+                if(memberTree.find(*accountID)  != memberTree.end())
+                    toReturn = true;
                 break;
                 
             case provider:
@@ -159,7 +164,8 @@ bool accountManager::editAccount(string* accountID, Account* newAccount, ACCOUNT
                 
                 //Reset the account
                 providerTree[*accountID] = newAccount;
-                toReturn = true;
+                if(providerTree.find(*accountID)  != providerTree.end())
+                    toReturn = true;
                 break;
                 
             case manager:
@@ -168,7 +174,8 @@ bool accountManager::editAccount(string* accountID, Account* newAccount, ACCOUNT
                 
                 //Reset the account
                 managerTree[*accountID] = newAccount;
-                toReturn = true;
+                if(managerTree.find(*accountID)  != managerTree.end())
+                    toReturn = true;
                 break;
                 
             default:
