@@ -45,7 +45,7 @@ list < Service > providerDirectory :: getDirectory ( void ) {
  * @param      addedService  The added service
  * @return     True if the service was added, false otherwise
  */
-bool providerDirectory :: addService ( Service addedService) {
+bool providerDirectory :: addService (Service addedService) {
         if(directory.empty()) {
             directory.push_front(addedService);
             return true;
@@ -69,29 +69,26 @@ bool providerDirectory :: addService ( Service addedService) {
  * @param      serviceID  The service id
  * @return     True if the service was removed, false otherwise
  */
-bool providerDirectory :: removeService ( string * serviceID) {
+bool providerDirectory :: removeService (string serviceID) {
 	if(directory.empty())
             return false;//Nothing was there to remove
         else {
             list < Service > :: iterator it = directory.begin(); 
             for(it; it != directory.end(); ++it) {
-                if(it -> serviceID == *serviceID) {
+                if(it -> serviceID == serviceID) {
 
 
                     /*
                         This stuff is breaking things.
+                        -- This should work now. - Dalton
                     */
                    
-                    // if(it -> serviceID)
-                    //     delete it -> serviceID;
-                    // if(it -> name)
-                    //     delete it -> name;
-                    // it = directory.erase(it);
-                    // //Possible problems if list is emptied after deletion. 
-                    // if(it -> serviceID == *serviceID)
-                    //     return false;
-                    // else
-                    //     return true;
+                    it = directory.erase(it);
+                    //Possible problems if list is emptied after deletion. 
+                    if(it -> serviceID == serviceID)
+                        return false;
+                    else
+                        return true;
                 }
             }
         }
@@ -105,13 +102,13 @@ bool providerDirectory :: removeService ( string * serviceID) {
  * @return     True if the service was displayed, false otherwise (Why is this a
  *             bool?)
  */
-bool providerDirectory :: displayService ( string * serviceID) {
+bool providerDirectory :: displayService (string serviceID) {
 	if(directory.empty())
             return false;
         else {
             list < Service > :: iterator it = directory.begin(); 
             for(it; it != directory.end(); ++it) {
-                if(it -> serviceID == *serviceID) {
+                if(it -> serviceID == serviceID) {
                     cout << "\nService ID: " << it -> serviceID << "\nName: " << it -> name << "\nService Fee: $" << it -> fee << endl;
                     return true;
                 }
@@ -127,13 +124,13 @@ bool providerDirectory :: displayService ( string * serviceID) {
  * @param      newFee     The new fee
  * @return     True if the service fee was updated, false otherwise
  */
-bool providerDirectory :: updateFee ( string * serviceID, float newFee) {
+bool providerDirectory :: updateFee (string serviceID, float newFee) {
 	if(directory.empty())
             return false;
         else {
             list < Service > :: iterator it = directory.begin();
             for(it; it != directory.end(); ++it) {
-                if(it -> serviceID == *serviceID) {
+                if(it -> serviceID == serviceID) {
                     it -> fee = newFee; 
                     if(it -> fee == newFee)
                         return true;

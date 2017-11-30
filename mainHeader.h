@@ -152,10 +152,10 @@ public:
     ~providerDirectory ( void );
 
     list < Service > getDirectory ( void );
-    bool addService ( Service addedService);
-    bool removeService ( string * serviceID);
-    bool displayService ( string * serviceID);
-    bool updateFee ( string * serviceID, float newFee);
+    bool addService (Service addedService);
+    bool removeService (string serviceID);
+    bool displayService (string serviceID);
+    bool updateFee (string serviceID, float newFee);
 
 private:
     list < Service > directory;
