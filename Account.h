@@ -38,19 +38,21 @@ struct providerRecord {
     string currentDateTime;
     string dateOfService;
     string memberName;
-    string memberID;
-    string serviceCode;
-    float serviceFee;
-};
-
-struct provSysRecord { //@todo deconflict with providerRecord
-    string currentDateTime;
-    string DateOfService;
     string providerID;
     string memberID;
     string serviceCode;
-    string comments; 
+    string comments;
+    float serviceFee;
 };
+
+//struct provSysRecord { //Conflict Resolved?
+//    string currentDateTime;
+//    string DateOfService;
+//    string providerID;
+//    string memberID;
+//    string serviceCode;
+//    string comments; 
+//};
 
 /* *** Enumerations
  * - Use to denote different statuses
@@ -67,6 +69,11 @@ enum SECURITY_LEVEL {
 	provider,
 	member
 }; typedef enum SECURITY_LEVEL SECURITY_LEVEL,ACCOUNT_TYPE;
+
+
+//OTHER TYPEDEFS
+typedef list < memberRecord > memberRecordList;
+typedef list < providerRecord > providerRecordList;
 
 
 
@@ -157,7 +164,7 @@ public:
 	Provider ( void );
 	Provider ( const Provider & );
 	Provider ( string * newName, string * newEmail, string *newID, Address *newAddress, SECURITY_LEVEL newSecurityLevel,
-  	string * newPassword, int newNumMembersSeen,   list < int > * newMembersSeen,   list < providerRecord >  * newServiceRecord);
+  	string * newPassword, int newNumMembersSeen, list < providerRecord >  & newServiceRecord);
 	~Provider ( void );
 
 
@@ -176,7 +183,7 @@ protected:
 	string * password;
 	int numMembersSeen;
 	list < int > * membersSeen; //Wasn't shown as a pointer, but maybe it should be?
-	list < providerRecord > * serviceRecord; //Wasn't shown as a pointer, but maybe it should be?
+	list < providerRecord > serviceRecord;
 };
 
 

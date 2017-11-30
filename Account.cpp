@@ -161,19 +161,17 @@ bool Manager :: checkPassword (   string * passwordToCheck ) const {
 /////////////
 
 Provider :: Provider ( void ) : 
-Account ( ), password ( NULL ), numMembersSeen ( 0 ), membersSeen ( NULL ), serviceRecord ( NULL ) {}
+Account ( ), password ( NULL ), numMembersSeen ( 0 ), membersSeen ( NULL ) {}
 
-Provider :: Provider ( string * newName, string * newEmail, string * newID, Address * newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword, int newNumMembersSeen,   list < int > * newMembersSeen,   list < providerRecord >  * newServiceRecord) :
+Provider :: Provider ( string * newName, string * newEmail, string * newID, Address * newAddress, SECURITY_LEVEL newSecurityLevel, string * newPassword, int newNumMembersSeen,  list < providerRecord >  & newServiceRecord) :
     Account ( newName, newEmail, newID, newAddress, newSecurityLevel ), password ( newPassword ), numMembersSeen ( newNumMembersSeen ), membersSeen ( NULL ),
     serviceRecord ( NULL )  {
 	
 	password = new string ( * newPassword );
 
 	membersSeen = new list < int >;
-	*membersSeen = *newMembersSeen;
-
-	serviceRecord = new list < providerRecord >;
-	*serviceRecord = *newServiceRecord;
+    
+	serviceRecord = newServiceRecord;
 }
 
 Provider :: Provider ( const Provider & copied) : 
@@ -185,8 +183,7 @@ Account ( copied ), password ( NULL ), numMembersSeen ( copied.numMembersSeen ),
 	membersSeen = new list < int >;
 	*membersSeen = *copied.membersSeen;
 
-	serviceRecord = new list < providerRecord >;
-	*serviceRecord = *copied.serviceRecord;
+	serviceRecord = copied.serviceRecord;
 }
 
 Provider :: ~Provider ( void ) {//@todo
@@ -200,11 +197,6 @@ Provider :: ~Provider ( void ) {//@todo
 	if ( membersSeen ) {
 		delete membersSeen;
 		membersSeen = NULL;
-	}
-
-	if ( serviceRecord ) {
-		delete serviceRecord;
-		serviceRecord = NULL;
 	}
 }
 
@@ -256,7 +248,7 @@ bool Provider :: displayAllMembers ( void ) const {//@todo
 bool Provider :: addServiceRecord ( providerRecord * newServiceRecord ) {//@todo
 	//Push newServiceRecord onto list head
 	
-	serviceRecord -> push_back ( * newServiceRecord );
+	serviceRecord.push_back ( * newServiceRecord );
 
 	//if ( serviceRecord - > end () - 1 == * newServiceRecord ) @toDo '==' operator for Record class ??? this is a struct?
 		//return true; 
