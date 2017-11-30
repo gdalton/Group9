@@ -359,7 +359,7 @@ bool UserInterface :: runManagerMenu ( void ) {
                 break;
 
             case 8:
-
+                directory.displayAll();
                 break;
 
             case 9:
