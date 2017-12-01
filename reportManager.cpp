@@ -52,7 +52,7 @@
                 theAccount = static_cast<Provider*>(i->second);
                 
                 //If they saw anyone this week
-                if( i->second.getNumMembersSeen () != 0) {
+                if( theAccount->getNumMembersSeen () != 0) {
                     ++totalProviders;
                 if( theAccount->getNumMembersSeen () != 0) {
 
@@ -82,7 +82,8 @@
 
         return record;
     }
-    
+}
+
     /** Reads in a 9-digit provider ID and generate an individual provider report
      * for a ChocAn manager if the provider ID input exists. The report will be
      * returned via provider report pointer provided in the arguments list. If
