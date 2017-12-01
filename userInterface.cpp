@@ -1219,7 +1219,7 @@ bool writeEFT(eft * toWrite) {
     ofstream fileOut;
     int count = 1;
     string id(toWrite -> providerID);
-    string filename("reports/provider/" + id + "-" + currentDateTime() + ".txt");
+    string filename("reports/eft/" + id + "-" + currentDateTime() + ".txt");
 
     fileOut.open(filename.c_str());
 
