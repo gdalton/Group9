@@ -34,7 +34,7 @@
      * returned via a manager’s report struct.
      * @return     True if the changes were made, false otherwise
      */
-    managersReport * reportManager :: managerReport ( const map < string, Account* > & providerTree ) {
+    managersReport * reportManager :: managerReport ( const map < string, Account* > * providerTree ) {
 
         float providerFee = 0;
         float totalFees = 0;
