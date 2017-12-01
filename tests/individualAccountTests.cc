@@ -78,9 +78,38 @@ TEST(accountTesting, managerTesting) {
 
     ASSERT_TRUE(test.setPassword(new string("root"))); 
 
-    ASSERT_TRUE(test.checkPassword(&password)); 
+    ASSERT_TRUE(test.checkPassword(&password));
+}
 
-   // Account ( string * newName, string * newEmail, string *newID, Address *newAddress, SECURITY_LEVEL newSecurityLevel );
+
+TEST(accountTesting, providerTesting) {
+    string street = "Street";
+    string city = "Portland";
+    string state = "OR";
+    string zipcode = "97201";
+    
+    Address theAddress(&street,&city,&state,&zipcode);
+    
+    string name= "Person";
+    string email  = "p@pdx.edu";
+    string id= "200000001";
+    string password = "password";
+    int membersSeen = 5;
+    list < providerRecord > records;
+    
+    Provider test(&name, &email, &id, &theAddress, provider, &password, membersSeen, records);
+    
+    ASSERT_TRUE(*test.getID() == "200000001");
+    ASSERT_TRUE(test.getSecurityLevel() == provider);
+    
+    ASSERT_TRUE(test.checkPassword(&password));
+    
+    password = "root";
+    ASSERT_FALSE(test.checkPassword(&password));
+    
+    ASSERT_TRUE(test.setPassword(new string("root")));
+    
+    ASSERT_TRUE(test.checkPassword(&password));
     
 }
 
