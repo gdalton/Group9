@@ -809,6 +809,7 @@ void viewAccount ( accountManager & accounts ) {
     }while(again("Would you like to view another account? (y/n):"));
 }
 
+//Creates a new Service and add it to the providerDirectory.
 bool createService(providerDirectory &master) {
 	char input[21];
         char * temp;
@@ -828,6 +829,10 @@ bool createService(providerDirectory &master) {
             temp[i] = toupper(temp[i]);
         }
         toAdd.name = temp;
+
+        if(temp)
+            delete [] temp;
+        temp = NULL;
 
         //Gets Service Fee from user.
 	cout << "\nPlease enter the cost of the service: $";
@@ -883,19 +888,27 @@ bool createService(providerDirectory &master) {
 	}
 }
 
+//Gets a service code from the user and removes it from 
+//the providerDirectory.
 bool deleteService(providerDirectory &master) {
 	char input[7];
 	char * temp;
         char c;
 	string id;
 
+        //Gets a service code from the user.
 	cout << "Please enter the 6-digit ID of the service to be removed: ";
 	cin.get(input, 7, '\n');
 	cin.ignore(100, '\n');
 	temp = new char[strlen(input) + 1];
 	strcpy(temp, input);
 	id = temp;
+        
+        if(temp)
+            delete [] temp;
+        temp = NULL;
 
+        //Validates the user input service code.
         if(master.displayService(id)) {
             do {
                 cout << "\nAre you sure you want to remove this service?" << endl
@@ -905,8 +918,10 @@ bool deleteService(providerDirectory &master) {
                 cin.ignore(100, '\n');
             }while(!(c == 'y' || c == 'n'));
 
-            if(c == 'n')
+            if(c == 'n') 
                 return false;
+ 
+            //Removes the service upon user confirmation. 
             else {
                 if(master.removeService(id))
                     return true;
@@ -920,6 +935,7 @@ bool deleteService(providerDirectory &master) {
         }
 }
 
+//Updates a service fee in the providerDirectory.
 bool updateService(providerDirectory &master) {
 	char input[7];
 	char * temp;
@@ -927,6 +943,7 @@ bool updateService(providerDirectory &master) {
 	string id;
         float fee;
 
+        //Gets a service code to update from the user.
 	cout << "Please enter the 6-digit ID of the service to be updated: ";
 	cin.get(input, 7, '\n');
 	cin.ignore(100, '\n');
@@ -934,6 +951,11 @@ bool updateService(providerDirectory &master) {
 	strcpy(temp, input);
 	id = temp;
 
+        if(temp)
+            delete temp;
+        temp = NULL;
+
+        //Checks providerDirectory for service code.
         if(master.displayService(id)) {
             do {
                 cout << "\nAre you sure you want to update this service?" << endl
@@ -958,11 +980,13 @@ bool updateService(providerDirectory &master) {
                 }
                 cin.ignore(100, '\n');
 
-            //Makes sure input is within correct range. 
+                //Makes sure input is within correct range. 
                 if(fee > 999.99 || fee < 0) {
                     cout << "That value is not within the acceptable price range ($0-$999.99)" << endl;
                     return false;
                 }
+
+                //Updates service fee upon valid input.
                 else {
                     if(master.updateFee(id, fee))
                         return true;
