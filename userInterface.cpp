@@ -1211,6 +1211,8 @@ bool getEFT(reportManager & reports, accountManager & accounts) {
 
     if ( providerAccount ) 
         return writeEFT ( reports.generateEFT ( providerAccount ) );
+
+    return false;
 }
 
 bool writeEFT(eft * toWrite) {
