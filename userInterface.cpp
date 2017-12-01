@@ -942,8 +942,8 @@ bool updateService(providerDirectory &master) {
 void writeManageReport(managersReport * toWrite) {
 	string filename("reports/manager/" + currentDateTime() + ".txt");
         ofstream fileOut;
-        map <string, map <int, float>>::iterator i;
-        fileOut.open(filename);
+        map <string, map <int, float> >::iterator i;
+        fileOut.open(filename.c_str());
 
         if(fileOut) {
             fileOut << "Current Date and Time: " << currentDateTime() << endl
