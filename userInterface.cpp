@@ -137,6 +137,7 @@ bool UserInterface :: runProviderMenu () {
         cout << "│ 1. Search for service in Provider Directory" << endl;
         cout << "│ 2. Validate Member Status" << endl;
         cout << "│ 3. Create Service Record" << endl;
+        cout << "│ 4. View Provider Directory" << endl;
         cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙";
         read_num("                      Option: ", selection);
 
@@ -174,6 +175,11 @@ bool UserInterface :: runProviderMenu () {
 
             case 3:
                 generateProviderServiceRecord( database, accounts );
+                break;
+
+            case 4:
+                directory.displayAll();
+                waitForEnter();
                 break;
 
             default:
@@ -283,7 +289,7 @@ bool UserInterface :: runManagerMenu ( void ) {
         cout << "│ 5. Create Service" << endl;
         cout << "│ 6. Delete Service" << endl;
         cout << "│ 7. Update Service" << endl;
-        cout << "│ 8. View ProviderDirectory" << endl;
+        cout << "│ 8. View Provider Directory" << endl;
         cout << "│" << endl;
         cout << "│ Reports:" << endl;
         cout << "│ 9. Generate Manager Report" << endl;
