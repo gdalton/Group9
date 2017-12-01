@@ -33,7 +33,9 @@ void writeProviderReports(list <providersReport> * toWrite);
 void writeMemberReports(list <membersReport> * toWrite);
 bool getProviderReport(reportManager &, accountManager &);
 void writeProviderRpt(providersReport * toWrite);
- 
+bool getMemberReport(reportManager & reports, accountManager & accounts);
+void writeMemberRpt(membersReport * toWrite);
+  
 /** Constructs the object.
  */
 UserInterface :: UserInterface () {
@@ -366,6 +368,12 @@ bool UserInterface :: runManagerMenu ( void ) {
 
             case 11:
 
+                if(getMemberReport(reports, accounts))
+                    cout << "\nMember Report generated successfully!" << endl;
+                else
+                    cout << "\nInvalid ID Member was not found." << endl;
+
+                waitForEnter();
                 break;
 
             case 12:
@@ -1112,7 +1120,74 @@ void writeProviderRpt(providersReport * toWrite) {
             fileOut.close();
        }
 }
-	
+
+bool getMemberReport(reportManager & reports, accountManager & accounts) {
+
+        string * id;
+        char userInput[20];
+        Member * toGet = NULL;
+
+        cout << "\nPlease Enter a Valid Member ID: ";
+        cin.get(userInput, 20, '\n');
+        cin.ignore(100, '\n');
+
+        id = new string(userInput);
+        toGet = static_cast<Member*>(accounts.getAccount(id, member));
+
+	if(toGet) {
+            writeMemberRpt(reports.memberReport(*toGet));
+
+            toGet = NULL;
+            if(id) {
+                delete id;
+                id = NULL;
+            }
+            return true;
+        }
+        else {
+            if(id) {
+                delete id;
+                id = NULL;
+            }
+            return false;
+        }
+    
+}
+    
+void writeMemberRpt(membersReport * toWrite) {
+
+        ofstream fileOut;
+        int count = 1;
+        string id(toWrite -> memberID);
+        string filename("reports/member/" + id + "-" + currentDateTime() + ".txt");
+
+        fileOut.open(filename.c_str());
+
+        if(fileOut) {
+            fileOut << "********MEMBER REPORT********" << endl
+                    << "\nMember Name: " << toWrite -> memberName << endl
+                    << "Member ID: " << toWrite -> memberID << endl
+                    << "Street Address: " << *toWrite -> theAddress.getStreetAddress() << endl
+                    << "City: " << *toWrite -> theAddress.getCity() << endl
+                    << "State: " << *toWrite -> theAddress.getState() << endl
+                    << "Zipcode: " << *toWrite -> theAddress.getZipcode() << endl
+                    << "\n****SERVICE RECORD****" << endl;
+
+           //Cycles through serviceRecord and writes info.
+           list <memberRecord> :: iterator j = toWrite -> serviceRecord.begin();
+           for(j; j != toWrite -> serviceRecord.end(); ++j) {
+               fileOut << "\nService #" << count << ":" << endl 
+                       << "Service Date: " << j -> dateOfService << endl
+                       << "Provider Name: " << j -> providerName << endl
+                       << "Service Name: " << j -> serviceName << endl;
+               ++count;
+           }
+           fileOut << "\n****END SERVICE RECORD****" << endl
+                   << "\n\n********END MEMBER REPORT********" << endl;
+               
+           fileOut.close();
+        }
+}
 
 /*
 PARKING LOT
