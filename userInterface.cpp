@@ -31,6 +31,8 @@ void generateProviderRepot();
 void writeManageReport(managersReport * toWrite);
 void writeProviderReports(list <providersReport> * toWrite);
 void writeMemberReports(list <membersReport> * toWrite);
+bool getProviderReport(reportManager &, accountManager &);
+void writeProviderRpt(providersReport * toWrite);
  
 /** Constructs the object.
  */
@@ -353,7 +355,13 @@ bool UserInterface :: runManagerMenu ( void ) {
                 break;
 
             case 10:
+ 
+                if(getProviderReport(reports, accounts))
+                    cout << "\nProvider Report generated successfully!" << endl;
+                else
+                    cout << "\nInvalid ID Provider was not found." << endl;
 
+                waitForEnter();
                 break;
 
             case 11:
@@ -998,7 +1006,7 @@ void writeMemberReports(list <membersReport> * toWrite) {
         list <membersReport> :: iterator i = toWrite -> begin();
         int count = 1;
 
-        //Cycles through providerReports opens a unique file and writes info.
+        //Cycles through memberReports opens a unique file and writes info.
         for(i; i != toWrite -> end(); ++i) {
             string id(i -> memberID);
             string filename("reports/member/" + id + "-" + currentDateTime() + ".txt");
@@ -1031,6 +1039,80 @@ void writeMemberReports(list <membersReport> * toWrite) {
            }
        }
 }
+
+bool getProviderReport(reportManager & reports, accountManager & accounts) {
+
+        string * id;
+        char userInput[20];
+        Provider * toGet = NULL;
+
+        cout << "\nPlease Enter a Valid Provider ID: ";
+        cin.get(userInput, 20, '\n');
+        cin.ignore(100, '\n');
+
+        id = new string(userInput);
+        toGet = static_cast<Provider*>(accounts.getAccount(id, provider));
+
+	if(toGet) {
+            writeProviderRpt(reports.providerReport(*toGet));
+
+            toGet = NULL;
+            if(id) {
+                delete id;
+                id = NULL;
+            }
+            return true;
+        }
+        else {
+            if(id) {
+                delete id;
+                id = NULL;
+            }
+            return false;
+        }
+    
+}
+    
+void writeProviderRpt(providersReport * toWrite) {
+
+        ofstream fileOut;
+        int count = 1;
+        string id(toWrite -> providerID);
+        string filename("reports/provider/" + id + "-" + currentDateTime() + ".txt");
+
+        fileOut.open(filename.c_str());
+
+        if(fileOut) {
+            fileOut << "********PROVIDER REPORT********" << endl
+                    << "\nProvider Name: " << toWrite -> providerName << endl
+                    << "Provider ID: " << toWrite -> providerID << endl
+                    << "Street Address: " << *toWrite -> theAddress.getStreetAddress() << endl
+                    << "City: " << *toWrite -> theAddress.getCity() << endl
+                    << "State: " << *toWrite -> theAddress.getState() << endl
+                    << "Zipcode: " << *toWrite -> theAddress.getZipcode() << endl
+                    << "\n****SERVICE RECORD****" << endl;
+
+               //Cycles through serviceRecord and writes info.
+            list <providerRecord> :: iterator j = toWrite -> serviceRecord.begin();
+            for(j; j != toWrite -> serviceRecord.end(); ++j) {
+                fileOut << "\nService #" << count << ":" << endl 
+                        << "Service Date: " << j -> dateOfService << endl
+                        << "Record Received: " << j -> currentDateTime << endl
+                        << "Member Name: " << j -> memberName << endl
+                        << "Member ID: " << j -> memberID << endl
+                        << "Service Code: " << j -> serviceCode << endl
+                        << "Service Fee: $" << j -> serviceFee << endl;
+                ++count;
+            }
+            fileOut << "\n****END SERVICE RECORD****" << endl
+                    << "\nTotal Consultations: " << toWrite -> consultations << endl
+                    << "Total Fee: $" << toWrite -> weekFee << endl
+                    << "\n********END PROVIDER REPORT********" << endl;
+               
+            fileOut.close();
+       }
+}
+	
 
 /*
 PARKING LOT
