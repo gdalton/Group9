@@ -942,15 +942,15 @@ bool updateService(providerDirectory &master) {
 void writeManageReport(managersReport * toWrite) {
 	string filename("reports/manager/" + currentDateTime() + ".txt");
         ofstream fileOut;
-
+        map <string, map <int, float>>::iterator i;
         fileOut.open(filename);
 
         if(fileOut) {
             fileOut << "Current Date and Time: " << currentDateTime() << endl
                     << "\n********PROVIDERS TO BE PAID********\n" << endl;
         
-            for(toWrite -> map <string, map <int, float>> :: iterator i = providerDetails.begin(); i != providerDetails.end(); ++i) {
-                map <int, float> :: iterator j = i -> begin();
+            for(i= toWrite->providerDetails.begin(); i != toWrite->providerDetails.end(); ++i) {
+                map <int, float> :: iterator j = i->second.begin();
 
                 fileOut << "\nProvider ID: " << i -> first << endl
                         << "Members Seen: " << j -> first << endl

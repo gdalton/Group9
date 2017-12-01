@@ -45,9 +45,9 @@
         managersReport * record = new managersReport;
         map < int, float > data;
 
-        if ( & providerTree ) {
+        if ( providerTree ) {
             //Loop over providers
-            for ( map < string, Account*  > :: const_iterator i = providerTree . begin (); i != providerTree . end (); ++i ) {
+            for ( map < string, Account*  > :: const_iterator i = providerTree->begin (); i != providerTree->end (); ++i ) {
 
                 theAccount = static_cast<Provider*>(i->second);
                 
