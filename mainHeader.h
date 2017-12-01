@@ -69,12 +69,16 @@ struct providersReport {
 struct managersReport {
     map < string, map < int, float > > providerDetails; //<providerID, <numMembersSeen, feesDue>
     float totalFees;
+    int totalProviders;
+    int totalConsults;
 
     managersReport ( void ) {};
 
     managersReport( const managersReport & toCopy) {
             providerDetails = toCopy.providerDetails;
             totalFees = toCopy.totalFees;
+            totalProviders = toCopy.totalProviders;
+            totalConsults = toCopy.totalConsults;
         
     }
 };
@@ -176,7 +180,7 @@ public:
     reportManager ( const reportManager & toCopy );
     ~reportManager ( void );
 
-    managersReport * managerReport ( const map < string, Provider > &);
+    managersReport * managerReport ( const map < string, Account*  > *);
     providersReport * providerReport ( const Provider &);
     membersReport * memberReport ( const Member &);
     list < providersReport > * providerAllReports ( const map < string, Provider > &);

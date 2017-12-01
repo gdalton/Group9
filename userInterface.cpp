@@ -28,6 +28,7 @@ bool deleteService(providerDirectory &master);
 bool updateService(providerDirectory &master);
 void generateProviderServiceRecord( fileSystem & database, accountManager & accounts );
 void generateProviderRepot();
+void writeManageReport(managersReport * toWrite);
 
 /** Constructs the object.
  */
@@ -434,6 +435,8 @@ bool UserInterface :: runManagerMenu ( void ) {
 
             case 9:
 
+                writeManageReport(reports.managerReport(accounts.getAllAccounts(provider)));
+                waitForEnter();
                 break;
 
             case 10:
@@ -997,6 +1000,31 @@ bool updateService(providerDirectory &master) {
         }
 }
 
+void writeManageReport(managersReport * toWrite) {
+	string filename("reports/manager/" + currentDateTime() + ".txt");
+        ofstream fileOut;
+        map <string, map <int, float> >::iterator i;
+        fileOut.open(filename.c_str());
+
+        if(fileOut) {
+            fileOut << "Current Date and Time: " << currentDateTime() << endl
+                    << "\n********PROVIDERS TO BE PAID********\n" << endl;
+        
+            for(i= toWrite->providerDetails.begin(); i != toWrite->providerDetails.end(); ++i) {
+                map <int, float> :: iterator j = i->second.begin();
+
+                fileOut << "\nProvider ID: " << i -> first << endl
+                        << "Members Seen: " << j -> first << endl
+                        << "Fees Due: $" << j -> second << endl;
+            }
+
+            fileOut << "\nTotal Providers: " << toWrite -> totalProviders << endl
+                    << "Total Consultations: " << toWrite -> totalConsults << endl
+                    << "Total Fees Owed: $" << toWrite -> totalFees << endl
+                    << "\n\n\n********END REPORT********" << endl;
+	}
+        fileOut.close();
+}
 /*
 PARKING LOT
 

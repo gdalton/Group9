@@ -1,6 +1,6 @@
 
 /* filename: reportManager.cpp
- * Programmers: Matthew Greenlaw (Add your name here)
+ * Programmers: Matthew Greenlaw, Dalton Gray (Add your name here)
  * Class Number: CS-300
  * Date: 22NOV17
  * Purpose: The Report Manager (RM) class will contain all of the functions
@@ -34,30 +34,38 @@
      * returned via a manager’s report struct.
      * @return     True if the changes were made, false otherwise
      */
-    managersReport * reportManager :: managerReport ( const map < string, Provider > & providerTree ) {
+    managersReport * reportManager :: managerReport ( const map < string, Account* > * providerTree ) {
 
         float providerFee = 0;
         float totalFees = 0;
+        int totalProviders = 0;
+        int totalConsults = 0;
+        Provider* theAccount;
 
         managersReport * record = new managersReport;
         map < int, float > data;
 
-        if ( & providerTree ) {
+        if ( providerTree ) {
             //Loop over providers
-            for ( map < string, Provider > :: const_iterator i = providerTree . begin (); i != providerTree . end (); ++i ) {
+            for ( map < string, Account*  > :: const_iterator i = providerTree->begin (); i != providerTree->end (); ++i ) {
+
+                theAccount = static_cast<Provider*>(i->second);
                 
                 //If they saw anyone this week
-                if( i->second.getNumMembersSeen () != 0) {
-                    
+                if( theAccount->getNumMembersSeen () != 0) {
+                    ++totalProviders;
+                if( theAccount->getNumMembersSeen () != 0) {
+
                     //loop over who they saw and record the fees
-                    list < providerRecord > * providerServiceRecord = i -> second.getServiceRecord ();
+                    list < providerRecord > * providerServiceRecord = theAccount->getServiceRecord ();
 
                     for ( list < providerRecord > :: const_iterator j = providerServiceRecord -> begin (); j != providerServiceRecord -> end (); ++j ) {
                         providerFee += j -> serviceFee;
+                        ++totalConsults;
                     }
 
                     //store the data
-                    data.insert ( pair < int, float > ( i->second.getNumMembersSeen (), providerFee));
+                    data.insert ( pair < int, float > ( theAccount->getNumMembersSeen (), providerFee));
 
                     //add the provider and their data
                     record -> providerDetails.insert ( pair < string, map < int, float > > ( i -> first, data));
@@ -67,13 +75,15 @@
                 totalFees += providerFee;
                 providerFee = 0;
             }
-
+            record -> totalProviders = totalProviders;
+            record -> totalConsults = totalConsults;
             record -> totalFees = totalFees;
         }
 
         return record;
     }
-    
+}
+
     /** Reads in a 9-digit provider ID and generate an individual provider report
      * for a ChocAn manager if the provider ID input exists. The report will be
      * returned via provider report pointer provided in the arguments list. If
@@ -318,4 +328,4 @@
         completedRecord = record.str();
         fs.write(completedRecord.c_str(), filename.c_str());
      */
-    
+
