@@ -14,8 +14,14 @@
 //Constructors and Destructors
 accountManager::accountManager(){
 
+    //Set the data loading flag
+    loadingData = true;
+    
     //Load any existing member data from the disk
     loadDataFromDisk();
+    
+    //Update flag
+    loadingData = false;
 }
 accountManager::accountManager(const accountManager & toCopy){
     
@@ -46,6 +52,27 @@ bool accountManager::addAccount(Account* toAdd, ACCOUNT_TYPE type){
     } else {
         //Add the ID number to ID tracker
         allIdNumbers.insert(*memberID);
+    }
+    
+    //If not loading data, update the ID list file
+    if(!loadingData){
+        
+        //Open the file in override mode
+        ofstream fileOut;
+        
+        //Open the filestream
+        fileOut.open("accounts/allIDs.txt");
+        
+        //Checking the connection to the file
+        if(fileOut)
+        {
+            //Read out the data
+            for (set<string>::iterator it=allIdNumbers.begin(); it!=allIdNumbers.end(); ++it)
+                fileOut << *it+".txt\n";
+            
+            //Close the file
+            fileOut.close();
+        }
     }
 
     //Make sure account type matches ID number

@@ -139,7 +139,8 @@ class accountManager{
     accountMap providerTree;
     accountMap managerTree;
     set<string> allIdNumbers;
-    fileSystem fileSys; 
+    fileSystem fileSys;
+    bool loadingData;
     
     //See for refrence: http://en.cppreference.com/w/cpp/container/map
 };
