@@ -73,12 +73,12 @@ bool fileSystem::writeSTR(string & dataToReadOut, string & filename)
 }
 
 bool fileSystem :: appendToFile ( string * filename, string * toAppend) {
-    ifstream appendedFile;
+    ofstream appendedFile;
 
-    appendedFile.open ( filename -> c_str(), ifstream::app );
+    appendedFile.open ( filename -> c_str(), ios_base::app );
 
     if ( !appendedFile.fail() ) {
-        appendedFile >> *toAppend;
+        appendedFile << *toAppend;
         appendedFile.close();
         return true;
     }

@@ -313,12 +313,12 @@ void generateProviderServiceRecord( fileSystem & database, accountManager & acco
         } else if (cin.fail()) {
             cin.clear();
             cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
-            cout << "\n[✗] Invalid service fee. \nTry again? (y/n):";
+            cout << "\n[✗] Invalid service fee. \nExit? (y/n):";
         }
         
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         getline ( cin, userInput);
-    } while ( userInput.at ( 0 ) != 'n' );
+    } while ( userInput.at ( 0 ) != 'y' );
 
     accountToEdit = static_cast < Provider * > ( accounts.getAccount ( providerID, type ) );
 

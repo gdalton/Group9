@@ -302,22 +302,26 @@ bool Provider :: addServiceRecord ( fileSystem & database, providerRecord & newS
     */
    
     string * recordContents = NULL;
-    //string * filename;
+    stringstream aFloat;
+    string serviceFee;
 
     if ( &newServiceRecord ) {
         serviceRecord.push_front ( newServiceRecord );
+        aFloat << newServiceRecord . serviceFee;
+        serviceFee = aFloat.str();
 
         recordContents = new string;
+        * recordContents += "^";
         * recordContents += newServiceRecord . currentDateTime + "^";
         * recordContents += newServiceRecord . dateOfService + "^";
-        * recordContents += newServiceRecord . memberName + "^";
         * recordContents += newServiceRecord . providerID + "^";
         * recordContents += newServiceRecord . memberID + "^";
         * recordContents += newServiceRecord . serviceCode + "^";
+        * recordContents += serviceFee + "^";
         * recordContents += newServiceRecord . comments + "^";
-        * recordContents += newServiceRecord . serviceFee;
-
-        if ( database . appendToFile ( new string ( * ID + ".txt" ),  recordContents ) )
+        * recordContents += newServiceRecord . memberName;
+        
+        if ( database . appendToFile ( new string ( "accounts/" + * ID + ".txt" ),  recordContents ) )
             return true;
     }
 	
