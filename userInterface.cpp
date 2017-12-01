@@ -48,75 +48,6 @@ UserInterface :: UserInterface ( const UserInterface & toCopy ) {
 UserInterface :: ~UserInterface ( void ) {
 }
 
-/** Starts up the whole system and runs the UI.
- * @return     True if the user exits normally, false otherwise
- */
-bool UserInterface :: runSystem ( void ) {
-    bool toReturn = false;
-    
-    int selection = 0;
-    
-    //Welcome the user and explain the program
-    printLine(50);
-    cout<<"           Welcome to the ChocAn HCS"<<endl;
-    printLine(50);
-    cout<<endl<<endl;
-    
-    //Login Function here
-    
-    do
-    {
-        //Get the user's selection
-        selection = userSelection();
-        switch(selection)
-        {
-            case 1:
-                //Some function call...
-                
-                //Wait for the user to continue
-                waitForEnter();
-                break;
-                
-            case 2:
-                //Some function call...
-                
-                //Wait for the user to continue
-                waitForEnter();
-                break;
-                
-            case 3:
-                
-                //Wait for the user to continue
-                waitForEnter();
-                break;
-                
-            case 4:
-                
-                //Wait for the user to continue
-                waitForEnter();
-                break;
-                
-            case 5:
-                
-                //Wait for the user to continue
-                waitForEnter();
-                break;
-                
-            case 9:
-                //Close the program
-                cout<<"Program closed... Thank you!"<<endl;
-                break;
-                
-            default:
-                cout<<"An unknown error occured!"<<endl;
-                
-        }
-    }while(selection<=8);
-
-    
-    return toReturn;
-}
-
 bool UserInterface :: login () {
    string userID = "";
    string password = "";
@@ -175,31 +106,6 @@ bool UserInterface :: login () {
    } while ( loginAttempts < 3);
     
     return false;
-}
-
-
-//Function to allow the user to select a number for the switch statement
-int UserInterface::userSelection()
-{
-    int userSelection=0;
-    
-    do
-    {
-        cout<<"************************************************"<<endl;;
-        cout<<"            ChocAn Manager Menu"<<endl;;
-        cout<<"************************************************"<<endl;
-        
-        //Print out the menu options
-        cout<<"1. Add a Account"<<endl;
-        cout<<"2. Run Reports"<<endl;
-        cout<<"3. Set member status"<<endl;
-        cout<<"9. Exit program."<<endl;
-        
-        read_num("\nPlease make a selection:", userSelection);
-        
-    }while(userSelection<1 || userSelection>9);
-    
-    return userSelection;
 }
 
 /** Runs the provider menu system. It presents the provider with a series of

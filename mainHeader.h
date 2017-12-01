@@ -37,13 +37,15 @@ struct membersReport {
     string memberName;
     string memberID;
     Address theAddress;
+    list < memberRecord > serviceRecord;
 
     membersReport ( void ) {};
 
     membersReport( const membersReport & toCopy) {
-            memberName = toCopy.memberName;
-            memberID = toCopy.memberID;
-            theAddress = toCopy.theAddress;
+        memberName = toCopy.memberName;
+        memberID = toCopy.memberID;
+        theAddress = toCopy.theAddress;
+        serviceRecord = toCopy.serviceRecord;
     }
 };
 
@@ -53,16 +55,17 @@ struct providersReport {
     Address theAddress;
     int consultations;
     float weekFee;
+    list < providerRecord > serviceRecord;
 
     providersReport ( void ) {};
 
     providersReport( const providersReport & toCopy) {
-            providerName = toCopy.providerName;
-            providerID = toCopy.providerID;
-            theAddress = toCopy.theAddress;
-            consultations = toCopy.consultations;
-            weekFee = toCopy.weekFee;
-        
+        providerName = toCopy.providerName;
+        providerID = toCopy.providerID;
+        theAddress = toCopy.theAddress;
+        consultations = toCopy.consultations;
+        weekFee = toCopy.weekFee;
+        serviceRecord = toCopy.serviceRecord;        
     }
 };
 
