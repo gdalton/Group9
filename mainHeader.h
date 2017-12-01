@@ -8,6 +8,7 @@
 #include <map>
 #include <set>
 #include <time.h> // time_t
+#include <limits> //numeric_limits
 
 
 using namespace std;
@@ -96,6 +97,8 @@ class fileSystem{
         bool write(const char* dataToReadOut, const char* filename);
     
         bool writeSTR(string & dataToReadOut, string & filename);
+
+        bool appendToFile ( string * filename, string * toAppend);
     
         //Read in from a file
         bool read(char* & allData, int length, const char* fileName);

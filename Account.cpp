@@ -289,10 +289,39 @@ bool Provider :: displayAllMembers ( void ) const {//@todo
  * @note	Client should not delete newServiceRecord, let Provider do that in the
  *       	destructor.
  */
-bool Provider :: addServiceRecord ( providerRecord * newServiceRecord ) {//@todo
-	//Push newServiceRecord onto list head
+bool Provider :: addServiceRecord ( fileSystem & database, providerRecord & newServiceRecord ) {//@todo    
+    /*provider service record
+    string currentDateTime;
+    string dateOfService;
+    string memberName;
+    string providerID;
+    string memberID;
+    string serviceCode;
+    string comments;
+    float serviceFee;
+    */
+   
+    string * recordContents = NULL;
+    //string * filename;
+
+    if ( &newServiceRecord ) {
+        serviceRecord.push_front ( newServiceRecord );
+
+        recordContents = new string;
+        * recordContents += newServiceRecord . currentDateTime + "^";
+        * recordContents += newServiceRecord . dateOfService + "^";
+        * recordContents += newServiceRecord . memberName + "^";
+        * recordContents += newServiceRecord . providerID + "^";
+        * recordContents += newServiceRecord . memberID + "^";
+        * recordContents += newServiceRecord . serviceCode + "^";
+        * recordContents += newServiceRecord . comments + "^";
+        * recordContents += newServiceRecord . serviceFee;
+
+        if ( database . appendToFile ( new string ( * ID + ".txt" ),  recordContents ) )
+            return true;
+    }
 	
-	serviceRecord.push_back ( * newServiceRecord );
+
 
 	//if ( serviceRecord - > end () - 1 == * newServiceRecord ) @toDo '==' operator for Record class ??? this is a struct?
 		//return true; 

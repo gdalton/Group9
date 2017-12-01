@@ -9,6 +9,9 @@
 
 #include "mainHeader.h"
 
+//Forward declarations
+bool fileExists ( string * );
+
 //Constructor and Destructor
 fileSystem::fileSystem()
 {
@@ -69,6 +72,20 @@ bool fileSystem::writeSTR(string & dataToReadOut, string & filename)
     return false;
 }
 
+bool fileSystem :: appendToFile ( string * filename, string * toAppend) {
+    ifstream appendedFile;
+
+    appendedFile.open ( filename -> c_str(), ifstream::app );
+
+    if ( !appendedFile.fail() ) {
+        appendedFile >> *toAppend;
+        appendedFile.close();
+        return true;
+    }
+    
+    return false;
+}
+
 
 bool fileSystem::read(char* & allData, int length, const char* fileName){
     ifstream fileIn;
@@ -95,10 +112,3 @@ bool fileSystem::testFileSystem(){
     
     return toReturn;
 }
-
-
-
-
-
-
-

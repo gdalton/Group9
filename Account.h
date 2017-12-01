@@ -24,6 +24,7 @@
 
 
 class Address; //forward declaration
+class fileSystem;
 
 /**Service Record Structs**/
 
@@ -189,7 +190,7 @@ public:
 	bool setPassword ( string * newPassword );
 	bool checkPassword ( string * passwordToCheck ) const ;
 	bool displayAllMembers ( void ) const ;
-	bool addServiceRecord ( providerRecord* newServiceRecord );
+	bool addServiceRecord ( fileSystem &, providerRecord& );
 	bool addMemberSeen ( int memberID );
     void displayToUI();
     string* writeToString();

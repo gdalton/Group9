@@ -26,6 +26,8 @@ void viewAccount ( accountManager & );
 bool createService(providerDirectory &master);
 bool deleteService(providerDirectory &master);
 bool updateService(providerDirectory &master);
+void generateProviderServiceRecord( fileSystem & database, accountManager & accounts );
+void generateProviderRepot();
 
 /** Constructs the object.
  */
@@ -257,13 +259,11 @@ bool UserInterface :: runProviderMenu () {
                 break;
 
             case 3:
-                //@todo Where is generateServiceRecord()?
-                waitForEnter();
+                generateProviderServiceRecord( database, accounts );
                 break;
 
             case 4:
-                //@todo Where is generateServiceReport()?
-                waitForEnter();
+                generateProviderRepot();
                 break;
 
             default:
@@ -272,6 +272,67 @@ bool UserInterface :: runProviderMenu () {
     } while ( selection );
 
 
+}
+
+void generateProviderServiceRecord( fileSystem & database, accountManager & accounts ) {
+    string userInput;
+    string * dateOfService = new string;
+    string * memberName = new string;
+    string * memberID = new string;
+    string * providerID = new string;
+    string * serviceID = new string;
+    string * comments = new string;
+    string * serviceFee = new string;
+    Provider * accountToEdit = NULL;
+    ACCOUNT_TYPE type = provider;
+    providerRecord * newServiceRecord = NULL;
+    float servicefee = 0;
+    bool validFloat = false;
+
+
+    do {
+        cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
+        cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+        cout << "│          Provider Service Record Creation" << endl;
+        cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+        cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+        cout << "│ New Provider Service Record Information: " << endl;
+        cout << "│" << endl;
+        cout << "│ Date of Service.......: "; getline ( cin, *dateOfService);
+        cout << "│ Member Name...........: "; getline ( cin, *memberName);
+        cout << "│ Member ID.............: "; getline ( cin, *memberID);
+        cout << "│ Provider ID...........: "; getline ( cin, *providerID);
+        cout << "│ Service ID............: "; getline ( cin, *serviceID);
+        cout << "│ Comments (Single Line): "; getline ( cin, *comments);
+        cout << "│ Service Fee:..........: $"; 
+        if (cin >> servicefee) {
+            cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+            cout << "         Is this information correct? (y/n):";
+            validFloat = true;
+        } else if (cin.fail()) {
+            cin.clear();
+            cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+            cout << "\n[✗] Invalid service fee. \nTry again? (y/n):";
+        }
+        
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        getline ( cin, userInput);
+    } while ( userInput.at ( 0 ) != 'n' );
+
+    accountToEdit = static_cast < Provider * > ( accounts.getAccount ( providerID, type ) );
+
+    if ( validFloat && accountToEdit ) {
+        newServiceRecord = new providerRecord ( new string ( currentDateTime() ), dateOfService, memberName, providerID, serviceID, memberID, comments, servicefee);
+
+        if ( accountToEdit -> addServiceRecord( database, * newServiceRecord ) )
+            cout << "\n[✓] Record added." << endl;
+        else
+            cout << "\n[✗] Failed to add Record." << endl;
+    }
+}
+
+void generateProviderRepot() {
+    //managersReport * reportManager :: managerReport ( const map < string, Provider > & providerTree )
 }
 
 /** Runs the manager menu system. It presents the manager with a series of
