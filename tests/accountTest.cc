@@ -76,15 +76,27 @@ TEST(smokeTesting, checkMemberStatus) {
 
 
 
-TEST(smokeTesting, runAReport) { //@todo finish this
+TEST(smokeTesting, generateAMemberReport) {
     reportManager testReportManger = reportManager();
-    string * testID = new string("564788132");
-    Member * memberCurrent = new Member(new string("John Freewaffle"), new string("johnnyfreewaffles@gmail.com"), new string("564788132"), new Address(new string("Apple"), new string("Apple City"), new string("Apple State"), new string("APPLES")), member, current, new memberRecordList());
-    ASSERT_TRUE(testReportManger.memberReport(*memberCurrent) != NULL) << "Failed to generate report";
-    map< string, Member> newMap;
-    /*newMap[*testID] = *memberCurrent;
-    ASSERT_TRUE(testReportManger.memberAllReports(newMap) != NULL) << "Failed to generate member report";
-    newMap.erase(*testID);*/
+    string * providerName = new string("Provider Provideson");
+    string * serviceName = new string("The Best Service");
+
+    memberRecord * newMemberReport = testReportManger.generateMemberServiceRecord(providerName, serviceName);
+    ASSERT_TRUE(newMemberReport != NULL) << "Failed to generate member report";
+}
+
+
+TEST(smokeTesting, generateAProviderReport) {
+    reportManager testReportManger = reportManager();
+    string * newDateOfService = new string("11/30/2017");
+    string * newMemberName = new string("Member Memberson");
+    string * providerID = new string("224938990");
+    string * serviceID = new string("TestServiceID");
+    string * memberID = new string("522225555");
+    string * comments = new string("Didn't like our service? :(");
+
+    providerRecord * newProvideReport = testReportManger.generateProviderServiceRecord(newDateOfService, newMemberName, providerID, serviceID, memberID, comments, 20);
+    ASSERT_TRUE(newProvideReport != NULL) << "Failed to generate member report";
 }
 
 TEST(smokeTesting, addServiceToMemberRecord) { 
