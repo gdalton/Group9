@@ -76,8 +76,15 @@ TEST(smokeTesting, checkMemberStatus) {
 
 
 
-TEST(smokeTesting, runAReport) { //@todo
-    ASSERT_TRUE(false) << "Not implemented";
+TEST(smokeTesting, runAReport) { //@todo finish this
+    reportManager testReportManger = reportManager();
+    string * testID = new string("564788132");
+    Member * memberCurrent = new Member(new string("John Freewaffle"), new string("johnnyfreewaffles@gmail.com"), new string("564788132"), new Address(new string("Apple"), new string("Apple City"), new string("Apple State"), new string("APPLES")), member, current, new memberRecordList());
+    ASSERT_TRUE(testReportManger.memberReport(*memberCurrent) != NULL) << "Failed to generate report";
+    map< string, Member> newMap;
+    /*newMap[*testID] = *memberCurrent;
+    ASSERT_TRUE(testReportManger.memberAllReports(newMap) != NULL) << "Failed to generate member report";
+    newMap.erase(*testID);*/
 }
 
 TEST(smokeTesting, addServiceToMemberRecord) { 
