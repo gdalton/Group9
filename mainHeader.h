@@ -184,11 +184,11 @@ public:
     ~reportManager ( void );
 
     managersReport * managerReport ( const map < string, Account*  > *);
-    providersReport * providerReport ( const Provider &);
+    providersReport * providerReport ( const Provider &) const;
     membersReport * memberReport ( const Member &);
     list < providersReport > * providerAllReports ( const map < string, Account* > *);
     list < membersReport > * memberAllReports ( const map < string, Account* > *);
-    eft * generateEFT ( const Provider &);
+    eft * generateEFT ( const Provider *);
 
     memberRecord * generateMemberServiceRecord ( string * providerID, string * serviceID );
     providerRecord * generateProviderServiceRecord ( string * newDateOfService, string * memberName, string * providerID, string * serviceID, string * memberID, string * comments, float serviceFee );

@@ -93,7 +93,7 @@
      * @param      newReport      The new report
      * @return     providersReport *  if the report was generated, NULL otherwise
      */
-    providersReport * reportManager :: providerReport ( const Provider & theProvider ) {
+    providersReport * reportManager :: providerReport ( const Provider & theProvider ) const {
 
         float totalFees = 0;
         int totalConsults = 0;
@@ -176,19 +176,21 @@
      * @param      trasferee  The trasferee
      * @return     True if the EFT was generated, false otherwise
      */
-    eft * reportManager :: generateEFT ( const Provider & trasferee) {
+    eft * reportManager :: generateEFT ( const Provider * transferee) {
 
         eft * retEFT = NULL;
-        // infoStruct * providerInfo = NULL;
+        infoStruct * providerInfo = NULL;
+        providersReport * theProviderReport = NULL;
 
-        // if ( &trasferee ) {
-        //     retEFT = new eft;
-        //     providerInfo = trasferee.getInfo();
+        if ( transferee ) {
+            retEFT = new eft;
+            providerInfo = transferee -> getInfo();
+            theProviderReport = providerReport( * transferee ) ;
 
-        //     retEFT -> providerName = *providerInfo -> name ;
-        //     retEFT -> providerID = *providerInfo -> ID;
-        //     //retEFT -> totalFee = *providerInfo -> fee;
-        // }
+            retEFT -> providerName = providerInfo -> name ;
+            retEFT -> providerID = providerInfo -> ID;
+            retEFT -> totalFee = theProviderReport -> weekFee;
+        }
 
         return retEFT;
     }
