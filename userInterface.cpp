@@ -30,7 +30,8 @@ void generateProviderServiceRecord( fileSystem & database, accountManager & acco
 void generateProviderRepot();
 void writeManageReport(managersReport * toWrite);
 void writeProviderReports(list <providersReport> * toWrite);
-
+void writeMemberReports(list <membersReport> * toWrite);
+ 
 /** Constructs the object.
  */
 UserInterface :: UserInterface () {
@@ -366,6 +367,8 @@ bool UserInterface :: runManagerMenu ( void ) {
             case 13:
 
                 writeProviderReports(reports.providerAllReports(accounts.getAllAccounts(provider)));
+                writeMemberReports(reports.memberAllReports(accounts.getAllAccounts(member)));
+                writeManageReport(reports.managerReport(accounts.getAllAccounts(provider)));
                 waitForEnter();
                 break;
 
@@ -982,6 +985,46 @@ void writeProviderReports(list <providersReport> * toWrite) {
                        << "\nTotal Consultations: " << i -> consultations << endl
                        << "Total Fee: $" << i -> weekFee << endl
                        << "\n********END PROVIDER REPORT********" << endl;
+               
+               fileOut.close();
+               count = 1;
+           }
+       }
+}
+
+void writeMemberReports(list <membersReport> * toWrite) {
+
+        ofstream fileOut;
+        list <membersReport> :: iterator i = toWrite -> begin();
+        int count = 1;
+
+        //Cycles through providerReports opens a unique file and writes info.
+        for(i; i != toWrite -> end(); ++i) {
+            string id(i -> memberID);
+            string filename("reports/member/" + id + "-" + currentDateTime() + ".txt");
+            fileOut.open(filename.c_str());
+
+            if(fileOut) {
+                fileOut << "********MEMBER REPORT********" << endl
+                        << "\nMember Name: " << i -> memberName << endl
+                        << "Member ID: " << i -> memberID << endl
+                        << "Street Address: " << *i -> theAddress.getStreetAddress() << endl
+                        << "City: " << *i -> theAddress.getCity() << endl
+                        << "State: " << *i -> theAddress.getState() << endl
+                        << "Zipcode: " << *i -> theAddress.getZipcode() << endl
+                        << "\n****SERVICE RECORD****" << endl;
+
+               //Cycles through serviceRecord and writes info.
+               list <memberRecord> :: iterator j = i -> serviceRecord.begin();
+               for(j; j != i -> serviceRecord.end(); ++j) {
+                   fileOut << "\nService #" << count << ":" << endl 
+                           << "Service Date: " << j -> dateOfService << endl
+                           << "Provider Name: " << j -> providerName << endl
+                           << "Service Name: " << j -> serviceName << endl;
+                   ++count;
+               }
+               fileOut << "\n****END SERVICE RECORD****" << endl
+                       << "\n\n********END MEMBER REPORT********" << endl;
                
                fileOut.close();
                count = 1;
