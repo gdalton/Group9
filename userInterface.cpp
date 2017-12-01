@@ -76,25 +76,35 @@ bool UserInterface :: login () {
 
       cout << "Account ID: ";
       getline ( cin, userID );
-      cout << "password: ";
+      cout << "Password: ";
       getline ( cin, password );
 
-
-      account = accounts.getAccount( &userID, ( ACCOUNT_TYPE ) ( userID.at ( 0 ) - '0' ) );
+       if(userID != "" && password != "")
+           account = accounts.getAccount( &userID, ( ACCOUNT_TYPE ) ( userID.at ( 0 ) - '0' ) );
       
       if ( account ) {
          switch ( userID.at ( 0 ) - '0' ) {
             case 1:
                manager = static_cast < Manager * > ( account );
 
-               if( manager )
+               if( manager && manager->checkPassword(&password))
                   return runManagerMenu();
+               else{
+                   //Inform of incorrect password and reset account object
+                   cout << "\n[✗] (Failed login " << ++loginAttempts << "/3) " << endl;
+                   account = NULL;
+               }
             break;
             case 2:
                provider = static_cast < Provider * > ( account );
 
-               if( provider )
+               if( provider && provider->checkPassword(&password))
                   return runProviderMenu();
+               else{
+                   //Inform of incorrect password and reset account object
+                   cout << "\n[✗] (Failed login " << ++loginAttempts << "/3) " << endl;
+                   account = NULL;
+               }
             break;
             default:
                return 0;
@@ -488,7 +498,7 @@ void createManager ( accountManager & accounts ) {
         cout << "│ City....: "; getline ( cin, city);
         cout << "│ State...: "; getline ( cin, state);
         cout << "│ Zip Code: "; getline ( cin, zip);
-        cout << "│ password: "; getline ( cin, password);
+        cout << "│ Password: "; getline ( cin, password);
         ID = *accounts.generateAccountID(manager);
         cout << "│ ID......: " << ID << endl;
         cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
@@ -531,7 +541,7 @@ void createProvider ( accountManager & accounts ) {
         cout << "│ City....: "; getline ( cin, city);
         cout << "│ State...: "; getline ( cin, state);
         cout << "│ Zip Code: "; getline ( cin, zip);
-        cout << "│ password: "; getline ( cin, password);
+        cout << "│ Password: "; getline ( cin, password);
         ID = *accounts.generateAccountID(provider);
         cout << "│ ID......: " << ID << endl;
         cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
@@ -674,7 +684,7 @@ void editAccount ( accountManager & accounts ) {
             cout << "│ 6. Zip Code: " << *accountAddress -> getZipcode() << endl;  
 
             if (( int ) userInput.at ( 0 ) - '0' < 3 )//show provider/manager level data members
-                cout << "│    password: XXXXXXXXX"<< endl;//Protected info
+                cout << "│    Password: XXXXXXXXX"<< endl;//Protected info
             
                 cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
                 cout << "        What would you like to update?: ";
@@ -730,7 +740,7 @@ void editAccount ( accountManager & accounts ) {
                 cout << "│ 6. Zip Code: " << *accountAddress -> getZipcode() << endl;  
 
             if (( int ) userInput.at ( 0 ) - '0' < 3 )//show provider/manager level data members
-                cout << "│    password: XXXXXXXXX"<< endl;//Protected info //Need to be able to update password
+                cout << "│    Password: XXXXXXXXX"<< endl;//Protected info //Need to be able to update password
             
                 cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
                 cout << "               [✓] Account updated";
