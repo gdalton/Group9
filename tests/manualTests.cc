@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "../mainHeader.h"
+#include "common.h"
 
 
 TEST(smokeTesting, displayServicesList) { // @todo I'm not sure how to test this

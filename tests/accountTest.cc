@@ -1,6 +1,6 @@
 
 #include "gtest/gtest.h"
-#include "../mainHeader.h"
+#include "common.h"
 
 //File for Account Testing 
 TEST(smokeTesting, allUsersExistInTable) {
@@ -56,51 +56,62 @@ TEST(smokeTesting, canLogin) {
     ASSERT_TRUE(type == provider) << "Failed to get proper user type" << endl;
     ASSERT_TRUE(account != NULL) << "Failed to login to test account " << *userID;
     delete userID;
+    delete account;
 }
+
 
 TEST(smokeTesting, checkMemberStatus) {
     
     accountManager testAccountManager = accountManager();
-    Member * memberCurrent = new Member(new string("John Freewaffle"), new string("johnnyfreewaffles@gmail.com"), new string("564788132"), new Address(new string("Apple"), new string("Apple City"), new string("Apple State"), new string("APPLES")), member, current, new memberRecordList());
-    Member * memberExpired = new Member(new string("Tim Freewaffle"), new string("timfreewaffles@gmail.com"), new string("564788131"), new Address(new string("Apple"), new string("Apple City"), new string("Apple State"), new string("APPLES")), member, expired, new memberRecordList());
+    Member * memberCurrent = createDummyMember(string("364788132"));
+    Member * memberExpired = createDummyMember(string("464788132"));
+    ASSERT_TRUE(memberExpired->setMemberStatus(expired)) << "Failed to set expired member status";
+
     testAccountManager.addAccount(memberCurrent, member);
     testAccountManager.addAccount(memberExpired, member);
     memberCurrent = (static_cast<Member*>(testAccountManager.getAccount(memberCurrent->getID(), member)));
     memberExpired = (static_cast<Member*>(testAccountManager.getAccount(memberExpired->getID(), member)));
+
+    
     ASSERT_TRUE(memberCurrent != NULL) << "Failed to get member current";
     ASSERT_TRUE(memberExpired != NULL) << "Failed to get member expired";
 
-    ASSERT_TRUE(memberCurrent->getMemberStatus() == current) << "Failed to get current status";
-    ASSERT_TRUE(memberExpired->getMemberStatus() == expired) << "Failed to get expired status";
-}
+    ASSERT_TRUE(memberCurrent->getMemberStatus() == current) << "Failed to get current status " << memberCurrent->getMemberStatus();
+    ASSERT_TRUE(memberExpired->getMemberStatus() == expired) << "Failed to get expired status " << memberExpired->getMemberStatus();
 
+    delete memberCurrent;
+    delete memberExpired;
+}
 
 
 TEST(smokeTesting, generateAMemberReport) {
     reportManager testReportManger = reportManager();
-    string * providerName = new string("Provider Provideson");
-    string * serviceName = new string("The Best Service");
+    string providerName = string("Provider Provideson");
+    string serviceName = string("The Best Service");
 
-    memberRecord * newMemberReport = testReportManger.generateMemberServiceRecord(providerName, serviceName);
+    memberRecord * newMemberReport = testReportManger.generateMemberServiceRecord(&providerName, &serviceName);
     ASSERT_TRUE(newMemberReport != NULL) << "Failed to generate member report";
+
+    delete newMemberReport;
 }
 
 
 TEST(smokeTesting, generateAProviderReport) {
     reportManager testReportManger = reportManager();
-    string * newDateOfService = new string("11/30/2017");
-    string * newMemberName = new string("Member Memberson");
-    string * providerID = new string("224938990");
-    string * serviceID = new string("TestServiceID");
-    string * memberID = new string("522225555");
-    string * comments = new string("Didn't like our service? :(");
+    string newDateOfService = string("11/30/2017");
+    string newMemberName = string("Member Memberson");
+    string providerID = string("224938990");
+    string serviceID = string("TestServiceID");
+    string memberID = string("522225555");
+    string comments = string("Didn't like our service? :(");
 
-    providerRecord * newProvideReport = testReportManger.generateProviderServiceRecord(newDateOfService, newMemberName, providerID, serviceID, memberID, comments, 20);
+    providerRecord * newProvideReport = testReportManger.generateProviderServiceRecord(&newDateOfService, &newMemberName, &providerID, &serviceID, &memberID, &comments, 20);
     ASSERT_TRUE(newProvideReport != NULL) << "Failed to generate member report";
+    delete newProvideReport;
 }
 
 TEST(smokeTesting, addServiceToMemberRecord) { 
-    Member * memberCurrent = new Member(new string("John Freewaffle"), new string("johnnyfreewaffles@gmail.com"), new string("564788132"), new Address(new string("Apple"), new string("Apple City"), new string("Apple State"), new string("APPLES")), member, current, new memberRecordList());
+    Member * memberCurrent = createDummyMember(string("222288132"));
     memberRecord record;
     string providerToLookFor = string("New Service Record Test 231323231");
     record.providerName = providerToLookFor;
@@ -115,11 +126,13 @@ TEST(smokeTesting, addServiceToMemberRecord) {
     }
     ASSERT_TRUE(found) << "Failed to add Service Record to member";
 
+    delete providerServiceRecord;
 }
 
 TEST(smokeTesting, saveFileSuccess) { 
     accountManager testAccountManager = accountManager();
-    Member * memberCurrent = new Member(new string("John Freewaffle"), new string("johnnyfreewaffles@gmail.com"), new string("522222222"), new Address(new string("Apple"), new string("Apple City"), new string("Apple State"), new string("APPLES")), member, current, new memberRecordList());
+    string testID = string("522222222");
+    Member * memberCurrent = createDummyMember(testID);
     ASSERT_TRUE(testAccountManager.addAccount(memberCurrent, member)) << "Failed to add account";
     ifstream account;
     account.open("accounts/522222222.txt");
@@ -127,5 +140,7 @@ TEST(smokeTesting, saveFileSuccess) {
 
     accountManager newAccountManager = accountManager();
 
-    ASSERT_TRUE(newAccountManager.getAccount(new string("522222222"), member) != NULL) << "Failed to read member after save";
+    ASSERT_TRUE(newAccountManager.getAccount(&testID , member) != NULL) << "Failed to read member after save";
+
+    delete memberCurrent;
 }
