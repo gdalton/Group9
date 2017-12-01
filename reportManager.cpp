@@ -91,22 +91,23 @@
      * otherwise it will return false.
      * @param      reportDetails  The report details
      * @param      newReport      The new report
-     * @return     True if the report was generated, false otherwise
+     * @return     providersReport *  if the report was generated, NULL otherwise
      */
     providersReport * reportManager :: providerReport ( const Provider & theProvider ) {
 
         int totalFees;
         int totalConsults;
-        providersReport * newReport = new providersReport;
+        providersReport * newReport = NULL;
 
         if( &theProvider ){
             //Static stuff
-            
+            newReport = new providersReport;
             infoStruct * providerInfo = theProvider . getInfo();
 
             newReport -> providerName = providerInfo -> name;//no get name
             newReport -> providerID = providerInfo -> ID;//invalid from string* to char
             newReport -> theAddress = providerInfo -> theAddress;//No get address
+            newReport -> serviceRecord = * theProvider . getServiceRecord();
 
             //Dynamic stuff
             list < providerRecord > * providerServiceRecord = theProvider . getServiceRecord ();
@@ -129,22 +130,24 @@
      * otherwise it will return false.
      * @param      reportDetails  The report details
      * @param      newReport      The new report
-     * @return     True if the report was generated, false otherwise
+     * @return     membersReport * if the report was generated, NULL otherwise
      */
     membersReport * reportManager :: memberReport ( const Member & theMember ) {
 
-        membersReport * newReport = new membersReport;
+        membersReport * newReport = NULL;
 
         if( &theMember ){
 
-            infoStruct * memberInfo = theMember . getInfo();
+            newReport = new membersReport;
+            infoStruct * memberInfo = theMember . getInfo ();
 
             newReport -> memberName = memberInfo -> name;
             newReport -> memberID = memberInfo -> ID;
             newReport -> theAddress = memberInfo -> theAddress;
+            newReport -> serviceRecord = * theMember.getServiceRecords ();
         }
 
-        return newReport;//@todo I think this memory is deleted once the func is out of scope
+        return newReport;
     }
 
     /**
