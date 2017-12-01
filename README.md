@@ -30,7 +30,9 @@ Run `make get-test-suite` to install googletest.
 
 **To run:**
 
-Run `make test` to run the tests (only runs tests/exampleTest.cc at the moment).  
+Run `make test` to run the automatic tests.  
+Run `make manualtest` to run the automatic and manual tests.  
+
 
 Verified to work on PSU Linux. 
 
