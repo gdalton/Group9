@@ -161,3 +161,8 @@ TEST(unitTests, editMember) {
     //ASSERT_TRUE(setInfo->securityLevel == newInfo->securityLevel) << "Failed set securityLevel?" << setInfo->securityLevel << " != " << newInfo->securityLevel;
     ASSERT_TRUE(*setInfo->theAddress.getFullAddress() == *newInfo->theAddress.getFullAddress()) << "Failed set address?";
 }
+
+TEST(unitTests, displayService) {
+    providerDirectory testProviderDirectory;
+    ASSERT_TRUE(testProviderDirectory.displayService("759433")) << "Unable to display service that should exist.";
+}
