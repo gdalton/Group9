@@ -1001,6 +1001,7 @@ bool updateService(providerDirectory &master) {
         }
 }
 
+//Writes the Managers Summary Report to a file.
 bool writeManageReport(managersReport * toWrite) {
     string filename("reports/manager/"+("summaryReport"+currentDateTime()) + ".txt");
     ofstream fileOut;
@@ -1031,6 +1032,7 @@ bool writeManageReport(managersReport * toWrite) {
     return toReturn;
 }
 
+//Writes all Provider Reports to files.
 void writeProviderReports(list <providersReport> * toWrite) {
 
         ofstream fileOut;
@@ -1076,6 +1078,7 @@ void writeProviderReports(list <providersReport> * toWrite) {
        }
 }
 
+//Writes all Member Reports to files.
 void writeMemberReports(list <membersReport> * toWrite) {
 
         ofstream fileOut;
@@ -1116,12 +1119,14 @@ void writeMemberReports(list <membersReport> * toWrite) {
        }
 }
 
+//Gets a Provider Report and writes it to a file.
 bool getProviderReport(reportManager & reports, accountManager & accounts) {
 
         string * id;
         char userInput[20];
         Provider * toGet = NULL;
 
+        //Gets a Provider ID from the user.
         cout << "\nPlease Enter a Valid Provider ID: ";
         cin.get(userInput, 20, '\n');
         cin.ignore(100, '\n');
@@ -1129,6 +1134,8 @@ bool getProviderReport(reportManager & reports, accountManager & accounts) {
         id = new string(userInput);
         toGet = static_cast<Provider*>(accounts.getAccount(id, provider));
 
+        //If the provider was found and their report generated
+        //this calls the write to file function.
 	if(toGet) {
             writeProviderRpt(reports.providerReport(*toGet));
 
@@ -1148,7 +1155,8 @@ bool getProviderReport(reportManager & reports, accountManager & accounts) {
         }
     
 }
-    
+   
+//Writes a Provider Report to a file. 
 void writeProviderRpt(providersReport * toWrite) {
 
         ofstream fileOut;
@@ -1189,12 +1197,14 @@ void writeProviderRpt(providersReport * toWrite) {
        }
 }
 
+//Gets a Member Report and writes it to a file.
 bool getMemberReport(reportManager & reports, accountManager & accounts) {
 
         string * id;
         char userInput[20];
         Member * toGet = NULL;
 
+        //Gets Member ID from user.
         cout << "\nPlease Enter a Valid Member ID: ";
         cin.get(userInput, 20, '\n');
         cin.ignore(100, '\n');
@@ -1202,6 +1212,8 @@ bool getMemberReport(reportManager & reports, accountManager & accounts) {
         id = new string(userInput);
         toGet = static_cast<Member*>(accounts.getAccount(id, member));
 
+        //If the Member was found and their report generated
+        //this calls the write report function.
 	if(toGet) {
             writeMemberRpt(reports.memberReport(*toGet));
 
@@ -1221,7 +1233,8 @@ bool getMemberReport(reportManager & reports, accountManager & accounts) {
         }
     
 }
-    
+
+//Writes Member Report to file.    
 void writeMemberRpt(membersReport * toWrite) {
 
         ofstream fileOut;
@@ -1277,6 +1290,7 @@ bool getEFT(reportManager & reports, accountManager & accounts) {
     return false;
 }
 
+//Writes EFT Report to file.
 bool writeEFT(eft * toWrite) {
     ofstream fileOut;
     int count = 1;
