@@ -68,12 +68,16 @@ struct providersReport {
 struct managersReport {
     map < string, map < int, float > > providerDetails; //<providerID, <numMembersSeen, feesDue>
     float totalFees;
+    int totalProviders;
+    int totalConsults;
 
     managersReport ( void ) {};
 
     managersReport( const managersReport & toCopy) {
             providerDetails = toCopy.providerDetails;
             totalFees = toCopy.totalFees;
+            totalProviders = toCopy.totalProviders;
+            totalConsults = toCopy.totalConsults;
         
     }
 };

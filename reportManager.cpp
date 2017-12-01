@@ -1,6 +1,6 @@
 
 /* filename: reportManager.cpp
- * Programmers: Matthew Greenlaw (Add your name here)
+ * Programmers: Matthew Greenlaw, Dalton Gray (Add your name here)
  * Class Number: CS-300
  * Date: 22NOV17
  * Purpose: The Report Manager (RM) class will contain all of the functions
@@ -38,6 +38,8 @@
 
         float providerFee = 0;
         float totalFees = 0;
+        int totalProviders = 0;
+        int totalConsults = 0;
 
         managersReport * record = new managersReport;
         map < int, float > data;
@@ -48,12 +50,14 @@
                 
                 //If they saw anyone this week
                 if( i->second.getNumMembersSeen () != 0) {
+                    ++totalProviders;
                     
                     //loop over who they saw and record the fees
                     list < providerRecord > * providerServiceRecord = i -> second.getServiceRecord ();
 
                     for ( list < providerRecord > :: const_iterator j = providerServiceRecord -> begin (); j != providerServiceRecord -> end (); ++j ) {
                         providerFee += j -> serviceFee;
+                        ++totalConsults;
                     }
 
                     //store the data
@@ -67,7 +71,8 @@
                 totalFees += providerFee;
                 providerFee = 0;
             }
-
+            record -> totalProviders = totalProviders;
+            record -> totalConsults = totalConsults;
             record -> totalFees = totalFees;
         }
 
