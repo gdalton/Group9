@@ -946,10 +946,10 @@ void writeManageReport(managersReport * toWrite) {
 
 void writeProviderReports(list <providersReport> * toWrite) {
 
-        string id("");
-	string filename("reports/provider/" + id + "-" + currentDateTime() + ".txt");
         ofstream fileOut;
         list <providersReport> :: iterator i = toWrite -> begin();
+        string id(i -> providerID);
+        string filename("reports/provider/" + id + "-" + currentDateTime() + ".txt");
         int count = 1;
 
         //Cycles through providerReports opens a unique file and writes info.
