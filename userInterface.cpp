@@ -35,6 +35,8 @@ bool getProviderReport(reportManager &, accountManager &);
 void writeProviderRpt(providersReport * toWrite);
 bool getMemberReport(reportManager & reports, accountManager & accounts);
 void writeMemberRpt(membersReport * toWrite);
+bool getEFT(reportManager & reports, accountManager & accounts);
+bool writeEFT(eft * toWrite);
   
 /** Constructs the object.
  */
@@ -377,6 +379,10 @@ bool UserInterface :: runManagerMenu ( void ) {
                 break;
 
             case 12:
+                if ( getEFT( reports, accounts ) ) 
+                    cout << "\n[✓] EFT report generated." << endl;
+                else
+                    cout << "\n[✗] Failed to generate EFT report." << endl;
 
                 break;
 
@@ -1187,6 +1193,47 @@ void writeMemberRpt(membersReport * toWrite) {
                
            fileOut.close();
         }
+}
+
+bool getEFT(reportManager & reports, accountManager & accounts) {
+    Provider * providerAccount = NULL;
+    string userID;
+
+    cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
+    cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+    cout << "│               EFT generation Menu" << endl;
+    cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
+    cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
+    cout << "                 Enter Provider ID#: ";
+
+    getline ( cin, userID );
+    providerAccount = static_cast < Provider * > ( accounts.getAccount( &userID, provider) );
+
+    if ( providerAccount ) 
+        return writeEFT ( reports.generateEFT ( providerAccount ) );
+}
+
+bool writeEFT(eft * toWrite) {
+    ofstream fileOut;
+    int count = 1;
+    string id(toWrite -> providerID);
+    string filename("reports/provider/" + id + "-" + currentDateTime() + ".txt");
+
+    fileOut.open(filename.c_str());
+
+    if(fileOut) {
+        fileOut << "********EFT REPORT********" << endl
+                << "\nProvider Name: " << toWrite -> providerName << endl
+                << "Provider ID: " << toWrite -> providerID << endl
+                << "Total Fees: " << toWrite -> totalFee << endl
+               << "\n\n********END EFT REPORT********" << endl;
+           
+       fileOut.close();
+
+       return true;
+    }
+
+    return false;
 }
 
 /*
