@@ -91,7 +91,7 @@ bool UserInterface :: login () {
                   return runManagerMenu();
                else{
                    //Inform of incorrect password and reset account object
-                   cout << "\n[✗] (Failed login " << ++loginAttempts << "/3) " << endl;
+                   cout << "\n[✗] Incorrect Passowrd (Failed login " << ++loginAttempts << "/3) " << endl;
                    account = NULL;
                }
             break;
@@ -102,7 +102,7 @@ bool UserInterface :: login () {
                   return runProviderMenu();
                else{
                    //Inform of incorrect password and reset account object
-                   cout << "\n[✗] (Failed login " << ++loginAttempts << "/3) " << endl;
+                   cout << "\n[✗] Incorrect Passowrd (Failed login " << ++loginAttempts << "/3) " << endl;
                    account = NULL;
                }
             break;
@@ -113,7 +113,7 @@ bool UserInterface :: login () {
          cout << "\n[✗] (Failed login " << ++loginAttempts << "/3) " << endl;
 
          if ( loginAttempts < 3 ) 
-            cout <<   "    There is no account with that password. Try again..." << endl;
+            cout <<   "    There is no account with that ID number. Try again..." << endl;
          else {
             cout << "\n You failed to log in too many times." << endl;
             cout <<   " Contact your administrator to regain access to your account.\n" << endl;
@@ -302,7 +302,7 @@ bool UserInterface :: runManagerMenu ( void ) {
         cout << "│ 8. View Provider Directory" << endl;
         cout << "│" << endl;
         cout << "│ Reports:" << endl;
-        cout << "│ 9. Generate Manager Report" << endl;
+        cout << "│ 9.  Generate Manager Report" << endl;
         cout << "│ 10. Generate Provider Report" << endl;
         cout << "│ 11. Generate Member Report" << endl;
         cout << "│ 12. Generate EFT Report" << endl;
