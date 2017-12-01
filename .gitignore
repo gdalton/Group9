@@ -8,3 +8,7 @@ ChocAn.xcodeproj/
 .DS_Store
 testdir/
 testdir/*
+reports/manger/*.txt
+reports/provider/*.txt
+reports/member/*.txt
+reports/eft/*.txt
