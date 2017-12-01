@@ -95,8 +95,8 @@
      */
     providersReport * reportManager :: providerReport ( const Provider & theProvider ) {
 
-        int totalFees;
-        int totalConsults;
+        float totalFees = 0;
+        int totalConsults = 0;
         providersReport * newReport = NULL;
 
         if( &theProvider ){
@@ -204,15 +204,19 @@
      * @param      theProvider   The provider
      * @return     True if the reports were generated, false otherwise
      */
-    list < providersReport >  * reportManager :: providerAllReports ( const map < string, Provider > & providerTree) {
+    list < providersReport >  * reportManager :: providerAllReports ( const map < string, Account* > * providerTree) {
 
         list < providersReport > * providerReports = NULL;
+        Provider* theAccount;
 
-        if ( & providerTree ) {//Can't remember if I need this if statment or not
+        if ( providerTree ) {//Can't remember if I need this if statment or not
             providerReports = new list < providersReport >;
 
-            for ( map < string, Provider > :: const_iterator i = providerTree.begin (); i != providerTree.end (); ++i )
-                providerReports -> push_back ( *providerReport ( i -> second ) );
+            for ( map < string, Account* > :: const_iterator i = providerTree -> begin (); i != providerTree -> end (); ++i ) {
+                
+                theAccount = static_cast<Provider*>(i->second);
+                providerReports -> push_back ( *providerReport ( *theAccount ) );
+            }
         }
 
         

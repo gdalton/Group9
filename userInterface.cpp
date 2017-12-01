@@ -29,6 +29,7 @@ bool updateService(providerDirectory &master);
 void generateProviderServiceRecord( fileSystem & database, accountManager & accounts );
 void generateProviderRepot();
 void writeManageReport(managersReport * toWrite);
+void writeProviderReports(list <providersReport> * toWrite);
 
 /** Constructs the object.
  */
@@ -282,6 +283,7 @@ bool UserInterface :: runManagerMenu ( void ) {
         cout << "│ 10. Generate Provider Report" << endl;
         cout << "│ 11. Generate Member Report" << endl;
         cout << "│ 12. Generate EFT Report" << endl;
+        cout << "│ 13. Run Weekly Reports" << endl;
         cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙";
         read_num("                        Option: ", userInput);
 
@@ -359,6 +361,12 @@ bool UserInterface :: runManagerMenu ( void ) {
 
             case 12:
 
+                break;
+
+            case 13:
+
+                writeProviderReports(reports.providerAllReports(accounts.getAllAccounts(provider)));
+                waitForEnter();
                 break;
 
             default:
@@ -935,6 +943,53 @@ void writeManageReport(managersReport * toWrite) {
 	}
         fileOut.close();
 }
+
+void writeProviderReports(list <providersReport> * toWrite) {
+
+        string id("");
+	string filename("reports/provider/" + id + "-" + currentDateTime() + ".txt");
+        ofstream fileOut;
+        list <providersReport> :: iterator i = toWrite -> begin();
+        int count = 1;
+
+        //Cycles through providerReports opens a unique file and writes info.
+        for(i; i != toWrite -> end(); ++i) {
+            id = i -> providerID;
+            fileOut.open(filename.c_str());
+
+            if(fileOut) {
+                fileOut << "********PROVIDER REPORT********" << endl
+                        << "\nProvider Name: " << i -> providerName << endl
+                        << "Provider ID: " << i -> providerID << endl
+                        << "Street Address: " << *i -> theAddress.getStreetAddress() << endl
+                        << "City: " << *i -> theAddress.getCity() << endl
+                        << "State: " << *i -> theAddress.getState() << endl
+                        << "Zipcode: " << *i -> theAddress.getZipcode() << endl
+                        << "\n****SERVICE RECORD****" << endl;
+
+               //Cycles through serviceRecord and writes info.
+               list <providerRecord> :: iterator j = i -> serviceRecord.begin();
+               for(j; j != i -> serviceRecord.end(); ++j) {
+                   fileOut << "\nService #" << count << ":" << endl 
+                           << "Service Date: " << j -> dateOfService << endl
+                           << "Record Received: " << j -> currentDateTime << endl
+                           << "Member Name: " << j -> memberName << endl
+                           << "Member ID: " << j -> memberID << endl
+                           << "Service Code: " << j -> serviceCode << endl
+                           << "Service Fee: $" << j -> serviceFee << endl;
+                   ++count;
+               }
+               fileOut << "\n****END SERVICE RECORD****" << endl
+                       << "\nTotal Consultations: " << i -> consultations << endl
+                       << "Total Fee: $" << i -> weekFee << endl
+                       << "\n********END PROVIDER REPORT********" << endl;
+               
+               fileOut.close();
+               count = 1;
+           }
+       }
+}
+
 /*
 PARKING LOT
 
