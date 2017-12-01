@@ -21,9 +21,9 @@
  * of the systems functionality. 
  */
 
-class Address; //forward declaration
-               
 
+
+class Address; //forward declaration
 
 /**Service Record Structs**/
 
@@ -31,6 +31,14 @@ struct memberRecord {
     string dateOfService;
     string providerName;
     string serviceName;
+
+    memberRecord (){}
+
+    memberRecord ( string * newDateOfService, string * newProviderName, string * newServiceName) {
+    	dateOfService = * newDateOfService;
+    	providerName = * newProviderName;
+    	serviceName = * newServiceName;
+    }
 };
 
 
@@ -43,6 +51,19 @@ struct providerRecord {
     string serviceCode;
     string comments;
     float serviceFee;
+
+    providerRecord () {};
+
+    providerRecord ( string * newCurrentDateTime, string * newDateOfService, string * newMemberName, string * newProviderID, string * newServiceID, string * newMemberID, string * newComments, float newServiceFee ) {
+    	currentDateTime = *newCurrentDateTime;
+	    dateOfService = * newDateOfService;
+	    memberName = * newMemberName;
+	    providerID = * newProviderID;
+	    memberID = * newMemberID;
+	    serviceCode = * newServiceID;
+	    comments = * newComments;
+	    serviceFee = newServiceFee;
+    }
 };
 
 

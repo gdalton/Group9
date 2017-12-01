@@ -178,6 +178,9 @@ public:
     list < providersReport > * providerAllReports ( const map < string, Provider > &);
     list < membersReport >* memberAllReports ( const map < string, Member > &);
     eft * generateEFT ( const Provider &);
+
+    memberRecord * generateMemberServiceRecord ( string * providerID, string * serviceID );
+    providerRecord * generateProviderServiceRecord ( string * newDateOfService, string * memberName, string * providerID, string * serviceID, string * memberID, string * comments, float serviceFee );
 };
 
 class Warden { 

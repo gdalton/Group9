@@ -137,6 +137,23 @@
         return newReport;//@todo I think this memory is deleted once the func is out of scope
     }
 
+    /**
+     * Generates a members's Service Record
+     * @return     Pointer to a memberRecord
+     */
+    memberRecord * reportManager :: generateMemberServiceRecord ( string * providerName, string * serviceName ) {
+            return new memberRecord ( new string ( currentDateTime()), providerName, serviceName);
+    }
+
+    /**
+     * Generates a provider's Service Record
+     * @return     Pointer to a providerRecord
+    */
+    providerRecord * reportManager :: generateProviderServiceRecord ( string * newDateOfService, string * newMemberName, string * providerID, string * serviceID, string * memberID, string * comments, float serviceFee ){        
+        return new providerRecord ( new string ( currentDateTime()), newDateOfService, newMemberName, providerID, serviceID, memberID, comments, serviceFee);
+    }
+
+
     /** Reads in a tree of providers and cycle through all of the ChocAn
      * providers creating a linear linked list of providers and total fees owed
      * to them. The completed list will be returned via the eft pointer for use
@@ -214,6 +231,8 @@
 
         return memberReports;
     }
+
+
 
     
 
