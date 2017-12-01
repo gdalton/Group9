@@ -223,9 +223,8 @@ bool UserInterface :: runProviderMenu () {
         cout << "│ 1. Search for service in Provider Directory" << endl;
         cout << "│ 2. Validate Member Status" << endl;
         cout << "│ 3. Create Service Record" << endl;
-        cout << "│ 4. Create Service Report" << endl;
         cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙";
-        read_num("                        Option: ", selection);
+        read_num("                      Option: ", selection);
 
 
         switch ( selection) {
@@ -261,10 +260,6 @@ bool UserInterface :: runProviderMenu () {
 
             case 3:
                 generateProviderServiceRecord( database, accounts );
-                break;
-
-            case 4:
-                generateProviderRepot();
                 break;
 
             default:
@@ -333,7 +328,16 @@ void generateProviderServiceRecord( fileSystem & database, accountManager & acco
 }
 
 void generateProviderRepot() {
-    //managersReport * reportManager :: managerReport ( const map < string, Provider > & providerTree )
+    /*
+    managersReport * reportManager :: managerReport ( const map < string, Provider > & providerTree )
+    providersReport {
+    string providerName;
+    string providerID;
+    Address theAddress;
+    int consultations;
+    float weekFee;
+    */
+   
 }
 
 /** Runs the manager menu system. It presents the manager with a series of
@@ -401,9 +405,9 @@ bool UserInterface :: runManagerMenu ( void ) {
             case 5:
             
                 if(createService( directory ))
-                    cout << "\nService added successfully!" << endl;
+                    cout << "\n[✓] Service added." << endl;
                 else
-                    cout << "\nService was not added." << endl;
+                    cout << "\n[✗] Failed to add service." << endl;
                 waitForEnter();
 
                 break;
@@ -411,9 +415,9 @@ bool UserInterface :: runManagerMenu ( void ) {
             case 6:
                
                 if(deleteService( directory ))
-                    cout << "\nService removed successfully!" << endl;
+                    cout << "\n[✓] Service removed." << endl;
                 else
-                    cout << "\nNo service has been removed." << endl;
+                    cout << "\n✗] Failed to remove service." << endl;
                 waitForEnter();
 
                 break;
@@ -421,9 +425,9 @@ bool UserInterface :: runManagerMenu ( void ) {
             case 7:
 
                 if(updateService( directory ))
-                    cout << "\nService updated successfully!" << endl;
+                    cout << "\n[✓] Service updated." << endl;
                 else
-                    cout << "\nNo services updated." << endl;
+                    cout << "\n[✗] Failed to update service." << endl;
                 waitForEnter();
 
                 break;
@@ -452,7 +456,7 @@ bool UserInterface :: runManagerMenu ( void ) {
                 break;
 
             default:
-                cout << "\n[✗] \"" << userInput << "\" is not an option\n" << endl;
+                cout << "\n[✗] \"" << userInput << "\" is not an option.\n" << endl;
                 waitForEnter();
         }
 
@@ -490,7 +494,7 @@ void createAccount( accountManager & accounts ) {
                 createMember ( accounts );
                 break;
             default:
-                cout << "\n[✗] \"" << userInput << "\" is not an option\n" << endl;
+                cout << "\n[✗] \"" << userInput << "\" is not an option.\n" << endl;
         }
     } while(again("Would you like to create another account? (y/n):"));
 
@@ -534,7 +538,7 @@ void createManager ( accountManager & accounts ) {
     if ( accounts.addAccount ( new Manager ( &name, &email, &ID, &newAddress, manager, &password ), manager ) )
         cout << "\n[✓] Account added." << endl;
     else
-        cout << "\n[✗]Failed to add account." << endl;
+        cout << "\n[✗] Failed to add account." << endl;
 }
 
 void createProvider ( accountManager & accounts ) {
@@ -577,7 +581,7 @@ void createProvider ( accountManager & accounts ) {
     if ( accounts.addAccount (new Provider ( &name, &email, &ID, &newAddress, provider, &password, 0, *newServiceRecord ), provider ) )
         cout << "\n[✓] Account added." << endl;
     else 
-        cout << "\n[✗]Failed to add account." << endl;
+        cout << "\n[✗] Failed to add account." << endl;
 
 }
 
@@ -619,7 +623,7 @@ void createMember ( accountManager & accounts ) {
     if ( accounts.addAccount ( new Member ( &name, &email, &ID, &newAddress, member, current, newMemberRecords ), member ) )
         cout << "\n[✓] Account added." << endl;
     else 
-        cout << "\n[✗]Failed to add account." << endl;
+        cout << "\n[✗] Failed to add account." << endl;
 }
 
 void deleteAccount ( accountManager & accounts ) {//Doesn't check if we are deleting this account
@@ -825,7 +829,7 @@ void viewAccount ( accountManager & accounts ) {
         else {
             cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
             cout << "\n[✗] No Account Exists for User ID# "<< userInput << endl;
-            cout << "    Please check the ID number and try again! " << endl;
+            cout << "    Please check the ID number and try again. " << endl;
             
         }
         
