@@ -948,13 +948,12 @@ void writeProviderReports(list <providersReport> * toWrite) {
 
         ofstream fileOut;
         list <providersReport> :: iterator i = toWrite -> begin();
-        string id(i -> providerID);
-        string filename("reports/provider/" + id + "-" + currentDateTime() + ".txt");
         int count = 1;
 
         //Cycles through providerReports opens a unique file and writes info.
         for(i; i != toWrite -> end(); ++i) {
-            id = i -> providerID;
+            string id(i -> providerID);
+            string filename("reports/provider/" + id + "-" + currentDateTime() + ".txt");
             fileOut.open(filename.c_str());
 
             if(fileOut) {

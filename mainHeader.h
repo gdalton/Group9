@@ -186,9 +186,8 @@ public:
     managersReport * managerReport ( const map < string, Account*  > *);
     providersReport * providerReport ( const Provider &);
     membersReport * memberReport ( const Member &);
-    list < providersReport > * providerAllReports ( const map < string, 
-Account* > * );
-    list < membersReport >* memberAllReports ( const map < string, Member > &);
+    list < providersReport > * providerAllReports ( const map < string, Account* > *);
+    list < membersReport > * memberAllReports ( const map < string, Account* > *);
     eft * generateEFT ( const Provider &);
 
     memberRecord * generateMemberServiceRecord ( string * providerID, string * serviceID );

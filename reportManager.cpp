@@ -236,14 +236,18 @@
      * @param      theMember   The member
      * @return     True if the reports were generated, false otherwise
      */
-    list < membersReport > * reportManager :: memberAllReports ( const map < string, Member > & memberTree) {
+    list < membersReport > * reportManager :: memberAllReports ( const map < string, Account* > * memberTree) {
         list < membersReport > * memberReports = NULL;
+        Member* theAccount;
 
-        if ( & memberTree ) {//Can't remember if I need this if statment or not
+        if ( memberTree ) {//Can't remember if I need this if statment or not
             memberReports = new list < membersReport >;
 
-            for ( map < string, Member > :: const_iterator i = memberTree.begin (); i != memberTree.end (); ++i )
-                memberReports -> push_back ( *memberReport ( i -> second ) );
+            for ( map < string, Account* > :: const_iterator i = memberTree -> begin (); i != memberTree -> end (); ++i ) {
+
+                theAccount = static_cast<Member*>(i->second);
+                memberReports -> push_back ( *memberReport ( *theAccount ) );
+            }
         }
 
         return memberReports;
