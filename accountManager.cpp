@@ -344,6 +344,17 @@ bool accountManager::loadDataFromDisk(){
     char memberName [75];
     int membersSeen = 0;
     float serviceFee = 0;
+    string nameSTR;
+    string emailSTR;
+    string passwordSTR;
+    string providerIDSTR;
+    string memberIDSTR;
+    string streetS;
+    string cityS;
+    string stateS;
+    string zipcodeS;
+    
+    
     MEMBER_STATUS memStatus = current;
 
     //Member record data
@@ -397,7 +408,19 @@ bool accountManager::loadDataFromDisk(){
         account.get();
         account.get(zipcode,10,'\n');
         account.get();
+    
+        //Set Account Info
+        nameSTR = name;
+        emailSTR = email;
+        memberIDSTR = accountID;
         
+        //Set Address Info
+        streetS = streetAdress;
+        cityS = city;
+        stateS = state;
+        zipcodeS = zipcode;
+        
+        theAddress = new Address(&streetS, &cityS, &stateS, &zipcodeS);
         
         //****************************
         //Read in unique MEMBER info
@@ -442,10 +465,7 @@ bool accountManager::loadDataFromDisk(){
             }
 
             
-            newAccount = new Member(new string(name), new string(email), new string(accountID), new Address(new string(streetAdress), new string(city), new string(state),new string(zipcode)),member, memStatus, memberRecords);
-            
-            //Clear Memory
-            delete memberRecords;
+            newAccount = new Member(&nameSTR, &emailSTR, &memberIDSTR, theAddress ,member, memStatus, memberRecords);
             
         }
         
@@ -457,6 +477,8 @@ bool accountManager::loadDataFromDisk(){
             //Get provider password
             account.get(password, 50, '\n');
             account.get();
+            
+            passwordSTR = password;
             
             //Get number of members seen
             account >> membersSeen;
@@ -507,7 +529,7 @@ bool accountManager::loadDataFromDisk(){
             }
             
            
-            newAccount = new Provider(new string(name), new string(email), new string(accountID), new Address(new string(streetAdress), new string(city), new string(state),new string(zipcode)),provider, new string(password), membersSeen , provList);
+            newAccount = new Provider(&nameSTR, &emailSTR, &memberIDSTR, theAddress, provider, &passwordSTR, membersSeen , provList);
             
         }
 
@@ -520,7 +542,9 @@ bool accountManager::loadDataFromDisk(){
             account.get(password, 50, '\n');
             account.get();
             
-            newAccount = new Manager(new string(name), new string(email), new string(accountID), new Address(new string(streetAdress), new string(city), new string(state),new string(zipcode)),manager, new string(password));
+            passwordSTR = password;
+            
+            newAccount = new Manager(&nameSTR, &emailSTR, &memberIDSTR, theAddress, manager, &passwordSTR);
         }
         
         
@@ -536,6 +560,11 @@ bool accountManager::loadDataFromDisk(){
     
     //Close the list of all Accounts
     allAccounts.close();
+    
+    //Free memory
+    delete theAddress;
+    delete memberRecords;
+    
     
     
     return true;
