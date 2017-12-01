@@ -28,7 +28,7 @@ bool deleteService(providerDirectory &master);
 bool updateService(providerDirectory &master);
 void generateProviderServiceRecord( fileSystem & database, accountManager & accounts );
 void generateProviderRepot();
-void writeManageReport(managersReport * toWrite);
+bool writeManageReport(managersReport * toWrite);
 void writeProviderReports(list <providersReport> * toWrite);
 void writeMemberReports(list <membersReport> * toWrite);
 bool getProviderReport(reportManager &, accountManager &);
@@ -359,37 +359,53 @@ bool UserInterface :: runManagerMenu ( void ) {
                 break;
 
             case 9:
+                if(writeManageReport(reports.managerReport(accounts.getAllAccounts(provider)))){
+                    cout << "\n[✓] Manager Report generated successfully!";
+                    cout << "\n    It has been placed in reports/manager/\n" << endl;
+                }
+                else{
+                    cout << "\n[✗] Manager report was not generated. Check data. \n" << endl;
+                }
 
-                writeManageReport(reports.managerReport(accounts.getAllAccounts(provider)));
                 waitForEnter();
                 break;
 
             case 10:
  
-                if(getProviderReport(reports, accounts))
-                    cout << "\nProvider Report generated successfully!" << endl;
-                else
-                    cout << "\nInvalid ID Provider was not found." << endl;
+                if(getProviderReport(reports, accounts)){
+                    cout << "\n[✓] Provider Report generated successfully!";
+                    cout << "\n    It has been placed in reports/provider/\n" << endl;
+                }
+                else{
+                    cout << "\n[✗] ID Provider was not found." << endl;
+                }
 
                 waitForEnter();
                 break;
 
             case 11:
 
-                if(getMemberReport(reports, accounts))
-                    cout << "\nMember Report generated successfully!" << endl;
-                else
-                    cout << "\nInvalid ID Member was not found." << endl;
+                if(getMemberReport(reports, accounts)){
+                    cout << "\n[✓] Member Report generated successfully!";
+                    cout << "\n    It has been placed in reports/member/\n" << endl;
+                }
+                else{
+                    cout << "\n[✗] ID Member was not found." << endl;
+                }
 
                 waitForEnter();
                 break;
 
             case 12:
-                if ( getEFT( reports, accounts ) ) 
-                    cout << "\n[✓] EFT report generated." << endl;
-                else
+                if ( getEFT( reports, accounts ) ){
+                    cout << "\n[✓] EFT report generated.";
+                    cout << "\n    It has been placed in reports/eft/\n" << endl;
+                }
+                else{
                     cout << "\n[✗] Failed to generate EFT report." << endl;
+                }
 
+                waitForEnter(); 
                 break;
 
             case 13:
@@ -397,6 +413,8 @@ bool UserInterface :: runManagerMenu ( void ) {
                 writeProviderReports(reports.providerAllReports(accounts.getAllAccounts(provider)));
                 writeMemberReports(reports.memberAllReports(accounts.getAllAccounts(member)));
                 writeManageReport(reports.managerReport(accounts.getAllAccounts(provider)));
+                cout << "\n[✓] All weekly reports have been generated.";
+                cout << "\n    They have been placed in the proper folders in reports/\n" << endl;
                 waitForEnter();
                 break;
 
@@ -949,30 +967,34 @@ bool updateService(providerDirectory &master) {
         }
 }
 
-void writeManageReport(managersReport * toWrite) {
-	string filename("reports/manager/" + currentDateTime() + ".txt");
-        ofstream fileOut;
-        map <string, map <int, float> >::iterator i;
-        fileOut.open(filename.c_str());
+bool writeManageReport(managersReport * toWrite) {
+    string filename("reports/manager/"+("summaryReport"+currentDateTime()) + ".txt");
+    ofstream fileOut;
+    bool toReturn = false;
+    map <string, map <int, float> >::iterator i;
+    fileOut.open(filename.c_str());
 
-        if(fileOut) {
-            fileOut << "Current Date and Time: " << currentDateTime() << endl
-                    << "\n********PROVIDERS TO BE PAID********\n" << endl;
-        
-            for(i= toWrite->providerDetails.begin(); i != toWrite->providerDetails.end(); ++i) {
-                map <int, float> :: iterator j = i->second.begin();
+    if(fileOut) {
+        toReturn = true;
+        fileOut << "Current Date and Time: " << currentDateTime() << endl
+                << "\n********PROVIDERS TO BE PAID********\n" << endl;
+    
+        for(i= toWrite->providerDetails.begin(); i != toWrite->providerDetails.end(); ++i) {
+            map <int, float> :: iterator j = i->second.begin();
 
-                fileOut << "\nProvider ID: " << i -> first << endl
-                        << "Members Seen: " << j -> first << endl
-                        << "Fees Due: $" << j -> second << endl;
-            }
+            fileOut << "\nProvider ID: " << i -> first << endl
+                    << "Members Seen: " << j -> first << endl
+                    << "Fees Due: $" << j -> second << endl;
+        }
 
-            fileOut << "\nTotal Providers: " << toWrite -> totalProviders << endl
-                    << "Total Consultations: " << toWrite -> totalConsults << endl
-                    << "Total Fees Owed: $" << toWrite -> totalFees << endl
-                    << "\n\n\n********END REPORT********" << endl;
+        fileOut << "\nTotal Providers: " << toWrite -> totalProviders << endl
+                << "Total Consultations: " << toWrite -> totalConsults << endl
+                << "Total Fees Owed: $" << toWrite -> totalFees << endl
+                << "\n\n\n********END REPORT********" << endl;
 	}
-        fileOut.close();
+    
+    fileOut.close();
+    return toReturn;
 }
 
 void writeProviderReports(list <providersReport> * toWrite) {
