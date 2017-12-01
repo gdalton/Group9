@@ -177,7 +177,7 @@ public:
     reportManager ( const reportManager & toCopy );
     ~reportManager ( void );
 
-    managersReport * managerReport ( const map < string, Provider > &);
+    managersReport * managerReport ( const map < string, Account*  > &);
     providersReport * providerReport ( const Provider &);
     membersReport * memberReport ( const Member &);
     list < providersReport > * providerAllReports ( const map < string, Provider > &);

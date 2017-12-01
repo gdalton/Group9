@@ -34,26 +34,30 @@
      * returned via a manager’s report struct.
      * @return     True if the changes were made, false otherwise
      */
-    managersReport * reportManager :: managerReport ( const map < string, Provider > & providerTree ) {
+    managersReport * reportManager :: managerReport ( const map < string, Account* > & providerTree ) {
 
         float providerFee = 0;
         float totalFees = 0;
         int totalProviders = 0;
         int totalConsults = 0;
+        Provider* theAccount;
 
         managersReport * record = new managersReport;
         map < int, float > data;
 
         if ( & providerTree ) {
             //Loop over providers
-            for ( map < string, Provider > :: const_iterator i = providerTree . begin (); i != providerTree . end (); ++i ) {
+            for ( map < string, Account*  > :: const_iterator i = providerTree . begin (); i != providerTree . end (); ++i ) {
+
+                theAccount = static_cast<Provider*>(i->second);
                 
                 //If they saw anyone this week
                 if( i->second.getNumMembersSeen () != 0) {
                     ++totalProviders;
-                    
+                if( theAccount->getNumMembersSeen () != 0) {
+
                     //loop over who they saw and record the fees
-                    list < providerRecord > * providerServiceRecord = i -> second.getServiceRecord ();
+                    list < providerRecord > * providerServiceRecord = theAccount->getServiceRecord ();
 
                     for ( list < providerRecord > :: const_iterator j = providerServiceRecord -> begin (); j != providerServiceRecord -> end (); ++j ) {
                         providerFee += j -> serviceFee;
@@ -61,7 +65,7 @@
                     }
 
                     //store the data
-                    data.insert ( pair < int, float > ( i->second.getNumMembersSeen (), providerFee));
+                    data.insert ( pair < int, float > ( theAccount->getNumMembersSeen (), providerFee));
 
                     //add the provider and their data
                     record -> providerDetails.insert ( pair < string, map < int, float > > ( i -> first, data));
@@ -323,4 +327,4 @@
         completedRecord = record.str();
         fs.write(completedRecord.c_str(), filename.c_str());
      */
-    
+
