@@ -57,7 +57,8 @@ bool accountManager::addAccount(Account* toAdd, ACCOUNT_TYPE type){
     
     //Check that we aren't overriding an account
     if((*memberID=="") || allIdNumbers.find(*memberID) != allIdNumbers.end()){
-        return false; //Stop and return if account exists
+        //Then stop and return if account exists
+        return false;
     } else {
         //Add the ID number to ID tracker
         allIdNumbers.insert(*memberID);
@@ -363,6 +364,7 @@ bool accountManager::loadDataFromDisk(){
     string cityS;
     string stateS;
     string zipcodeS;
+    bool result = false;
     
     
     MEMBER_STATUS memStatus = current;
@@ -557,7 +559,11 @@ bool accountManager::loadDataFromDisk(){
         
         
         //Add the account
-        addAccount(newAccount, type);
+        result = addAccount(newAccount, type);
+        
+        //Make sure account was added
+        if(result == false)
+            delete newAccount;
         
         //Log the account ID Number
         allIdNumbers.insert(accountID);
