@@ -348,7 +348,7 @@ bool UserInterface :: runManagerMenu ( void ) {
                 if(deleteService( directory ))
                     cout << "\n[✓] Service removed." << endl;
                 else
-                    cout << "\n✗] Failed to remove service." << endl;
+                    cout << "\n[✗] Service was not removed." << endl;
                 waitForEnter();
 
                 break;
