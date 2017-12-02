@@ -82,6 +82,8 @@ infoStruct* Account::getInfo() const {
 	toReturn->email = *email;
 	toReturn->theAddress = *theAddress;
 	toReturn->ID = *ID;
+    toReturn->securityLevel = securityLevel;
+    
 	return toReturn;
 }
 
@@ -100,6 +102,7 @@ void Account :: setInfo ( string * _name, string * _email, string * _ID, Address
     * name = *_name;
     * ID = * _ID;
     * theAddress = * _theAddress;
+    * email = *_email;
 
     //theAddress-> setAddress ( _theAddress -> getStreetAddress(), _theAddress -> getCity(), _theAddress -> getState(), _theAddress -> getZipcode() );   
     securityLevel = _securityLevel;
@@ -414,7 +417,7 @@ void Provider::displayToUI(){
         cout << "│ Date Performed..: "<<it->dateOfService<<endl;
         cout << "│ Provider ID.....: "<<it->providerID<<endl;
         cout << "│ Member ID.......: "<<it->memberID<<endl;
-        cout << "│ Member Name.....: "<<it->dateOfService<<endl;
+        cout << "│ Member Name.....: "<<it->memberName<<endl;
         cout << "│ Service Code....: "<<it->serviceCode<<endl;
         cout << "│ Service Fee.....: "<<it->serviceFee<<endl;
         cout << "│ Comments........: "<<it->comments<<endl;

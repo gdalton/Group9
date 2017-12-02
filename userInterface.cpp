@@ -725,6 +725,9 @@ void editAccount ( accountManager & accounts ) {
 
             accountInfo = accountToEdit -> getInfo();
             accountAddress = &accountInfo -> theAddress;//ERROR
+            
+            //Update the Account in the database
+            accounts.editAccount(&accountInfo->ID, accountToEdit, accountToEdit->getSecurityLevel());
 
             cout << endl;
                 cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
@@ -748,8 +751,10 @@ void editAccount ( accountManager & accounts ) {
             cout << "\nWould you like to edit another account (y/n)? ";
             getline ( cin, userInput );
 
-        } else 
+        } else {
             cout << "\n[✗] No Account Exists for User ID#: "<< userInput << "\n" << endl;
+            waitForEnter();
+        }
 
     } while ( userInput.at ( 0 ) == 'y' );
 }

@@ -167,45 +167,40 @@ bool accountManager::removeAccount(string* accountID, ACCOUNT_TYPE type){
  */
 bool accountManager::editAccount(string* accountID, Account* newAccount, ACCOUNT_TYPE type){
     bool toReturn = false;
+    string filename("accounts/"+*accountID+".txt");
     
     //Make sure that member already exists
     if(allIdNumbers.find(*accountID) == allIdNumbers.end()){
         return false; //Stop and return if does not exist
     }
-    
+
     //Make sure account type matches ID number
     if(checkAccountType(accountID, type)){
         
         //Add the account
         switch (type) {
             case member:
-                //Free memory
-                delete memberTree[*accountID];
                 
                 //Reset the account
                 memberTree[*accountID] = newAccount;
                 if(memberTree.find(*accountID)  != memberTree.end())
-                    toReturn = true;
+                    toReturn = fileSys.writeSTR(*(static_cast<Member*>(newAccount)->writeToString()), filename);
                 break;
                 
             case provider:
-                //Free memory
-                delete providerTree[*accountID];
                 
                 //Reset the account
                 providerTree[*accountID] = newAccount;
                 if(providerTree.find(*accountID)  != providerTree.end())
-                    toReturn = true;
+                    toReturn = fileSys.writeSTR(*(static_cast<Provider*>(newAccount)->writeToString()), filename);
                 break;
                 
             case manager:
-                //Free memory
-                delete managerTree[*accountID];
                 
                 //Reset the account
                 managerTree[*accountID] = newAccount;
                 if(managerTree.find(*accountID)  != managerTree.end())
-                    toReturn = true;
+                    toReturn = fileSys.writeSTR(*(static_cast<Manager*>(newAccount)->writeToString()), filename);
                 break;
                 
             default:
