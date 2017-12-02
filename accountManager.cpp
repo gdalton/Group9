@@ -136,7 +136,7 @@ bool accountManager::removeAccount(string* accountID, ACCOUNT_TYPE type){
     
     //Make sure that member already exists
     if(allIdNumbers.find(*accountID) == allIdNumbers.end()){
-        return true; //Stop and return if it does not exist
+        return false; //Stop and return if it does not exist
     }
     
     //Make sure account type matches ID number
