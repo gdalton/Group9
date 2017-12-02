@@ -669,6 +669,10 @@ void editAccount ( accountManager & accounts ) {
     Account * accountToEdit = NULL;
     Account * editedAccount = NULL;
     ACCOUNT_TYPE type = (ACCOUNT_TYPE)0;
+    string* streetAddress = NULL;
+    string* city = NULL;
+    string* state = NULL;
+    string* zipcode = NULL;
 
     do { 
         cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
@@ -686,7 +690,11 @@ void editAccount ( accountManager & accounts ) {
         if ( accountToEdit ){
             accountInfo = accountToEdit -> getInfo();
             accountAddress = &accountInfo -> theAddress;
-
+            streetAddress = accountAddress -> getStreetAddress();
+            city = accountAddress -> getCity();
+            state = accountAddress -> getState();
+            zipcode = accountAddress -> getZipcode();
+            
             cout << endl;
             cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
             cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
@@ -695,10 +703,10 @@ void editAccount ( accountManager & accounts ) {
             cout << "│    ID......: " << accountInfo -> ID << endl;
             cout << "│ 1. Name....: " << accountInfo -> name << endl;
             cout << "│ 2. Email...: " << accountInfo -> email << endl;
-            cout << "│ 3. Address.: " << *accountAddress -> getStreetAddress() << endl; 
-            cout << "│ 4. City....: " << *accountAddress -> getCity() << endl; 
-            cout << "│ 5. State...: " << *accountAddress -> getState() << endl;  
-            cout << "│ 6. Zip Code: " << *accountAddress -> getZipcode() << endl;  
+            cout << "│ 3. Address.: " << *streetAddress << endl;
+            cout << "│ 4. City....: " << *city << endl;
+            cout << "│ 5. State...: " << *state << endl;
+            cout << "│ 6. Zip Code: " << *zipcode << endl;
 
             if (( int ) userInput.at ( 0 ) - '0' < 3 )//show provider/manager level data members
                 cout << "│    Password: XXXXXXXXX"<< endl;//Protected info
@@ -717,23 +725,20 @@ void editAccount ( accountManager & accounts ) {
                     accountToEdit -> setInfo(&accountInfo -> name, &newValue, &accountInfo -> ID, accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
                     break;
                 case 3:
-                    accountAddress -> setAddress(&newValue, accountAddress -> getCity(), accountAddress -> getState(), accountAddress -> getZipcode());
+                    accountAddress -> setAddress(&newValue, city, state, zipcode);
                     accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
                     break;
                 case 4:
-                    accountAddress -> setAddress(accountAddress -> getStreetAddress(), &newValue, accountAddress -> getState(), accountAddress -> getZipcode());
+                    accountAddress -> setAddress(streetAddress, &newValue, state, zipcode);
                     accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
                     break;
                 case 5:
-                    accountAddress -> setAddress(accountAddress -> getStreetAddress(), accountAddress -> getCity(), &newValue, accountAddress -> getZipcode());
+                    accountAddress -> setAddress(streetAddress, city, &newValue, zipcode);
                     accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
                     break;
                 case 6:
-                    accountAddress -> setAddress(accountAddress -> getStreetAddress(), accountAddress -> getCity(), accountAddress -> getState(), &newValue);
+                    accountAddress -> setAddress(streetAddress, city, state, &newValue);
                     accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
-                    break;
-                //case 7: //Need to be able to update password
-                    //accountToEdit.setInfo(accountInfo -> name, accountInfo -> ID, accountInfo -> email, accountAddress, accountInfo -> securityLevel);
                     break;
                     
                 default:
@@ -741,7 +746,7 @@ void editAccount ( accountManager & accounts ) {
             }
 
             accountInfo = accountToEdit -> getInfo();
-            accountAddress = &accountInfo -> theAddress;//ERROR
+            accountAddress = &accountInfo -> theAddress;
             
             //Update the Account in the database
             accounts.editAccount(&accountInfo->ID, accountToEdit, accountToEdit->getSecurityLevel());
@@ -760,14 +765,19 @@ void editAccount ( accountManager & accounts ) {
                 cout << "│ 6. Zip Code: " << *accountAddress -> getZipcode() << endl;  
 
             if (( int ) userInput.at ( 0 ) - '0' < 3 )//show provider/manager level data members
-                cout << "│    Password: XXXXXXXXX"<< endl;//Protected info //Need to be able to update password
+                cout << "│    Password: XXXXXXXXX"<< endl;//Protected info
             
                 cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
                 cout << "               [✓] Account updated";
 
             cout << "\nWould you like to edit another account (y/n)? ";
             getline ( cin, userInput );
-
+            
+            //Free used memory
+            delete streetAddress;
+            delete city;
+            delete state;
+            delete zipcode;
         } else {
             cout << "\n[✗] No Account Exists for User ID#: "<< userInput << "\n" << endl;
             waitForEnter();
@@ -974,7 +984,7 @@ bool updateService(providerDirectory &master) {
 	id = temp;
 
         if(temp)
-            delete temp;
+            delete [] temp;
         temp = NULL;
 
         //Checks providerDirectory for service code.

@@ -4,6 +4,7 @@
  * Class Number: CS-300
  * Date: 22NOV17
  * Purpose:
+ * Manage all ChocAn members, providers and managers
  * @todo
  */
 
