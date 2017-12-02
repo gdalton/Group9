@@ -759,10 +759,10 @@ void editAccount ( accountManager & accounts ) {
                 cout << "│    ID......: " << accountInfo -> ID << endl;
                 cout << "│ 1. Name....: " << accountInfo -> name << endl; 
                 cout << "│ 2. Email...: " << accountInfo -> email << endl; 
-                cout << "│ 3. Address.: " << *accountAddress -> getStreetAddress() << endl; 
-                cout << "│ 4. City....: " << *accountAddress -> getCity() << endl; 
-                cout << "│ 5. State...: " << *accountAddress -> getState() << endl;  
-                cout << "│ 6. Zip Code: " << *accountAddress -> getZipcode() << endl;  
+                cout << "│ 3. Address.: " << *streetAddress << endl;
+                cout << "│ 4. City....: " << *city << endl;
+                cout << "│ 5. State...: " << *state << endl;
+                cout << "│ 6. Zip Code: " << *zipcode << endl;
 
             if (( int ) userInput.at ( 0 ) - '0' < 3 )//show provider/manager level data members
                 cout << "│    Password: XXXXXXXXX"<< endl;//Protected info
