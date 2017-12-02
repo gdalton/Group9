@@ -31,8 +31,17 @@ accountManager::accountManager(const accountManager & toCopy){
 }
 
 accountManager::~accountManager(){
-    // No action needed -
-    // map destructors should delete the data
+
+    //Delete all accounts contained in Map data structures
+    for (accountMap::iterator it=memberTree.begin(); it!=memberTree.end(); ++it){
+        delete static_cast<Member*>(it->second);
+    }
+    for (accountMap::iterator it=providerTree.begin(); it!=providerTree.end(); ++it){
+        delete static_cast<Provider*>(it->second);
+    }
+    for (accountMap::iterator it=managerTree.begin(); it!=managerTree.end(); ++it){
+        delete static_cast<Manager*>(it->second);
+    }
 }
 
 
@@ -77,23 +86,29 @@ bool accountManager::addAccount(Account* toAdd, ACCOUNT_TYPE type){
 
     //Make sure account type matches ID number
     if(checkAccountType(memberID, type)){
-
+        string* temp = NULL;
+        
         //Add the account
         switch (type) {
             case member:
                 memberTree[*memberID] = toAdd;
-                toReturn = fileSys.writeSTR(*(static_cast<Member*>(toAdd)->writeToString()), filename);
+                temp = static_cast<Member*>(toAdd)->writeToString();
+                toReturn = fileSys.writeSTR(*(temp), filename);
+                delete temp;
                 break;
 
             case provider:
                 providerTree[*memberID] = toAdd;
-                toReturn = fileSys.writeSTR(*(static_cast<Provider*>(toAdd)->writeToString()), filename);
-                
+                temp = static_cast<Provider*>(toAdd)->writeToString();
+                toReturn = fileSys.writeSTR(*(temp), filename);
+                delete temp;
                 break;
 
             case manager:
                 managerTree[*memberID] = toAdd;
-                toReturn = fileSys.writeSTR(*(static_cast<Manager*>(toAdd)->writeToString()), filename);
+                temp = static_cast<Manager*>(toAdd)->writeToString();
+                toReturn = fileSys.writeSTR(*(temp), filename);
+                delete temp;
                 break;
 
             default:
@@ -386,10 +401,6 @@ bool accountManager::loadDataFromDisk(){
         else type = member;
         
         
-        // Get The Core Info About An Account 
-        theAddress = new Address;
-        memberRecords = new list<memberRecord>;
-        
         //Get Core Info
         account.get(name, 100, '\n');
         account.get();
@@ -462,6 +473,8 @@ bool accountManager::loadDataFromDisk(){
             
             newAccount = new Member(&nameSTR, &emailSTR, &memberIDSTR, theAddress ,member, memStatus, memberRecords);
             
+            //Free Memory
+            delete memberRecords;
         }
         
         //****************************
@@ -551,17 +564,14 @@ bool accountManager::loadDataFromDisk(){
         
         //Close the Account File
         account.close();
+        
+        //Free Memory
+        delete theAddress;
     }
     
     //Close the list of all Accounts
     allAccounts.close();
-    
-    //Free memory
-    delete theAddress;
-    delete memberRecords;
-    
-    
-    
+
     return true;
 }
 

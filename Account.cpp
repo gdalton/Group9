@@ -117,7 +117,11 @@ string* Account::getID() const {
 }
 
 string* Account::writeToString(){
-    return new string(*ID+"\n"+*name+"\n"+*email+"\n"+*theAddress->writeToString());
+    //Create new string and manage returned memory
+    string* address =theAddress->writeToString();
+    string* toReturn = new string(*ID+"\n"+*name+"\n"+*email+"\n"+*address);
+    delete address;
+    return toReturn;
 }
 
 
@@ -184,7 +188,11 @@ bool Manager :: checkPassword (   string * passwordToCheck ) const {
 }
 
 string* Manager::writeToString(){
-     return new string(*ID+"\n"+*name+"\n"+*email+"\n"+*theAddress->writeToString()+"\n"+*password);
+    //Create new string and manage returned memory
+    string* address =theAddress->writeToString();
+    string* toReturn = new string(*ID+"\n"+*name+"\n"+*email+"\n"+*address+"\n"+*password);
+    delete address;
+    return toReturn;
 }
 
 //Function to display the account
@@ -379,14 +387,20 @@ list < providerRecord > * Provider :: getServiceRecord ( void ) const {
 
 
 string* Provider::writeToString(){
-    
+
+    //Create new string and manage returned memory
+    string* address =theAddress->writeToString();
     string serviceRecords = "";
     
     for (providerRecordList::iterator it=serviceRecord.begin(); it != serviceRecord.end(); ++it){
         serviceRecords += ("^")+it->currentDateTime+("^")+it->dateOfService+("^")+it->providerID+("^")+it->memberID+("^")+it->serviceCode+("^")+toString(it->serviceFee)+("^")+it->comments+("^")+it->memberName+("\n");
     }
     
-    return new string(*ID+"\n"+*name+"\n"+*email+"\n"+*theAddress->writeToString()+"\n"+*password+"\n"+toString(numMembersSeen)+"\n"+serviceRecords);
+    string* toReturn = new string(*ID+"\n"+*name+"\n"+*email+"\n"+*address+"\n"+*password+"\n"+toString(numMembersSeen)+"\n"+serviceRecords);
+    
+    //Free memory and return
+    delete address;
+    return toReturn;
 }
 
 //Function to display the account
@@ -504,8 +518,11 @@ bool Member :: appendToServiceRecord ( memberRecord newServiceRecord) {//@todo c
 
 string* Member::writeToString(){
     
+    //Create new strings
     string serviceRecords = "";
     string strStatus = "Current";
+    string* address =theAddress->writeToString();
+    string* toReturn = NULL;
     
     //Set to expired if expired
     if(status == expired)
@@ -516,7 +533,11 @@ string* Member::writeToString(){
         serviceRecords += ("^")+it->dateOfService+("^")+it->providerName+("^")+it->serviceName+("\n");
     }
     
-    return new string(*ID+"\n"+*name+"\n"+*email+"\n"+*theAddress->writeToString()+"\n"+strStatus+"\n"+serviceRecords);
+    toReturn = new string(*ID+"\n"+*name+"\n"+*email+"\n"+*address+"\n"+strStatus+"\n"+serviceRecords);
+    
+    //Free memory and return
+    delete address;
+    return toReturn;
 }
 
 

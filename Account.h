@@ -203,7 +203,7 @@ public:
 protected:
 	string * password;
 	int numMembersSeen;
-	list < int > * membersSeen; //Wasn't shown as a pointer, but maybe it should be?
+	list < int > * membersSeen;
 	list < providerRecord > serviceRecord;
 };
 
