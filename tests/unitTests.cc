@@ -19,12 +19,14 @@ TEST(unitTests, loadUsersFromDatabase) {
 }
 
 //BROKEN UNIT TESTS -- RAN ON EARILER SYSTEM VERSION
-/*
+
 TEST(unitTests, checkMemberStatus) {
     
-    accountManager testAccountManager = accountManager();
+    accountManager testAccountManager;
+
     Member * memberCurrent = createDummyMember(string("364744432"));
     Member * memberExpired = createDummyMember(string("464744432"));
+    
     ASSERT_TRUE(memberExpired->setMemberStatus(expired)) << "Failed to set expired member status";
 
     testAccountManager.addAccount(memberCurrent, member);
@@ -41,7 +43,9 @@ TEST(unitTests, checkMemberStatus) {
 
     delete memberCurrent;
     delete memberExpired;
+    
 }
+
 
 TEST(unitTests, addServiceToMemberRecord) { 
     Member * memberCurrent = createDummyMember(string("222288132"));
@@ -67,7 +71,6 @@ TEST(unitTests, addService) {
     providerDirectory testDirectory = providerDirectory();
     string testServiceName = string("This is a test service");
     Service toAdd;
-    };
     toAdd.fee = 0;
     toAdd.name = testServiceName;
     toAdd.serviceID = "2323232";
@@ -173,4 +176,4 @@ TEST(unitTests, editMember) {
 TEST(unitTests, displayService) {
     providerDirectory testProviderDirectory;
     ASSERT_TRUE(testProviderDirectory.displayService("759433")) << "Unable to display service that should exist.";
-} */
+} 

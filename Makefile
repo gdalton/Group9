@@ -14,7 +14,7 @@ setuptest:
 test: 	
 	make setuptest
 	cd googletest && \
-	g++ -g $(addprefix ../, $(filter-out main.cpp, $(wildcard *.cpp))) ../tests/common.cpp -Igoogletest/include -pthread $(addprefix ../, $(filter-out tests/manualTests.cc, $(wildcard tests/*.cc))) libgtest.a -o ../testdir/test_executable.out && \
+	g++ -g $(addprefix ../, $(filter-out accountManager.cpp main.cpp, $(wildcard *.cpp))) ../tests/accountManagerLocal.cpp ../tests/common.cpp -Igoogletest/include -pthread $(addprefix ../, $(filter-out tests/manualTests.cc, $(wildcard tests/*.cc))) libgtest.a -o ../testdir/test_executable.out && \
 	cd ../testdir/ && \
 	./test_executable.out
 
@@ -22,7 +22,7 @@ manualtest:
 	make setuptest
 	
 	cd googletest && \
-	g++ $(addprefix ../, $(filter-out main.cpp, $(wildcard *.cpp))) ../tests/common.cpp -Igoogletest/include -pthread ../tests/*.cc libgtest.a -o ../testdir/test_executable.out && \
+	g++ $(addprefix ../, $(filter-out accountManager main.cpp, $(wildcard *.cpp))) ../tests/accountManagerLocal.cpp ../tests/common.cpp -Igoogletest/include -pthread ../tests/*.cc libgtest.a -o ../testdir/test_executable.out && \
 	cd ../testdir/ && \
 	./test_executable.out
 
