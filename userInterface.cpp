@@ -727,18 +727,22 @@ void editAccount ( accountManager & accounts ) {
                 case 3:
                     accountAddress -> setAddress(&newValue, city, state, zipcode);
                     accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                    *streetAddress = newValue;
                     break;
                 case 4:
                     accountAddress -> setAddress(streetAddress, &newValue, state, zipcode);
                     accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                    *city = newValue;
                     break;
                 case 5:
                     accountAddress -> setAddress(streetAddress, city, &newValue, zipcode);
                     accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                    *state = newValue;
                     break;
                 case 6:
                     accountAddress -> setAddress(streetAddress, city, state, &newValue);
                     accountToEdit -> setInfo(&accountInfo -> name, &accountInfo -> email, &accountInfo -> ID, accountAddress, (SECURITY_LEVEL) accountInfo -> securityLevel);
+                    *zipcode = newValue;
                     break;
                     
                 default:
