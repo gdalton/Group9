@@ -278,6 +278,8 @@ bool UserInterface :: runManagerMenu ( void ) {
     int userInput = -1;
     int numAccounts = 0;
     int numServices = 0;
+    accountMap* temp = NULL;
+    managersReport* report = NULL;
 
     do {
 
@@ -369,14 +371,17 @@ bool UserInterface :: runManagerMenu ( void ) {
                 break;
 
             case 9:
-                if(writeManageReport(reports.managerReport(accounts.getAllAccounts(provider)))){
+                temp = accounts.getAllAccounts(provider);
+                report = reports.managerReport(temp);
+                if(writeManageReport(report)){
                     cout << "\n[✓] Manager Report generated successfully!";
                     cout << "\n    It has been placed in reports/manager/\n" << endl;
                 }
                 else{
                     cout << "\n[✗] Manager report was not generated. Check data. \n" << endl;
                 }
-
+                delete temp;
+                delete report;
                 waitForEnter();
                 break;
 
@@ -1139,37 +1144,41 @@ void writeMemberReports(list <membersReport> * toWrite) {
 //Gets a Provider Report and writes it to a file.
 bool getProviderReport(reportManager & reports, accountManager & accounts) {
 
-        string * id;
-        char userInput[20];
-        Provider * toGet = NULL;
+    string * id;
+    char userInput[20];
+    Provider * toGet = NULL;
+    providersReport * report = NULL;
 
-        //Gets a Provider ID from the user.
-        cout << "\nPlease Enter a Valid Provider ID: ";
-        cin.get(userInput, 20, '\n');
-        cin.ignore(100, '\n');
+    //Gets a Provider ID from the user.
+    cout << "\nPlease Enter a Valid Provider ID: ";
+    cin.get(userInput, 20, '\n');
+    cin.ignore(100, '\n');
 
-        id = new string(userInput);
-        toGet = static_cast<Provider*>(accounts.getAccount(id, provider));
+    id = new string(userInput);
+    toGet = static_cast<Provider*>(accounts.getAccount(id, provider));
 
-        //If the provider was found and their report generated
-        //this calls the write to file function.
+    //If the provider was found and their report generated
+    //this calls the write to file function.
 	if(toGet) {
-            writeProviderRpt(reports.providerReport(*toGet));
+        report = reports.providerReport(*toGet);
+        writeProviderRpt(report);
 
-            toGet = NULL;
-            if(id) {
-                delete id;
-                id = NULL;
-            }
-            return true;
+        toGet = NULL;
+        if(id) {
+            delete id;
+            id = NULL;
         }
-        else {
-            if(id) {
-                delete id;
-                id = NULL;
-            }
-            return false;
+        if(report)
+            delete report;
+        return true;
+    }
+    else {
+        if(id) {
+            delete id;
+            id = NULL;
         }
+        return false;
+    }
     
 }
    

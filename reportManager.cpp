@@ -63,6 +63,9 @@
                         providerFee += j -> serviceFee;
                         ++totalConsults;
                     }
+                    
+                    //Free memory
+                    delete providerServiceRecord;
 
                     //store the data
                     data.insert ( pair < int, float > ( theAccount->getNumMembersSeen (), providerFee));
@@ -103,14 +106,14 @@
             //Static stuff
             newReport = new providersReport;
             infoStruct * providerInfo = theProvider . getInfo();
+            list < providerRecord > * providerServiceRecord = theProvider . getServiceRecord ();
 
             newReport -> providerName = providerInfo -> name;//no get name
             newReport -> providerID = providerInfo -> ID;//invalid from string* to char
             newReport -> theAddress = providerInfo -> theAddress;//No get address
-            newReport -> serviceRecord = * theProvider . getServiceRecord();
-
+            newReport -> serviceRecord = *providerServiceRecord;
+            
             //Dynamic stuff
-            list < providerRecord > * providerServiceRecord = theProvider . getServiceRecord ();
             for ( list < providerRecord > :: iterator j = providerServiceRecord -> begin (); j != providerServiceRecord -> end (); ++j ) {
                 totalFees += j -> serviceFee;
                 ++totalConsults;
@@ -118,8 +121,11 @@
 
             newReport -> consultations = totalConsults;
             newReport -> weekFee = totalFees;
+            
+            //Free memory
+            delete providerServiceRecord; 
         }
-
+        
         return newReport;
     }
 

@@ -269,8 +269,8 @@ Account* accountManager::getAccount(string* accountID, ACCOUNT_TYPE type){
  */
 accountMap* accountManager::getAllAccounts(ACCOUNT_TYPE type){
     
-    map< string, Account*>* toReturn = NULL;
-    
+    accountMap* toReturn = NULL;
+
     //Find the right tree and return a copy
     switch (type) {
         case member:
