@@ -197,16 +197,26 @@ string* Manager::writeToString(){
 
 //Function to display the account
 void Manager::displayToUI(){
+    string* temp = NULL;
+    
     cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
     cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
     cout << "│              Manager Account Info" << endl;
     cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
     cout << "│ Name....: "<<*name<<endl;
     cout << "│ Email...: "<<*email<<endl;
-    cout << "│ Address.: "<<*theAddress->getStreetAddress()<<endl;
-    cout << "│ City....: "<<*theAddress->getCity()<<endl;
-    cout << "│ State...: "<<*theAddress->getState()<<endl;
-    cout << "│ Zip Code: "<<*theAddress->getZipcode()<<endl;
+    temp = theAddress->getStreetAddress();
+    cout << "│ Address.: "<<*temp<<endl;
+    delete temp;
+    temp = theAddress->getCity();
+    cout << "│ City....: "<<*temp<<endl;
+    delete temp;
+    temp =theAddress->getState();
+    cout << "│ State...: "<<*temp<<endl;
+    delete temp;
+    temp = theAddress->getZipcode();
+    cout << "│ Zip Code: "<<*temp<<endl;
+    delete temp;
     cout << "│ password: "<<*password<<endl;
     cout << "│ ID......: " << *ID << endl;
     cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
@@ -300,17 +310,7 @@ bool Provider :: displayAllMembers ( void ) const {//@todo
  * @note	Client should not delete newServiceRecord, let Provider do that in the
  *       	destructor.
  */
-bool Provider :: addServiceRecord ( fileSystem & database, providerRecord & newServiceRecord ) {//@todo    
-    /*provider service record
-    string currentDateTime;
-    string dateOfService;
-    string memberName;
-    string providerID;
-    string memberID;
-    string serviceCode;
-    string comments;
-    float serviceFee;
-    */
+bool Provider :: addServiceRecord ( fileSystem & database, providerRecord & newServiceRecord ) {
    
     string * recordContents = NULL;
     stringstream aFloat;
@@ -406,6 +406,8 @@ string* Provider::writeToString(){
 //Function to display the account
 void Provider::displayToUI(){
     int counter = 1;
+    string* temp;
+    
     
     cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
     cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
@@ -413,10 +415,18 @@ void Provider::displayToUI(){
     cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
     cout << "│ Name....: "<<*name<<endl;
     cout << "│ Email...: "<<*email<<endl;
-    cout << "│ Address.: "<<*theAddress->getStreetAddress()<<endl;
-    cout << "│ City....: "<<*theAddress->getCity()<<endl;
-    cout << "│ State...: "<<*theAddress->getState()<<endl;
-    cout << "│ Zip Code: "<<*theAddress->getZipcode()<<endl;
+    temp = theAddress->getStreetAddress();
+    cout << "│ Address.: "<<*temp<<endl;
+    delete temp;
+    temp = theAddress->getCity();
+    cout << "│ City....: "<<*temp<<endl;
+    delete temp;
+    temp =theAddress->getState();
+    cout << "│ State...: "<<*temp<<endl;
+    delete temp;
+    temp = theAddress->getZipcode();
+    cout << "│ Zip Code: "<<*temp<<endl;
+    delete temp;
     cout << "│ password: "<<*password<<endl;
     cout << "│ ID......: " << *ID << endl;
     cout << "│ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ " << endl;
@@ -545,16 +555,26 @@ string* Member::writeToString(){
 void Member::displayToUI(){
     int counter = 1;
     
+    string* temp;
+    
     cout << "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ChocAn]━┑" << endl;
     cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
     cout << "│              Member Account Info" << endl;
     cout << "┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥" << endl;
     cout << "│ Name....: "<<*name<<endl;
     cout << "│ Email...: "<<*email<<endl;
-    cout << "│ Address.: "<<*theAddress->getStreetAddress()<<endl;
-    cout << "│ City....: "<<*theAddress->getCity()<<endl;
-    cout << "│ State...: "<<*theAddress->getState()<<endl;
-    cout << "│ Zip Code: "<<*theAddress->getZipcode()<<endl;
+    temp = theAddress->getStreetAddress();
+    cout << "│ Address.: "<<*temp<<endl;
+    delete temp;
+    temp = theAddress->getCity();
+    cout << "│ City....: "<<*temp<<endl;
+    delete temp;
+    temp =theAddress->getState();
+    cout << "│ State...: "<<*temp<<endl;
+    delete temp;
+    temp = theAddress->getZipcode();
+    cout << "│ Zip Code: "<<*temp<<endl;
+    delete temp;
     cout << "│ ID......: " << *ID << endl;
     cout << "│ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ " << endl;
     cout << "│                      Records                       " << endl;

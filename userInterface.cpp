@@ -482,7 +482,7 @@ void createManager ( accountManager & accounts ) {
     string state;
     string zip;
     string password;
-    string ID;
+    string* ID;
     string userInput;
     
     do {
@@ -499,8 +499,8 @@ void createManager ( accountManager & accounts ) {
         cout << "│ State...: "; getline ( cin, state);
         cout << "│ Zip Code: "; getline ( cin, zip);
         cout << "│ Password: "; getline ( cin, password);
-        ID = *accounts.generateAccountID(manager);
-        cout << "│ ID......: " << ID << endl;
+        ID = accounts.generateAccountID(manager);
+        cout << "│ ID......: " << *ID << endl;
         cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
         cout << "         Is this information correct? (y/n):"; 
         getline ( cin, userInput);
@@ -508,10 +508,13 @@ void createManager ( accountManager & accounts ) {
 
     newAddress.setAddress ( &address, &city, &state, &zip );
     
-    if ( accounts.addAccount ( new Manager ( &name, &email, &ID, &newAddress, manager, &password ), manager ) )
+    if ( accounts.addAccount ( new Manager ( &name, &email, ID, &newAddress, manager, &password ), manager ) ){
         cout << "\n[✓] Account added." << endl;
+    }
     else
         cout << "\n[✗] Failed to add account." << endl;
+    
+    delete ID;
 }
 
 void createProvider ( accountManager & accounts ) {
@@ -525,7 +528,7 @@ void createProvider ( accountManager & accounts ) {
     string state;
     string zip;
     string password;
-    string ID;
+    string* ID;
     string userInput;
 
     do {
@@ -542,8 +545,8 @@ void createProvider ( accountManager & accounts ) {
         cout << "│ State...: "; getline ( cin, state);
         cout << "│ Zip Code: "; getline ( cin, zip);
         cout << "│ Password: "; getline ( cin, password);
-        ID = *accounts.generateAccountID(provider);
-        cout << "│ ID......: " << ID << endl;
+        ID = accounts.generateAccountID(provider);
+        cout << "│ ID......: " << *ID << endl;
         cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
         cout << "         Is this information correct? (y/n):"; 
         getline ( cin, userInput);
@@ -551,10 +554,15 @@ void createProvider ( accountManager & accounts ) {
 
     newAddress.setAddress ( &address, &city, &state, &zip );
     
-    if ( accounts.addAccount (new Provider ( &name, &email, &ID, &newAddress, provider, &password, 0, *newServiceRecord ), provider ) )
+    if ( accounts.addAccount (new Provider ( &name, &email, ID, &newAddress, provider, &password, 0, *newServiceRecord ), provider ) ){
         cout << "\n[✓] Account added." << endl;
-    else 
+    }
+    else
         cout << "\n[✗] Failed to add account." << endl;
+    
+    delete ID;
+    delete newServiceRecord;
+    delete newMembersSeen;
 
 }
 
@@ -568,7 +576,7 @@ void createMember ( accountManager & accounts ) {
     string state;
     string zip;
     string password;
-    string ID;
+    string* ID;
     string userInput;
 
     do {
@@ -584,8 +592,8 @@ void createMember ( accountManager & accounts ) {
         cout << "│ City....: "; getline ( cin, city);
         cout << "│ State...: "; getline ( cin, state);
         cout << "│ Zip Code: "; getline ( cin, zip);
-        ID = *accounts.generateAccountID(member);
-        cout << "│ ID......: " << ID << endl;
+        ID = accounts.generateAccountID(member);
+        cout << "│ ID......: " << *ID << endl;
         cout << "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙" << endl;
         cout << "         Is this information correct? (y/n):"; 
         getline ( cin, userInput);
@@ -593,10 +601,14 @@ void createMember ( accountManager & accounts ) {
 
     newAddress.setAddress ( &address, &city, &state, &zip );
     
-    if ( accounts.addAccount ( new Member ( &name, &email, &ID, &newAddress, member, current, newMemberRecords ), member ) )
+    if ( accounts.addAccount ( new Member ( &name, &email, ID, &newAddress, member, current, newMemberRecords ), member ) ){
         cout << "\n[✓] Account added." << endl;
-    else 
+    }
+    else
         cout << "\n[✗] Failed to add account." << endl;
+    
+    delete ID;
+    delete newMemberRecords;
 }
 
 void deleteAccount ( accountManager & accounts ) {//Doesn't check if we are deleting this account
